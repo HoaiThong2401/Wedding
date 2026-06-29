@@ -13,68 +13,38 @@
 
             </div>
 
-            <div class="row align-items-center gy-5">
+            <div class="row align-items-center gy-3">
 
-                <!-- Groom -->
-                <div class="col-lg-6">
-
+                <div class="col-6">
                     <div class="person">
-
                         <div class="avatar">
-
-                            <img
-                                src="/images/avatar_nam.jpg"
-                                alt="Groom">
-
+                            <img src="/images/avatar_nam.jpg" alt="Groom">
                         </div>
 
-                        <span class="role">
-                            Chú rể
-                        </span>
-
-                        <h3 class="name">
-                            Hoàng Thiện
-                        </h3>
+                        <span class="role">Chú rể</span>
+                        <h3 class="name">Hoàng Thiện</h3>
 
                         <p class="description">
-                            Con ông Lê Xuyên Truyền
-                            <br>
+                            Con ông Lê Xuyên Truyền<br>
                             Con bà Lê Thị Thanh Nữ
                         </p>
-
                     </div>
-
                 </div>
 
-                <!-- Bride -->
-                <div class="col-lg-6">
-
+                <div class="col-6">
                     <div class="person">
-
                         <div class="avatar">
-
-                            <img
-                                src="/images/avatar_nu.jpg"
-                                alt="Bride">
-
+                            <img src="/images/avatar_nu.jpg" alt="Bride">
                         </div>
 
-                        <span class="role">
-                            Cô dâu
-                        </span>
-
-                        <h3 class="name">
-                            Phan Linh
-                        </h3>
+                        <span class="role">Cô dâu</span>
+                        <h3 class="name">Phan Linh</h3>
 
                         <p class="description">
-                            Con ông...
-                            <br>
+                            Con ông...<br>
                             Con bà...
                         </p>
-
                     </div>
-
                 </div>
 
             </div>
@@ -149,18 +119,25 @@
     line-height:1.8;
 }
 
-@media(max-width:992px){
+@media (max-width: 768px) {
 
-    .avatar{
-
-        width:260px;
-
+    .role {
+        font-size: 14px;
+        margin-top: 10px;
     }
 
-    .name{
+    .name {
+        font-size: 18px;
+    }
 
-        font-size:32px;
+    .description {
+        font-size: 12px;
+        line-height: 1.5;
+    }
 
+    .avatar {
+        width: 100%;
+        max-width: 160px;
     }
 
 }
