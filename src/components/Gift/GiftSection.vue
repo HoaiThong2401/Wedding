@@ -37,8 +37,6 @@
             <div class="seal">囍</div>
           </div>
         </div>
-
-        <p class="hint">Chạm để mở bao thư</p>
       </button>
 
       <div v-if="open" class="modal" @click.self="open = false">
