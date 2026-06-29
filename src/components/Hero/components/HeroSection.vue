@@ -61,12 +61,10 @@
 
     <div class="page right">
       <img src="/images/rightpage.png" class="bg-right" />
-
     </div>
 
   </div>
 </template>
-
 <style scoped>
 .invitation-book {
   width: min(100%, 900px);
@@ -75,7 +73,7 @@
   display: flex;
   box-shadow: 0 30px 80px rgba(0, 0, 0, 0.2);
   border-radius: 12px;
-  overflow: hidden;
+  overflow: visible;
   background: #fff;
   margin: 0 auto;
 }
@@ -105,7 +103,6 @@
   width: 100%;
   height: 100%;
   object-fit: cover;
-  object-position: center;
   display: block;
 }
 
@@ -118,14 +115,13 @@
 }
 
 .left-section {
-  flex: 0 1 60%;
-  min-width: 0;
+    flex: 1;
+    min-width: 0;
 }
 
 .right-section {
   flex: 0 1 40%;
   min-width: 0;
-  max-width: 220px;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -133,8 +129,8 @@
 
 .right-section img {
   width: 100%;
+  max-width: 140px;
   height: auto;
-  max-width: 100%;
   object-fit: contain;
   display: block;
 }
@@ -187,7 +183,6 @@
 
 .row-love {
   width: min(100px, 20vw);
-  height: auto;
   aspect-ratio: 5 / 3;
   display: flex;
   justify-content: center;
@@ -216,63 +211,72 @@
 }
 
 @media (max-width: 1024px) {
+  .invitation-book {
+    aspect-ratio: auto;
+  }
+
   .page.left {
     padding: 24px;
   }
 
-  .invitation-book {
-    aspect-ratio: auto;
+  .top-layout {
+    min-height: auto;
   }
 
   .names {
     min-height: auto;
     margin-top: 16px;
   }
-
-  .top-layout {
-    min-height: auto;
-  }
 }
 
 @media (max-width: 768px) {
-
   .invitation-book {
     flex-direction: column;
+    aspect-ratio: auto;
+    overflow: visible;
+    min-height: unset;
     height: auto;
   }
 
+.page.left {
+  padding: 20px 16px;
+}
   .page {
     width: 100%;
     flex-basis: 100%;
-    min-width: 0;
   }
 
-  /* FIX QUAN TRỌNG: RIGHT PAGE KHÔNG BỊ MẤT */
   .page.right {
-    height: 220px;
-    min-height: 220px;
-    display: flex;
+    height: 240px;
+    min-height: 240px;
   }
 
-  /* IMAGE RIGHT FIX */
   .bg-right {
     width: 100%;
     height: 100%;
     object-fit: cover;
-    display: block;
   }
 
   .top-layout {
-    flex-direction: column;
-    gap: 12px;
+    flex-direction: row;
+    align-items: flex-start;
+    gap: 8px;
   }
 
   .right-section img {
-    max-width: 50;
+    width: 100%;
+    max-width: 70px;
     height: auto;
     object-fit: contain;
   }
-
+  .left-section {
+    flex: 1;
+    min-width: 0;
+  }
+  
+  .right-section {
+    flex: 0 0 70px;
+  }
   .names {
     flex-direction: column;
     text-align: center;
@@ -286,7 +290,6 @@
 
   .row-love {
     width: 60px;
-    height: auto;
   }
 
   .event,

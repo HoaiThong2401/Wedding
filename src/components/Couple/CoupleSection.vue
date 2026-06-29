@@ -23,7 +23,7 @@
                         <div class="avatar">
 
                             <img
-                                src="https://placehold.co/450x600"
+                                src="/images/avatar_nam.jpg"
                                 alt="Groom">
 
                         </div>
@@ -54,7 +54,7 @@
                         <div class="avatar">
 
                             <img
-                                src="https://placehold.co/450x600"
+                                src="/images/avatar_nu.jpg"
                                 alt="Bride">
 
                         </div>
@@ -111,16 +111,22 @@
     text-align:center;
 }
 
-.avatar{
-    width:340px;
-    margin:auto;
-    overflow:hidden;
-}
+.avatar {
+  width: 100%;
+  max-width: 400px;
+  aspect-ratio: 3 / 4;
+  margin: auto;
 
-.avatar img{
-    width:100%;
-    display:block;
-    border-radius:220px 220px 0 0;
+  overflow: hidden;
+  border-radius: 220px 220px 0 0;
+
+  position: relative;
+}
+.avatar img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
 }
 
 .role{
