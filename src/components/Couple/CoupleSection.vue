@@ -33,13 +33,13 @@
                         </span>
 
                         <h3 class="name">
-                            Đăng Quang
+                            Hoàng Thiện
                         </h3>
 
                         <p class="description">
-                            Con ông...
+                            Con ông Lê Xuyên Truyền
                             <br>
-                            Con bà...
+                            Con bà Lê Thị Thanh Nữ
                         </p>
 
                     </div>
@@ -64,7 +64,7 @@
                         </span>
 
                         <h3 class="name">
-                            Thuý An
+                            Phan Linh
                         </h3>
 
                         <p class="description">

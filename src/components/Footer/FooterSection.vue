@@ -13,13 +13,13 @@
             </p>
 
             <h3>
-                Đăng Quang
+                Hoàng Thiện
                 <span>&</span>
-                Thuý An
+                Phan Linh
             </h3>
 
             <small>
-                15.12.2026
+                07.01.2027
             </small>
 
         </div>

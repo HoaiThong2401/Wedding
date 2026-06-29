@@ -37,7 +37,7 @@
 
                         <h4>Chú Rể</h4>
 
-                        <h5>Đăng Quang</h5>
+                        <h5>Hoàng Thiện</h5>
 
                         <div class="bank">
 
@@ -67,7 +67,7 @@
 
                         <h4>Cô Dâu</h4>
 
-                        <h5>Thuý An</h5>
+                        <h5>Phan Linh</h5>
 
                         <div class="bank">
 
