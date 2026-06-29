@@ -3,7 +3,6 @@
 
     <div class="card" :class="{ open: isOpen }" @click="openLetter">
 
-      <!-- COVER -->
       <div class="cover">
         <div class="cover-card">
 
@@ -110,7 +109,6 @@ const openLetter = () => {
 </script>
 
 <style scoped>
-/* HERO */
 .hero {
   min-height: 100dvh;
   display: flex;
@@ -120,7 +118,6 @@ const openLetter = () => {
   padding: 16px;
 }
 
-/* CARD */
 .card {
   width: 900px;
   max-width: 100%;
@@ -185,14 +182,13 @@ const openLetter = () => {
   opacity: 0.6;
 }
 
-/* OPEN */
+
 .card.open .cover {
   opacity: 0;
   transform: rotateY(-120deg);
   pointer-events: none;
 }
 
-/* BOOK */
 .book {
   position: absolute;
   inset: 0;
@@ -215,14 +211,12 @@ const openLetter = () => {
   transform: scale(1);
 }
 
-/* BOOK LAYOUT */
 .invitation-book {
   width: 100%;
   max-width: 900px;
   display: flex;
 }
 
-/* PAGES */
 .page {
   flex: 1;
   min-width: 0;
@@ -248,7 +242,6 @@ const openLetter = () => {
   object-fit: cover;
 }
 
-/* TOP */
 .top-layout {
   display: flex;
   gap: 16px;
@@ -273,7 +266,6 @@ const openLetter = () => {
   object-fit: contain;
 }
 
-/* TEXT */
 .title {
   font-size: 14px;
   letter-spacing: 2px;
@@ -332,7 +324,6 @@ const openLetter = () => {
   opacity: 0.8;
 }
 
-/* MOBILE */
 @media (max-width: 768px) {
 
   .page.left {

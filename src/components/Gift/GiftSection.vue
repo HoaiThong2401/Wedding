@@ -82,7 +82,7 @@ const downloadQR = () => {
 <style scoped>
 
 .gift-section{
-  padding:120px 0;
+  padding-bottom:80px;
   text-align:center;
   font-family:"Times New Roman", serif;
 }

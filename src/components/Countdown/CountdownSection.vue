@@ -120,9 +120,7 @@ onUnmounted(() => {
 <style scoped>
 
 .countdown-section{
-
-    padding:120px 0;
-
+    padding-bottom:80px;
 }
 
 .title{

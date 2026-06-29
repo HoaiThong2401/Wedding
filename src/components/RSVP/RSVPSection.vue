@@ -56,7 +56,7 @@
 <style scoped>
 
 .rsvp-section{
-    padding:120px 0;
+    padding-bottom:80px;
 }
 
 .section-title{
