@@ -2,13 +2,17 @@
   <section class="gift-section">
     <div class="container">
 
-      <div class="title">
-        <h2>Phong Bao Mừng Cưới</h2>
-        <p>Nhấn vào phong bao để mở QR</p>
+      <div class="section-title text-center">
+        <span class="sub-title">WEDDING GIFT</span>
+        <div class="title-group">
+          <div class="decorator-line"></div>
+          <h2>Phong Bao Mừng Cưới</h2>
+          <div class="decorator-line"></div>
+        </div>
+        <p class="title-desc">Nhấn vào phong bao để mở mã QR</p>
       </div>
 
       <button class="envelope-btn" @click="open = true">
-
         <div class="coin coin-1"></div>
         <div class="coin coin-2"></div>
         <div class="coin coin-3"></div>
@@ -25,41 +29,38 @@
         <span class="spark s3">✦</span>
 
         <div class="envelope">
-          <div class="corner tl"></div>
-          <div class="corner tr"></div>
-          <div class="corner bl"></div>
-          <div class="corner br"></div>
-
-          <div class="seal">囍</div>
+          <div class="envelope-lines">
+            <div class="corner tl"></div>
+            <div class="corner tr"></div>
+            <div class="corner bl"></div>
+            <div class="corner br"></div>
+            <div class="seal">囍</div>
+          </div>
         </div>
 
-        <br>
-        <p class="hint">Nhấn để mở</p>
-
+        <p class="hint">Chạm để mở bao thư</p>
       </button>
 
       <div v-if="open" class="modal" @click.self="open = false">
-
         <div class="modal-box">
-
           <div class="modal-header">
-            <p></p>
+            <div class="header-blank"></div>
             <h3>QR Mừng Cưới</h3>
             <button class="close-icon" @click="open = false">✕</button>
           </div>
 
           <div class="modal-body">
-            <img src="/images/bank.jpg" alt="QR" />
+            <div class="qr-wrapper">
+              <img src="/images/bank.jpg" alt="QR" />
+            </div>
 
             <div class="actions">
               <button class="btn download" @click="downloadQR">
-                Tải QR
+                📍 Tải mã QR về máy
               </button>
             </div>
           </div>
-
         </div>
-
       </div>
 
     </div>
@@ -80,213 +81,325 @@ const downloadQR = () => {
 </script>
 
 <style scoped>
-
-.gift-section{
-  padding-bottom:80px;
-  text-align:center;
-  font-family:"Times New Roman", serif;
+.gift-section {
+  padding: 80px 16px;
+  text-align: center;
 }
 
-.title h2{
-  font-size:28px;
-  color:#30530f;
-  margin-bottom:6px;
+.section-title {
+  margin-bottom: 40px;
 }
 
-.title p{
-  font-size:14px;
-  color:#666;
+.sub-title {
+  display: block;
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 4px;
+  color: #b38b4d;
+  text-transform: uppercase;
+  margin-bottom: 8px;
 }
 
-.envelope-btn{
-  width:220px;
-  height:280px;
-  position:relative;
-  margin:40px auto;
-  border:none;
-  background:transparent;
-  cursor:pointer;
-  overflow:visible;
+.title-group {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 20px;
 }
 
-.envelope{
-  width:140px;
-  height:200px;
-  margin:auto;
-  position:relative;
-  border-radius:14px;
-  background:#b3122d;
-  box-shadow:0 10px 25px rgba(0,0,0,.25);
-  animation:shake 2.8s ease-in-out infinite;
+.decorator-line {
+  width: 50px;
+  height: 1px;
+  background: linear-gradient(to right, transparent, #b38b4d, transparent);
 }
 
-.seal{
-  width:60px;
-  height:60px;
-  border-radius:50%;
-  background:gold;
-  position:absolute;
-  top:50%;
-  left:50%;
-  transform:translate(-50%,-50%);
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  font-weight:bold;
-  font-size:26px;
-  color:#a70d0d;
-  border:3px solid #fff3c4;
+.section-title h2 {
+  font-family: serif;
+  font-size: 34px;
+  font-weight: 600;
+  color: #a23946;
+  margin: 0;
+  letter-spacing: 0.5px;
 }
 
-.corner{
-  position:absolute;
-  width:22px;
-  height:22px;
+.title-desc {
+  font-size: 14px;
+  color: #7a6b5c;
+  margin-top: 10px;
+  font-style: italic;
 }
 
-.tl{top:8px;left:8px;border-top:3px solid #ffd166;border-left:3px solid #ffd166;}
-.tr{top:8px;right:8px;border-top:3px solid #ffd166;border-right:3px solid #ffd166;}
-.bl{bottom:8px;left:8px;border-bottom:3px solid #ffd166;border-left:3px solid #ffd166;}
-.br{bottom:8px;right:8px;border-bottom:3px solid #ffd166;border-right:3px solid #ffd166;}
-
-.coin{
-  position:absolute;
-  border-radius:50%;
-  background:radial-gradient(circle,#fbbf24,#d97706);
-  border:2px solid #f59e0b;
-  box-shadow:0 2px 6px rgba(0,0,0,.25);
-  opacity:0;
-  animation:floatWide 3.4s linear infinite;
+.envelope-btn {
+  width: 240px;
+  height: 320px;
+  position: relative;
+  margin: 20px auto 0;
+  border: none;
+  background: transparent;
+  cursor: pointer;
+  overflow: visible;
+  display: block;
+  outline: none;
 }
 
-.coin-1{width:26px;height:26px;left:-15%;top:75%;animation-delay:0s}
-.coin-2{width:18px;height:18px;left:-5%;top:85%;animation-delay:.3s}
-.coin-3{width:22px;height:22px;left:10%;top:90%;animation-delay:.6s}
-.coin-4{width:20px;height:20px;left:25%;top:92%;animation-delay:.9s}
-.coin-5{width:24px;height:24px;left:45%;top:88%;animation-delay:1.2s}
-.coin-6{width:18px;height:18px;left:60%;top:92%;animation-delay:1.5s}
-.coin-7{width:22px;height:22px;left:75%;top:88%;animation-delay:1.8s}
-.coin-8{width:20px;height:20px;left:90%;top:85%;animation-delay:2.1s}
-.coin-9{width:16px;height:16px;left:105%;top:80%;animation-delay:2.4s}
-.coin-10{width:28px;height:28px;left:50%;top:95%;animation-delay:2.7s}
+.envelope {
+  width: 150px;
+  height: 220px;
+  margin: 0 auto;
+  position: relative;
+  border-radius: 12px;
+  background: linear-gradient(145deg, #a23946, #802833);
+  border: 1px solid rgba(179, 139, 77, 0.3);
+  box-shadow: 0 15px 40px rgba(74, 59, 47, 0.18);
+  padding: 6px;
+  box-sizing: border-box;
+  animation: shake 3s ease-in-out infinite;
+}
+
+.envelope-lines {
+  width: 100%;
+  height: 100%;
+  border: 1px solid rgba(179, 139, 77, 0.4);
+  border-radius: 8px;
+  position: relative;
+}
+
+.seal {
+  width: 54px;
+  height: 54px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #fff3c4, #b38b4d);
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: bold;
+  font-size: 24px;
+  color: #a23946;
+  border: 1px solid #ffffff;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+.corner {
+  position: absolute;
+  width: 16px;
+  height: 16px;
+}
+
+.tl { top: 6px; left: 6px; border-top: 2px solid rgba(179, 139, 77, 0.6); border-left: 2px solid rgba(179, 139, 77, 0.6); }
+.tr { top: 6px; right: 6px; border-top: 2px solid rgba(179, 139, 77, 0.6); border-right: 2px solid rgba(179, 139, 77, 0.6); }
+.bl { bottom: 6px; left: 6px; border-bottom: 2px solid rgba(179, 139, 77, 0.6); border-left: 2px solid rgba(179, 139, 77, 0.6); }
+.br { bottom: 6px; right: 6px; border-bottom: 2px solid rgba(179, 139, 77, 0.6); border-right: 2px solid rgba(179, 139, 77, 0.6); }
+
+.coin {
+  position: absolute;
+  border-radius: 50%;
+  background: radial-gradient(circle, #fff3c4, #b38b4d);
+  border: 1px solid #ffffff;
+  box-shadow: 0 3px 8px rgba(74, 59, 47, 0.15);
+  opacity: 0;
+  animation: floatWide 3.5s linear infinite;
+}
+
+.coin-1  { width: 20px; height: 20px; left: -10%; top: 70%; animation-delay: 0s }
+.coin-2  { width: 14px; height: 14px; left: 0%;   top: 80%; animation-delay: 0.3s }
+.coin-3  { width: 18px; height: 18px; left: 15%;  top: 85%; animation-delay: 0.6s }
+.coin-4  { width: 16px; height: 16px; left: 30%;  top: 85%; animation-delay: 0.9s }
+.coin-5  { width: 22px; height: 22px; left: 45%;  top: 80%; animation-delay: 1.2s }
+.coin-6  { width: 14px; height: 14px; left: 60%;  top: 85%; animation-delay: 1.5s }
+.coin-7  { width: 18px; height: 18px; left: 75%;  top: 80%; animation-delay: 1.8s }
+.coin-8  { width: 16px; height: 16px; left: 90%;  top: 80%; animation-delay: 2.1s }
+.coin-9  { width: 12px; height: 12px; left: 100%; top: 75%; animation-delay: 2.4s }
+.coin-10 { width: 24px; height: 24px; left: 50%;  top: 88%; animation-delay: 2.7s }
+
+.spark {
+  position: absolute;
+  color: #b38b4d;
+  font-size: 12px;
+  opacity: 0;
+  animation: pulse 2s infinite;
+}
+
+.s1 { top: 20%; left: 15%; animation-delay: 0s; }
+.s2 { top: 45%; right: 10%; animation-delay: 0.7s; }
+.s3 { bottom: 30%; left: 10%; animation-delay: 1.4s; }
 
 @keyframes floatWide {
-  0%{transform:translateY(0) scale(.8);opacity:0}
-  10%{opacity:1}
-  50%{transform:translateY(-130px) translateX(-25px) scale(1)}
-  100%{transform:translateY(-280px) translateX(40px) scale(1.1);opacity:0}
+  0% { transform: translateY(0) scale(0.7); opacity: 0; }
+  15% { opacity: 1; }
+  50% { transform: translateY(-120px) translateX(-20px) scale(1); }
+  100% { transform: translateY(-260px) translateX(30px) scale(1.1); opacity: 0; }
 }
 
 @keyframes shake {
-  0%{transform:rotate(0deg)}
-  25%{transform:rotate(1deg)}
-  50%{transform:rotate(-1deg)}
-  75%{transform:rotate(1deg)}
-  100%{transform:rotate(0deg)}
+  0%, 100% { transform: rotate(0deg); }
+  20% { transform: rotate(1.5deg); }
+  40% { transform: rotate(-1.5deg); }
+  60% { transform: rotate(1deg); }
+  80% { transform: rotate(-1deg); }
 }
 
-.hint{
-  position:absolute;
-  bottom:0;
-  left:50%;
-  transform:translateX(-50%);
-  font-size:12px;
-  color:#30530f;
+.hint {
+  position: absolute;
+  bottom: 15px;
+  left: 50%;
+  transform: translateX(-50%);
+  font-size: 13px;
+  color: #b38b4d;
+  letter-spacing: 1px;
+  font-weight: 500;
+}
+
+.envelope-btn:hover .envelope {
+  border-color: #b38b4d;
+  box-shadow: 0 20px 50px rgba(162, 57, 70, 0.25);
+  transform: scale(1.02);
 }
 
 /* MODAL */
-.modal{
-  position:fixed;
-  inset:0;
-  background:rgba(0,0,0,.65);
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  backdrop-filter: blur(6px);
+.modal {
+  position: fixed;
+  inset: 0;
+  background: rgba(74, 59, 47, 0.4);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  backdrop-filter: blur(8px);
+  z-index: 9999;
 }
 
-.modal-box{
-  width:340px;
-  border-radius:18px;
-  overflow:hidden;
-  background:linear-gradient(145deg,#fff7f2,#ffffff);
-  box-shadow:0 20px 60px rgba(0,0,0,.25);
+.modal-box {
+  width: 340px;
+  border-radius: 16px;
+  overflow: hidden;
+  background: #fffdfa;
+  border: 1px solid rgba(179, 139, 77, 0.25);
+  box-shadow: 0 25px 60px rgba(74, 59, 47, 0.25);
+  animation: modalFadeIn 0.4s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
-.modal-header{
-  background:linear-gradient(135deg,#b3122d,#fb4f4f);
-  color:#fff;
-  padding:12px 16px;
-  display:flex;
-  justify-content:space-between;
-  align-items:center;
+@keyframes modalFadeIn {
+  from { opacity: 0; transform: translateY(15px) scale(0.97); }
+  to { opacity: 1; transform: translateY(0) scale(1); }
 }
 
-.modal-header h3{
-  font-size:16px;
-  margin:0;
+.modal-header {
+  background: linear-gradient(135deg, #a23946, #802833);
+  color: #fffdfa;
+  padding: 14px 20px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 1px solid rgba(179, 139, 77, 0.2);
 }
 
-.close-icon{
-  border:none;
-  background:rgba(255,255,255,.2);
-  width:28px;
-  height:28px;
-  border-radius:50%;
-  cursor:pointer;
-  color:#fff;
+.header-blank {
+  width: 28px;
 }
 
-.close-icon:hover{
-  background:rgba(255,255,255,.35);
+.modal-header h3 {
+  font-family: serif;
+  font-size: 18px;
+  font-weight: 500;
+  margin: 0;
+  letter-spacing: 1px;
 }
 
-.modal-body{
-  padding:18px;
-  display:flex;
-  flex-direction:column;
-  align-items:center;
+.close-icon {
+  border: none;
+  background: rgba(255, 255, 255, 0.15);
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  cursor: pointer;
+  color: #fffdfa;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 12px;
+  transition: background 0.2s ease;
 }
 
-img{
-  width:220px;
-  height:220px;
-  object-fit:cover;
-  border-radius:14px;
-  margin:10px 0 18px;
-  border:4px solid #fff;
-  box-shadow:0 10px 25px rgba(0,0,0,.15);
+.close-icon:hover {
+  background: rgba(255, 255, 255, 0.3);
 }
 
-.actions{
-  display:flex;
-  gap:10px;
+.modal-body {
+  padding: 24px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 
-.btn{
-  padding:8px 14px;
-  border:none;
-  border-radius:999px;
-  cursor:pointer;
-  font-size:14px;
-  transition:.2s;
+.qr-wrapper {
+  background: #ffffff;
+  border: 1px solid rgba(179, 139, 77, 0.2);
+  padding: 12px;
+  border-radius: 12px;
+  box-shadow: 0 10px 30px rgba(74, 59, 47, 0.05);
+  margin-bottom: 20px;
 }
 
-.download{
-  background:#16a34a;
-  color:#fff;
+.qr-wrapper img {
+  width: 200px;
+  height: 200px;
+  object-fit: cover;
+  display: block;
 }
 
-.download:hover{
-  background:#15803d;
-  transform:translateY(-1px);
+.actions {
+  width: 100%;
 }
 
-.close{
-  background:#e5e5e5;
+.btn {
+  width: 100%;
+  padding: 11px;
+  border: none;
+  border-radius: 50px;
+  cursor: pointer;
+  font-size: 14px;
+  font-weight: 600;
+  transition: all 0.3s ease;
+  box-sizing: border-box;
 }
 
-.close:hover{
-  background:#d4d4d4;
+.download {
+  background: #fffdfa;
+  border: 1px solid #b38b4d;
+  color: #a23946;
+  box-shadow: 0 4px 15px rgba(74, 59, 47, 0.08);
+}
+
+.download:hover {
+  background: #a23946;
+  color: #fffdfa;
+  border-color: #a23946;
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(162, 57, 70, 0.2);
+}
+
+@media (max-width: 768px) {
+  .gift-section {
+    padding: 60px 16px;
+  }
+
+  .section-title {
+    margin-bottom: 30px;
+  }
+
+  .section-title h2 {
+    font-size: 26px;
+  }
+
+  .title-group {
+    gap: 12px;
+  }
+
+  .decorator-line {
+    width: 30px;
+  }
 }
 </style>

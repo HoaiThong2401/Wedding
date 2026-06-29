@@ -1,54 +1,56 @@
 <template>
-  <section class="hero">
+  <section ref="heroRef" class="hero" @click="closeLetter">
 
-    <div class="card" :class="{ open: isOpen }" @click="openLetter">
+    <div class="card" :class="{ open: isOpen }" @click.stop="openLetter">
 
       <div class="cover">
-        <div class="cover-card">
-
-          <p class="cover-title">WEDDING INVITATION</p>
-
-          <div class="divider"></div>
-
-          <div class="cover-preview">
-            <p>Lê Hoàng Thiện</p>
-            💍
-            <p>Phan Linh</p>
+        <div class="cover-border">
+          <div class="cover-card">
+            <p class="cover-subtitle">THE WEDDING OF</p>
+            <div class="divider-diamond">✦</div>
+            <div class="cover-preview">
+              <p class="name-highlight">Lê Hoàng Thiện</p>
+              <div class="ring-icon">
+                <span class="line"></span>
+                <span class="heart">❤</span>
+                <span class="line"></span>
+              </div>
+              <p class="name-highlight">Phan Linh</p>
+            </div>
+            <div class="divider-diamond">✦</div>
+            <p class="cover-footer">SAVE THE DATE</p>
+            <p class="hint" v-if="!isOpen">Chạm để mở thiệp</p>
           </div>
-
-          <div class="divider"></div>
-
-          <p class="hint" v-if="!isOpen">Click để mở thiệp</p>
-
         </div>
       </div>
 
-      <!-- BOOK -->
       <div class="book">
-        <div class="invitation-book">
+        <div class="invitation-content">
+          
+          <div class="page-image">
+            <img src="/images/rightpage.png" class="bg-image" alt="Wedding" />
+          </div>
 
-          <div class="page left">
-
+          <div class="page-info">
             <div class="top-layout">
-
-              <div class="left-section">
-                <div class="section">
+              <div class="family-section">
+                <div class="parent-block">
                   <p class="title">NHÀ TRAI</p>
-                  <p>ÔNG: LÊ XUYÊN TRUYỀN</p>
-                  <p>BÀ: LÊ THỊ THANH NỮ</p>
+                  <p class="parent-name">ÔNG: LÊ XUYÊN TRUYỀN</p>
+                  <p class="parent-name">BÀ: LÊ THỊ THANH NỮ</p>
                   <p class="addr">Xã Trung An, TP.Mỹ Tho, Tiền Giang</p>
-
+                </div>
+                
+                <div class="parent-block">
                   <p class="title">NHÀ GÁI</p>
-                  <p>ÔNG:</p>
-                  <p>BÀ:</p>
-                  <p class="addr">TP.Đà Lạt</p>
+                  <p class="parent-name">ÔNG: [Họ tên Bố]</p>
+                  <p class="parent-name">BÀ: [Họ tên Mẹ]</p>
+                  <p class="addr">TP.Đà Lạt, Lâm Đồng</p>
                 </div>
               </div>
-
-              <div class="right-section">
+              <div class="flower-icon">
                 <img src="/images/flower.png" alt="flower" />
               </div>
-
             </div>
 
             <div class="announce">
@@ -56,21 +58,17 @@
             </div>
 
             <div class="names">
-
-              <div class="groom">
+              <div class="couple-name groom">
                 <h2>Lê Hoàng Thiện</h2>
                 <h4>Trưởng Nam</h4>
               </div>
-
               <div class="row-love">
                 <img src="/images/rowlove.png" alt="love" />
               </div>
-
-              <div class="bride">
+              <div class="couple-name bride">
                 <h2>Phan Linh</h2>
                 <h4>Thứ Nữ</h4>
               </div>
-
             </div>
 
             <div class="event">
@@ -78,15 +76,9 @@
             </div>
 
             <div class="time">
-              VÀO LÚC 11H00 - THỨ NĂM - 07.01.2027
-              <br />
-              Nhằm ngày 30 tháng 11 năm Bính Ngọ
+              <p class="solar-date">VÀO LÚC 11H00 - THỨ NĂM - 07.01.2027</p>
+              <p class="lunar-date">(Nhằm ngày 30 tháng 11 năm Bính Ngọ)</p>
             </div>
-
-          </div>
-
-          <div class="page right">
-            <img src="/images/rightpage.png" class="bg-right" />
           </div>
 
         </div>
@@ -98,14 +90,42 @@
 </template>
 
 <script setup>
-import { ref } from 'vue'
+import { ref, onMounted, onUnmounted } from 'vue'
 
 const isOpen = ref(false)
+const heroRef = ref(null)
+let observer = null
 
 const openLetter = () => {
   if (isOpen.value) return
   isOpen.value = true
 }
+
+const closeLetter = () => {
+  if (!isOpen.value) return
+  isOpen.value = false
+}
+
+onMounted(() => {
+  observer = new IntersectionObserver(
+    ([entry]) => {
+      if (!entry.isIntersecting) {
+        closeLetter()
+      }
+    },
+    { threshold: 0.1 }
+  )
+
+  if (heroRef.value) {
+    observer.observe(heroRef.value)
+  }
+})
+
+onUnmounted(() => {
+  if (observer && heroRef.value) {
+    observer.unobserve(heroRef.value)
+  }
+})
 </script>
 
 <style scoped>
@@ -114,247 +134,374 @@ const openLetter = () => {
   display: flex;
   justify-content: center;
   align-items: center;
-  background: #f6f1ea;
+  background: #f3ebe1;
   padding: 16px;
+  perspective: 1500px;
+  cursor: pointer;
 }
 
 .card {
   width: 900px;
   max-width: 100%;
-  min-height: 600px;
+  height: 600px;
   position: relative;
-
-  border-radius: 16px;
-  overflow: hidden;
-  background: #fff;
-
-  box-shadow: 0 30px 80px rgba(0,0,0,0.15);
+  border-radius: 12px;
+  box-shadow: 0 30px 70px rgba(74, 59, 47, 0.15);
+  transform-style: preserve-3d;
+  transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+  cursor: default;
 }
 
-/* COVER */
 .cover {
   position: absolute;
   inset: 0;
-  z-index: 2;
-
+  z-index: 10;
   display: flex;
   justify-content: center;
   align-items: center;
+  background: #fdfaf6;
+  border-radius: 12px;
+  box-shadow: inset 0 0 50px rgba(179, 139, 77, 0.08), 0 10px 30px rgba(0,0,0,0.05);
+  padding: 24px;
+  transform-origin: top center;
+  transition: transform 0.8s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.6s ease;
+  backface-visibility: hidden; 
+  pointer-events: auto;
+}
 
-  background: linear-gradient(135deg, #fffaf3, #ffffff);
-  transition: 0.8s ease;
+.cover-border {
+  width: 100%;
+  height: 100%;
+  border: 1px solid #b38b4d;
+  border-radius: 8px;
+  padding: 6px;
+  box-sizing: border-box;
 }
 
 .cover-card {
-  width: 55%;
+  width: 100%;
+  height: 100%;
+  border: 2px solid #b38b4d;
+  border-radius: 4px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
   padding: 40px;
-  text-align: center;
-
-  border: 1px solid rgba(74, 59, 47, 0.2);
-  border-radius: 14px;
-  background: rgba(255, 255, 255, 0.8);
-  backdrop-filter: blur(6px);
+  box-shadow: inset 0 0 20px rgba(179, 139, 77, 0.05);
 }
 
-.cover-title {
-  font-size: 14px;
-  letter-spacing: 3px;
-  color: #4a3b2f;
+.cover-subtitle {
+  font-size: 13px;
+  letter-spacing: 5px;
+  color: #b38b4d;
+  font-weight: 500;
+}
+
+.divider-diamond {
+  color: #b38b4d;
+  font-size: 12px;
+  margin: 20px 0;
+  opacity: 0.7;
 }
 
 .cover-preview {
-  margin: 20px 0;
-  font-size: 16px;
-  color: #4a3b2f;
-  line-height: 1.8;
+  width: 100%;
+  text-align: center;
 }
 
-.divider {
+.name-highlight {
+  font-family: serif;
+  font-size: 32px;
+  font-weight: 600;
+  color: #a23946; 
+  margin: 10px 0;
+  letter-spacing: 1px;
+  text-align: center;
+}
+
+.ring-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 15px;
+  margin: 15px 0;
+  width: 100%;
+}
+
+.ring-icon .line {
   width: 60px;
   height: 1px;
-  background: #4a3b2f;
-  opacity: 0.3;
-  margin: 12px auto;
+  background: linear-gradient(to right, transparent, #b38b4d, transparent);
+}
+
+.ring-icon .heart {
+  color: #a23946;
+  font-size: 16px;
+}
+
+.cover-footer {
+  font-size: 14px;
+  letter-spacing: 4px;
+  color: #7a6b5c;
+  font-weight: 500;
+  margin-top: 10px;
 }
 
 .hint {
   font-size: 12px;
-  opacity: 0.6;
+  color: #b38b4d;
+  font-style: italic;
+  margin-top: 30px;
+  letter-spacing: 1px;
+  animation: pulse 2s infinite;
 }
 
-
 .card.open .cover {
+  transform: rotateX(115deg); 
   opacity: 0;
-  transform: rotateY(-120deg);
   pointer-events: none;
 }
 
 .book {
   position: absolute;
   inset: 0;
-
+  z-index: 1;
   opacity: 0;
   transform: scale(0.98);
-  transition: 1s ease;
-
+  transition: opacity 0.6s ease, transform 0.6s ease;
   overflow-y: auto;
-  -webkit-overflow-scrolling: touch;
-  scrollbar-width: none;
-}
-
-.book::-webkit-scrollbar {
-  display: none;
+  border-radius: 12px;
+  pointer-events: none;
 }
 
 .card.open .book {
   opacity: 1;
   transform: scale(1);
+  pointer-events: auto;
 }
 
-.invitation-book {
+.invitation-content {
+  display: flex;
   width: 100%;
-  max-width: 900px;
-  display: flex;
+  height: 100%;
 }
 
-.page {
+.page-image {
   flex: 1;
-  min-width: 0;
+  height: 100%;
 }
 
-.page.left {
-  padding: 40px;
-  background: #fffaf3;
-  color: #4a3b2f;
-
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-}
-
-.page.right {
-  display: flex;
-}
-
-.bg-right {
+.bg-image {
   width: 100%;
   height: 100%;
   object-fit: cover;
 }
 
+.page-info {
+  flex: 1.2;
+  padding: 40px;
+  color: #4a3b2f;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  background: #fffaf3;
+}
+
 .top-layout {
+  position: relative;
   display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
   gap: 16px;
-  align-items: center;
 }
 
-.left-section {
-  flex: 1;
-  min-width: 0;
-}
-
-.right-section {
-  flex: 0 0 140px;
+.family-section {
   display: flex;
-  justify-content: center;
-  align-items: center;
-}
-
-.right-section img {
-  width: 100%;
-  max-width: 140px;
-  object-fit: contain;
+  gap: 32px;
 }
 
 .title {
-  font-size: 14px;
+  font-size: 13px;
   letter-spacing: 2px;
-  font-weight: 600;
+  font-weight: 700;
+  color: #8c2f39;
+  margin-bottom: 6px;
 }
 
-.section p {
+.parent-name {
   font-size: 13px;
-  margin: 2px 0;
+  margin: 3px 0;
 }
 
 .addr {
-  font-size: 12px;
+  font-size: 11px;
   opacity: 0.7;
+  max-width: 180px;
+  line-height: 1.4;
+}
+
+.flower-icon img {
+  width: 70px;
+  object-fit: contain;
 }
 
 .announce {
   font-size: 13px;
-  margin-top: 20px;
   letter-spacing: 1px;
+  text-align: center;
+  margin: 20px 0;
+  font-weight: 500;
 }
 
 .names {
   display: flex;
-  justify-content: space-between;
-  gap: 12px;
+  justify-content: space-around;
   align-items: center;
-  flex-wrap: wrap;
+  gap: 12px;
+  margin: 10px 0;
 }
 
-.groom, .bride {
-  flex: 1;
+.couple-name h2 {
+  font-size: 24px;
+  color: #8c2f39;
+  margin-bottom: 4px;
 }
 
-.groom { text-align: left; }
-.bride { text-align: right; }
-
-.row-love {
-  width: 80px;
-}
-
-.row-love img {
-  width: 100%;
-  object-fit: contain;
-}
-
-.event {
+.couple-name h4 {
   font-size: 13px;
-  margin-top: 10px;
-  border-bottom: 1px solid #000;
-  display: inline-block;
-}
-
-.time {
-  font-size: 12px;
+  font-weight: 400;
   opacity: 0.8;
 }
 
+.groom { text-align: center; }
+.bride { text-align: center; }
+
+.row-love {
+  width: 100px;
+}
+.row-love img {
+  width: 100%;
+}
+
+.event {
+  font-size: 14px;
+  font-weight: 600;
+  text-align: center;
+  letter-spacing: 1px;
+  border-bottom: 1px solid rgba(74, 59, 47, 0.3);
+  padding-bottom: 6px;
+  align-self: center;
+}
+
+.time {
+  text-align: center;
+  line-height: 1.6;
+}
+
+.solar-date {
+  font-size: 13px;
+  font-weight: 600;
+}
+
+.lunar-date {
+  font-size: 12px;
+  opacity: 0.8;
+  font-style: italic;
+}
+
+@keyframes pulse {
+  0%, 100% { opacity: 0.6; }
+  50% { opacity: 1; }
+}
+
 @media (max-width: 768px) {
+  .card {
+    height: 90dvh; 
+    max-height: 680px;
+  }
 
-  .page.left {
+  .card.open .cover {
+    transform: rotateX(140deg); 
+  }
+
+  .cover {
+    padding: 12px;
+  }
+
+  .cover-card {
+    padding: 20px 10px;
+  }
+
+  .name-highlight {
+    font-size: 24px;
+  }
+
+  .ring-icon .line {
+    width: 40px;
+  }
+
+  .invitation-content {
+    flex-direction: column; 
+  }
+
+  .page-image {
+    flex: 0 0 140px;
+    width: 100%;
+  }
+
+  .page-info {
+    flex: 1;
     padding: 20px 16px;
-  }
-
-  .invitation-book {
-    flex-direction: column;
-  }
-
-  .right-section {
-    flex: 0 0 80px;
-  }
-
-  .right-section img {
-    max-width: 70px;
+    justify-content: flex-start;
+    gap: 12px;
   }
 
   .top-layout {
-    flex-direction: row;
-    align-items: flex-start;
-    gap: 8px;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+  }
+
+  .family-section {
+    flex-direction: column;
+    gap: 12px;
+    text-align: center;
+  }
+
+  .parent-block .addr {
+    max-width: 100%;
+  }
+
+  .flower-icon {
+    position: absolute;
+    right: 0;
+    top: 0;
+  }
+
+  .flower-icon img {
+    width: 45px;
+  }
+
+  .announce {
+    margin: 4px 0;
+    font-size: 11px;
   }
 
   .names {
     flex-direction: column;
-    text-align: center;
+    gap: 4px;
   }
 
-  .groom, .bride {
-    text-align: center;
+  .couple-name h2 {
+    font-size: 20px;
+  }
+
+  .row-love {
+    width: 100px;
+  }
+  .row-love img {
+    width: 100%;
   }
 }
 </style>
