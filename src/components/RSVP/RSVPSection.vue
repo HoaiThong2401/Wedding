@@ -16,20 +16,25 @@
           <div class="wish-form">
             <div class="mb-4">
               <input
+                v-model="name"
                 type="text"
                 class="form-control"
-                placeholder="Họ và tên của bạn...">
+                placeholder="Họ và tên của bạn..."
+              >
             </div>
 
             <div class="mb-4">
               <textarea
+                v-model="message"
                 rows="5"
                 class="form-control"
-                placeholder="Nhập lời chúc ý nghĩa gửi đến cặp đôi..."></textarea>
+                placeholder="Nhập lời chúc ý nghĩa gửi đến cặp đôi..."
+              ></textarea>
             </div>
 
-            <button class="btn btn-submit">
-              ✦ Gửi lời chúc hạnh phúc
+            <button class="btn btn-submit" @click="submitWish" :disabled="loading">
+              <span v-if="loading">⏳ Đang gửi...</span>
+              <span v-else>✦ Gửi lời chúc hạnh phúc</span>
             </button>
           </div>
         </div>
@@ -38,6 +43,52 @@
     </div>
   </section>
 </template>
+
+<script>
+export default {
+  data() {
+    return {
+      name: "",
+      message: "",
+      loading: false,
+    };
+  },
+  methods: {
+    async submitWish() {
+      if (this.loading) return;
+
+      this.loading = true;
+
+      try {
+        const res = await fetch("https://script.google.com/macros/s/AKfycbzWXgxFNZdg6ZdeSqpd3es7OEEKKRwQ0olvp-DCc7ELh9e6DMA5AvZz7iRkEQhxHPJDDQ/exec", {
+          method: "POST",
+          body: new URLSearchParams({
+            name: this.name,
+            message: this.message
+          })
+        });
+
+        const text = await res.text();
+        const clean = text.trim().toLowerCase();
+
+        if (clean === "ok") {
+          alert("Gửi thành công ❤️");
+          this.name = "";
+          this.message = "";
+        } else {
+          alert("Lỗi gửi dữ liệu");
+        }
+
+      } catch (err) {
+        console.error(err);
+        alert("Không gửi được!");
+      } finally {
+        this.loading = false;
+      }
+    }
+  }
+};
+</script>
 
 <style scoped>
 .rsvp-section {
