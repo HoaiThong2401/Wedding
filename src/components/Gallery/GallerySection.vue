@@ -55,7 +55,6 @@ const getStyle = (i) => {
 
 .gallery-section {
     padding: 120px 0;
-    background: #faf8f5;
 }
 
 .section-title {

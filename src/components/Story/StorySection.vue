@@ -40,7 +40,6 @@
 
                 </div>
 
-                <!-- ITEM 2 -->
                 <div class="story-item right">
 
                     <div class="story-image">
@@ -62,7 +61,6 @@
 
                 </div>
 
-                <!-- ITEM 3 -->
                 <div class="story-item left">
 
                     <div class="story-image">
@@ -94,7 +92,6 @@
 
 <style scoped>
 
-/* ================= SECTION ================= */
 .story-section {
     padding: 120px 0;
 }
@@ -116,12 +113,10 @@
     font-weight: 600;
 }
 
-/* ================= TIMELINE ================= */
 .timeline {
     position: relative;
 }
 
-/* center line */
 .timeline::before {
     content: "";
     position: absolute;
@@ -133,7 +128,6 @@
     transform: translateX(-50%);
 }
 
-/* item desktop */
 .story-item {
     width: 45%;
     margin-bottom: 70px;
@@ -147,14 +141,12 @@
     margin-left: auto;
 }
 
-/* image */
 .story-image img {
     width: 100%;
     border-radius: 16px;
     display: block;
 }
 
-/* content */
 .story-content {
     margin-top: 20px;
 }
