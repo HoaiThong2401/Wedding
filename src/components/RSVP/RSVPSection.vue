@@ -80,6 +80,7 @@
 
 <script setup>
 import { ref, onMounted, onUnmounted, nextTick, computed } from "vue";
+import { demoMessages } from "./demoMessages.js";
 
 const SCRIPT_URL =
   "https://script.google.com/macros/s/AKfycbzWXgxFNZdg6ZdeSqpd3es7OEEKKRwQ0olvp-DCc7ELh9e6DMA5AvZz7iRkEQhxHPJDDQ/exec";
@@ -118,40 +119,6 @@ const avatarColors = [
   "#8a6d3b",
   "#2e5a44",
   "#7a6b5c"
-];
-
-const demoMessages = [
-  { name: "Hoài Thông", message: "Chúc anh chị hai trăm năm hạnh phúc ❤️" },
-  { name: "Ngọc Anh", message: "Chúc cô dâu chú rể trăm năm hạnh phúc ❤️" },
-  { name: "Minh Khang", message: "Happy Wedding! Chúc anh chị mãi yêu thương nhau." },
-  { name: "Gia Bảo", message: "Xin chúc gia đình nhỏ luôn tràn ngập tiếng cười." },
-  { name: "Thu Trang", message: "Chúc hai bạn mãi mãi hạnh phúc và viên mãn." },
-  { name: "Quốc Đạt", message: "Chúc cô dâu chú rể trăm năm tình viên mãn." },
-  { name: "Bảo Trân", message: "Happy Wedding ❤️" },
-  { name: "Phương Linh", message: "Chúc hai bạn luôn đồng hành và yêu thương nhau thật lâu." },
-  { name: "Tuấn Kiệt", message: "Chúc hôn lễ trọn vẹn và hạnh phúc dài lâu." },
-  { name: "Thảo Nguyên", message: "Mong tình yêu của hai bạn luôn bền chặt theo năm tháng." },
-  { name: "Duy Anh", message: "Chúc cuộc sống hôn nhân luôn bình yên và hạnh phúc." },
-  { name: "Kim Ngân", message: "Happy Wedding! Chúc hai bạn mãi ngọt ngào như hôm nay." },
-  { name: "Hoàng Long", message: "Chúc đôi uyên ương trăm năm viên mãn." },
-  { name: "Mỹ Duyên", message: "Chúc tình yêu của hai bạn luôn rực rỡ và bền lâu." },
-  { name: "Anh Tú", message: "Chúc hai bạn sớm có một tổ ấm thật hạnh phúc." },
-  { name: "Lan Anh", message: "Mãi mãi bên nhau nhé ❤️ Chúc mừng hạnh phúc!" },
-  { name: "Trung Kiên", message: "Chúc cô dâu chú rể sống bên nhau trọn đời." },
-  { name: "Hồng Nhung", message: "Chúc hạnh phúc ngập tràn trong từng ngày của hai bạn." },
-  { name: "Văn Hậu", message: "Happy Wedding! Chúc mọi điều tốt đẹp nhất đến với hai bạn." },
-  { name: "Bích Phương", message: "Chúc hai bạn luôn nắm tay nhau đi hết cuộc đời." },
-  { name: "Đức Minh", message: "Chúc tình yêu này mãi không phai theo thời gian." },
-  { name: "Thanh Tâm", message: "Chúc hai bạn mãi là phiên bản tốt nhất của nhau." },
-  { name: "Khánh Vy", message: "Chúc hạnh phúc viên mãn, sớm có tin vui ❤️" },
-  { name: "Gia Hân", message: "Chúc hai bạn một hành trình mới thật đẹp." },
-  { name: "Nam Phong", message: "Chúc cuộc sống hôn nhân luôn đầy ắp yêu thương." },
-  { name: "Yến Nhi", message: "Happy Wedding ❤️ chúc mãi hạnh phúc bên nhau." },
-  { name: "Minh Tâm", message: "Chúc tình yêu của hai bạn luôn vững bền." },
-  { name: "Quỳnh Anh", message: "Chúc hai bạn mãi là định mệnh của nhau." },
-  { name: "Hoàng Yến", message: "Chúc hôn lễ thật trọn vẹn và đáng nhớ." },
-  { name: "Thanh Hằng", message: "Chúc tình yêu của hai bạn luôn rực sáng." },
-  { name: "Eric Nguyen", message: "Congratulations! Wishing you a lifetime of love ❤️" }
 ];
 
 let demoIndex = 0;
