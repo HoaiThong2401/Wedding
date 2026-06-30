@@ -286,9 +286,9 @@ const submitWish = async () => {
 };
 
 onMounted(async () => {
-  await fetchWishes();
+  fetchWishes();
 
-  liveTimer = setInterval(fetchWishes, 6000);
+  liveTimer = setInterval(fetchWishes, 2000);
 
   demoTimer = setInterval(() => {
     pushDemoMessage();
