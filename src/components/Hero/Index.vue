@@ -1,23 +1,29 @@
 <template>
   <section ref="heroRef" class="hero" @click="closeLetter">
 
-    <div class="card" :class="{ open: isOpen }" @click.stop="openLetter">
+    <div class="card" :class="{ open: isOpen }">
 
-      <div class="cover">
+      <div class="cover" @click.stop="onCoverClick">
         <div class="cover-border">
           <div class="cover-card">
             <p class="cover-subtitle">THE WEDDING OF</p>
+
             <div class="divider-diamond">✦</div>
+
             <div class="cover-preview">
               <p class="name-highlight">Lê Hoàng Thiện</p>
+
               <div class="ring-icon">
                 <span class="line"></span>
                 <span class="heart">❤</span>
                 <span class="line"></span>
               </div>
+
               <p class="name-highlight">Phan Linh</p>
             </div>
+
             <div class="divider-diamond">✦</div>
+
             <p class="cover-footer">SAVE THE DATE</p>
             <p class="hint" v-if="!isOpen">Chạm để mở thiệp</p>
           </div>
@@ -26,28 +32,32 @@
 
       <div class="book">
         <div class="invitation-content">
-          
+
           <div class="page-image">
             <img src="/images/rightpage.png" class="bg-image" alt="Wedding" />
           </div>
 
           <div class="page-info">
+
             <div class="top-layout">
               <div class="family-section">
+
                 <div class="parent-block">
                   <p class="title">NHÀ TRAI</p>
                   <p class="parent-name">ÔNG: LÊ XUYÊN TRUYỀN</p>
                   <p class="parent-name">BÀ: LÊ THỊ THANH NỮ</p>
                   <p class="addr">Xã Trung An, TP.Mỹ Tho, Tiền Giang</p>
                 </div>
-                
+
                 <div class="parent-block">
                   <p class="title">NHÀ GÁI</p>
                   <p class="parent-name">ÔNG: [Họ tên Bố]</p>
                   <p class="parent-name">BÀ: [Họ tên Mẹ]</p>
                   <p class="addr">TP.Đà Lạt, Lâm Đồng</p>
                 </div>
+
               </div>
+
               <div class="flower-icon">
                 <img src="/images/flower.png" alt="flower" />
               </div>
@@ -62,9 +72,11 @@
                 <h2>Lê Hoàng Thiện</h2>
                 <h4>Trưởng Nam</h4>
               </div>
+
               <div class="row-love">
                 <img src="/images/rowlove.png" alt="love" />
               </div>
+
               <div class="couple-name bride">
                 <h2>Phan Linh</h2>
                 <h4>Thứ Nữ</h4>
@@ -79,6 +91,7 @@
               <p class="solar-date">VÀO LÚC 11H00 - THỨ NĂM - 07.01.2027</p>
               <p class="lunar-date">(Nhằm ngày 30 tháng 11 năm Bính Ngọ)</p>
             </div>
+
           </div>
 
         </div>
@@ -96,9 +109,15 @@ const isOpen = ref(false)
 const heroRef = ref(null)
 let observer = null
 
-const openLetter = () => {
-  if (isOpen.value) return
-  isOpen.value = true
+const playMusic = () => {
+  window.dispatchEvent(new Event('user-interact'))
+}
+
+const onCoverClick = () => {
+  if (!isOpen.value) {
+    isOpen.value = true
+  }
+  playMusic()
 }
 
 const closeLetter = () => {

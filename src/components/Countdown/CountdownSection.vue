@@ -1,9 +1,10 @@
 <template>
   <section class="countdown-section" id="countdown">
     <div class="container">
-      
+
       <div class="text-center mb-5">
         <p class="sub-title">CHÚNG MÌNH SẮP VỀ CHUNG MỘT NHÀ</p>
+
         <div class="title-group">
           <div class="decorator-line"></div>
           <h2 class="title">Đếm ngược đến ngày cưới</h2>
@@ -128,6 +129,9 @@ onUnmounted(() => {
   color: #a23946;
   margin: 0;
   letter-spacing: 0.5px;
+
+  white-space: nowrap;
+  text-align: center;
 }
 
 .sub-title {
@@ -179,16 +183,19 @@ onUnmounted(() => {
 }
 
 @media (max-width: 768px) {
+
   .countdown-section {
     padding: 60px 16px;
   }
 
   .title {
-    font-size: 26px;
+    font-size: 18px;
+    white-space: nowrap;
+    letter-spacing: 0.3px;
   }
 
   .title-group {
-    gap: 12px;
+    gap: 10px;
   }
 
   .decorator-line {
@@ -211,6 +218,12 @@ onUnmounted(() => {
   .time-box span {
     font-size: 11px;
     letter-spacing: 1px;
+  }
+}
+
+@media (max-width: 360px) {
+  .title {
+    font-size: 16px;
   }
 }
 </style>

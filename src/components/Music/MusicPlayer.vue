@@ -21,7 +21,8 @@
         ref="audio"
         loop
         preload="auto"
-        playsinline>
+        playsinline
+        muted>
         <source src="/music/GapNguoiDungLuc.mp3" type="audio/mpeg">
     </audio>
 </template>
@@ -29,54 +30,79 @@
 <script setup>
 import { ref, onMounted, onBeforeUnmount } from 'vue'
 
-const playing = ref(false)
 const audio = ref(null)
-let unlocked = false
+const playing = ref(false)
 
 const syncState = () => {
     if (!audio.value) return
     playing.value = !audio.value.paused
 }
 
-const startMusic = async () => {
-    if (!audio.value || unlocked) return
-
-    try {
-        await audio.value.play()
-        unlocked = true
-        syncState()
-        removeListeners()
-    } catch {}
-}
-
-const toggleMusic = async () => {
+const playMusic = async (unmute = true) => {
     if (!audio.value) return
 
     try {
-        if (audio.value.paused) {
-            await audio.value.play()
-        } else {
-            audio.value.pause()
+        if (unmute) {
+            audio.value.muted = false
         }
+        await audio.value.play()
     } catch {}
 
     syncState()
 }
 
-const removeListeners = () => {
-    window.removeEventListener('click', startMusic)
-    window.removeEventListener('touchstart', startMusic)
+const pauseMusic = () => {
+    if (!audio.value) return
+    audio.value.pause()
+    syncState()
+}
+
+const toggleMusic = async (e) => {
+    e?.stopPropagation?.()
+
+    if (!audio.value) return
+
+    if (audio.value.paused) {
+        await playMusic(true)
+    } else {
+        pauseMusic()
+    }
+}
+
+const handleGlobalPointer = async () => {
+    if (!audio.value) return
+
+    if (audio.value.paused) {
+        await playMusic(true)
+    }
 }
 
 onMounted(() => {
     if (!audio.value) return
+
+    audio.value.addEventListener('play', syncState)
+    audio.value.addEventListener('pause', syncState)
+
     syncState()
-    window.addEventListener('click', startMusic, { once: true })
-    window.addEventListener('touchstart', startMusic, { once: true })
+    audio.value.muted = true
+
+    window.addEventListener('pointerdown', handleGlobalPointer, { passive: true })
+    window.addEventListener('pointerup', handleGlobalPointer, { passive: true })
+    window.addEventListener('touchstart', handleGlobalPointer, { passive: true })
+    window.addEventListener('touchend', handleGlobalPointer, { passive: true })
+    window.addEventListener('click', handleGlobalPointer, { passive: true })
+    window.addEventListener('keydown', handleGlobalPointer)
+    window.addEventListener('user-interact', handleGlobalPointer)
 })
 
 onBeforeUnmount(() => {
-    removeListeners()
+    window.removeEventListener('pointerdown', handleGlobalPointer)
+    window.removeEventListener('pointerup', handleGlobalPointer)
+    window.removeEventListener('touchstart', handleGlobalPointer)
+    window.removeEventListener('touchend', handleGlobalPointer)
+    window.removeEventListener('click', handleGlobalPointer)
+    window.removeEventListener('keydown', handleGlobalPointer)
+    window.removeEventListener('user-interact', handleGlobalPointer)
 })
 </script>
 
@@ -110,21 +136,15 @@ onBeforeUnmount(() => {
         0 15px 40px rgba(0,0,0,.5);
 }
 
-/* 💿 CD */
 .cd {
     position: absolute;
     width: 58px;
     height: 58px;
     border-radius: 50%;
-    background:
-        radial-gradient(circle at 35% 35%, #2a2a2a, #000 70%);
+    background: radial-gradient(circle at 35% 35%, #2a2a2a, #000 70%);
     border: 1px solid rgba(255,255,255,.08);
-    box-shadow:
-        inset 0 0 12px rgba(255,255,255,.05),
-        inset -5px -5px 15px rgba(0,0,0,.6);
 }
 
-/* tâm CD */
 .cd::before {
     content: "";
     position: absolute;
@@ -135,19 +155,17 @@ onBeforeUnmount(() => {
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
-    box-shadow: 0 0 8px rgba(255,255,255,.1);
 }
 
-/* xoay khi play */
 .music-btn.is-playing .cd {
     animation: spin 2.8s linear infinite;
 }
 
 @keyframes spin {
+    from { transform: rotate(0deg); }
     to { transform: rotate(360deg); }
 }
 
-/* 🌈 wave */
 .music-waves {
     position: absolute;
     inset: 0;
@@ -163,7 +181,6 @@ onBeforeUnmount(() => {
     opacity: 1;
 }
 
-/* rainbow spectrum */
 .music-waves span {
     width: 3px;
     height: 14px;
@@ -182,14 +199,12 @@ onBeforeUnmount(() => {
     50% { transform: scaleY(2.2); opacity: 1; }
 }
 
-/* ▶ icon chỉ khi dừng */
 .music-btn i {
     position: relative;
     z-index: 3;
     font-size: 22px;
     color: white;
-    text-shadow: 0 0 8px rgba(255,255,255,.2);
-    transition: opacity .25s ease;
+    transition: opacity .2s ease;
 }
 
 .music-btn.is-playing i {

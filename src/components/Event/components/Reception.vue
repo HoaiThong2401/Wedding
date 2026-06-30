@@ -2,7 +2,8 @@
   <div class="event-card">
     <div class="card-title-group">
       <div class="mini-line"></div>
-      <h4>💗 Tiệc Cưới</h4>
+      
+      <h4 class="title"><span class="icon">✧</span> Tiệc Cưới</h4>
       <div class="mini-line"></div>
     </div>
 
@@ -220,4 +221,22 @@
     padding: 8px 16px;
   }
 }
+
+.title {
+  font-family: serif;
+  font-size: 22px;
+  font-weight: 600;
+  color: #a23946;
+  margin: 0;
+  letter-spacing: 0.5px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.title .icon {
+  font-size: 16px;
+  color: #b38b4d;
+}
+
 </style>

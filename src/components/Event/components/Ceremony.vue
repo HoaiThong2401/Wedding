@@ -2,7 +2,12 @@
   <div class="event-card">
     <div class="card-title-group">
       <div class="mini-line"></div>
-      <h4>💙 Lễ Thành Hôn</h4>
+
+      <h4 class="title">
+        <span class="icon">✧</span>
+        Lễ Thành Hôn
+      </h4>
+
       <div class="mini-line"></div>
     </div>
 
@@ -31,9 +36,11 @@
             src="https://www.google.com/maps?q=10.371986,106.324576&z=15&output=embed"
             loading="lazy"
           ></iframe>
+
           <div class="map-overlay">
             <span class="map-btn">
-              <span class="icon">📍</span> Chỉ đường trên Google Maps
+              <span class="icon">📍</span>
+              Chỉ đường trên Google Maps
             </span>
           </div>
         </div>
@@ -50,8 +57,10 @@
   box-shadow: 0 20px 50px rgba(74, 59, 47, 0.05);
   max-width: 650px;
   margin: 0 auto;
+  background: #fff;
 }
 
+/* TITLE */
 .card-title-group {
   display: flex;
   align-items: center;
@@ -60,21 +69,30 @@
   margin-bottom: 35px;
 }
 
-.card-title-group .mini-line {
+.mini-line {
   width: 40px;
   height: 1px;
   background: linear-gradient(to right, transparent, #b38b4d, transparent);
 }
 
-.event-card h4 {
+.title {
   font-family: serif;
   font-size: 22px;
   font-weight: 600;
   color: #a23946;
   margin: 0;
   letter-spacing: 0.5px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
 }
 
+.title .icon {
+  font-size: 16px;
+  color: #b38b4d;
+}
+
+/* CONTENT */
 .event-content {
   display: flex;
   flex-direction: column;
@@ -123,6 +141,7 @@
   opacity: 0.85;
 }
 
+/* MAP */
 .map-wrapper {
   display: block;
   width: 100%;
@@ -150,7 +169,7 @@
   height: 100%;
   border: 0;
   display: block;
-  filter: sepia(10%) contrast(0.95);
+  filter: sepia(12%) contrast(0.95);
   transition: transform 0.4s ease;
 }
 
@@ -172,11 +191,12 @@
   font-weight: 600;
   padding: 10px 20px;
   border-radius: 50px;
-  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
-  transition: all 0.3s ease;
+  background: rgba(255,255,255,0.8);
   display: flex;
   align-items: center;
   gap: 6px;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 15px rgba(0,0,0,0.08);
 }
 
 .map-wrapper:hover iframe {
@@ -184,17 +204,18 @@
 }
 
 .map-wrapper:hover .map-overlay {
-  background: rgba(74, 59, 47, 0.25);
-  backdrop-filter: blur(0px);
+  background: rgba(74, 59, 47, 0.22);
 }
 
 .map-wrapper:hover .map-btn {
   background: #a23946;
   border-color: #a23946;
+  color: white;
   transform: translateY(-2px);
   box-shadow: 0 6px 20px rgba(162, 57, 70, 0.25);
 }
 
+/* MOBILE */
 @media (max-width: 600px) {
   .event-card {
     padding: 30px 20px;
@@ -214,10 +235,9 @@
   .map-wrapper {
     aspect-ratio: 4 / 3;
   }
-  
-  .map-btn {
-    font-size: 12px;
-    padding: 8px 16px;
+
+  .title {
+    font-size: 18px;
   }
 }
 </style>
