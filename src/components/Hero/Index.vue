@@ -1,29 +1,22 @@
 <template>
   <section ref="heroRef" class="hero" @click="closeLetter">
-
     <div class="card" :class="{ open: isOpen }">
-
+      
       <div class="cover" @click.stop="onCoverClick">
         <div class="cover-border">
           <div class="cover-card">
             <p class="cover-subtitle">THE WEDDING OF</p>
-
             <div class="divider-diamond">✦</div>
-
             <div class="cover-preview">
               <p class="name-highlight">Lê Hoàng Thiện</p>
-
               <div class="ring-icon">
                 <span class="line"></span>
                 <span class="heart">❤</span>
                 <span class="line"></span>
               </div>
-
               <p class="name-highlight">Phan Linh</p>
             </div>
-
             <div class="divider-diamond">✦</div>
-
             <p class="cover-footer">SAVE THE DATE</p>
             <p class="hint" v-if="!isOpen">Chạm để mở thiệp</p>
           </div>
@@ -32,32 +25,26 @@
 
       <div class="book">
         <div class="invitation-content">
-
           <div class="page-image">
             <img src="/images/rightpage.png" class="bg-image" alt="Wedding" />
           </div>
 
           <div class="page-info">
-
             <div class="top-layout">
               <div class="family-section">
-
                 <div class="parent-block">
                   <p class="title">NHÀ TRAI</p>
                   <p class="parent-name">ÔNG: LÊ XUYÊN TRUYỀN</p>
                   <p class="parent-name">BÀ: LÊ THỊ THANH NỮ</p>
                   <p class="addr">Xã Trung An, TP.Mỹ Tho, Tiền Giang</p>
                 </div>
-
                 <div class="parent-block">
                   <p class="title">NHÀ GÁI</p>
                   <p class="parent-name">ÔNG: [Họ tên Bố]</p>
                   <p class="parent-name">BÀ: [Họ tên Mẹ]</p>
                   <p class="addr">TP.Đà Lạt, Lâm Đồng</p>
                 </div>
-
               </div>
-
               <div class="flower-icon">
                 <img src="/images/flower.png" alt="flower" />
               </div>
@@ -72,33 +59,26 @@
                 <h2>Lê Hoàng Thiện</h2>
                 <h4>Trưởng Nam</h4>
               </div>
-
               <div class="row-love">
                 <img src="/images/rowlove.png" alt="love" />
               </div>
-
               <div class="couple-name bride">
                 <h2>Phan Linh</h2>
                 <h4>Thứ Nữ</h4>
               </div>
             </div>
 
-            <div class="event">
-              HÔN LỄ ĐƯỢC CỬ HÀNH TẠI TƯ GIA
-            </div>
+            <div class="event">HÔN LỄ ĐƯỢC CỬ HÀNH TẠI TƯ GIA</div>
 
             <div class="time">
               <p class="solar-date">VÀO LÚC 11H00 - THỨ NĂM - 07.01.2027</p>
               <p class="lunar-date">(Nhằm ngày 30 tháng 11 năm Bính Ngọ)</p>
             </div>
-
           </div>
-
         </div>
       </div>
 
     </div>
-
   </section>
 </template>
 
@@ -155,8 +135,9 @@ onUnmounted(() => {
   align-items: center;
   background: #f3ebe1;
   padding: 16px;
-  perspective: 1500px;
+  perspective: 2000px;
   cursor: pointer;
+  overflow: hidden;
 }
 
 .card {
@@ -165,10 +146,16 @@ onUnmounted(() => {
   height: 600px;
   position: relative;
   border-radius: 12px;
-  box-shadow: 0 30px 70px rgba(74, 59, 47, 0.15);
+  box-shadow: 0 20px 50px rgba(74, 59, 47, 0.15), 0 5px 15px rgba(0, 0, 0, 0.05);
   transform-style: preserve-3d;
-  transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+  transform: rotateX(5deg) rotateY(-2deg);
+  transition: transform 1s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 1s ease;
   cursor: default;
+}
+
+.card.open {
+  transform: rotateX(10deg) rotateY(0deg) translateZ(-20px);
+  box-shadow: 0 40px 80px rgba(74, 59, 47, 0.25), 0 10px 25px rgba(0, 0, 0, 0.1);
 }
 
 .cover {
@@ -180,12 +167,19 @@ onUnmounted(() => {
   align-items: center;
   background: #fdfaf6;
   border-radius: 12px;
-  box-shadow: inset 0 0 50px rgba(179, 139, 77, 0.08), 0 10px 30px rgba(0,0,0,0.05);
   padding: 24px;
   transform-origin: top center;
-  transition: transform 0.8s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.6s ease;
   backface-visibility: hidden; 
   pointer-events: auto;
+  transition: transform 1.2s cubic-bezier(0.68, -0.6, 0.32, 1.6), opacity 0.8s ease, box-shadow 1.2s ease;
+  box-shadow: inset 0 0 50px rgba(179, 139, 77, 0.08), 0 10px 30px rgba(0,0,0,0.08);
+}
+
+.card.open .cover {
+  transform: rotateX(-160deg); 
+  opacity: 0;
+  pointer-events: none;
+  box-shadow: 0 -20px 40px rgba(0,0,0,0);
 }
 
 .cover-border {
@@ -273,13 +267,7 @@ onUnmounted(() => {
   font-style: italic;
   margin-top: 30px;
   letter-spacing: 1px;
-  animation: pulse 2s infinite;
-}
-
-.card.open .cover {
-  transform: rotateX(115deg); 
-  opacity: 0;
-  pointer-events: none;
+  animation: elegantPulse 2.5s infinite ease-in-out;
 }
 
 .book {
@@ -287,17 +275,19 @@ onUnmounted(() => {
   inset: 0;
   z-index: 1;
   opacity: 0;
-  transform: scale(0.98);
-  transition: opacity 0.6s ease, transform 0.6s ease;
+  transform: scale(0.93) translateZ(-30px);
+  transition: opacity 0.8s cubic-bezier(0.25, 1, 0.5, 1), transform 1s cubic-bezier(0.25, 1, 0.5, 1);
   overflow-y: auto;
   border-radius: 12px;
   pointer-events: none;
+  box-shadow: inset 0 0 40px rgba(0, 0, 0, 0.05);
 }
 
 .card.open .book {
   opacity: 1;
-  transform: scale(1);
+  transform: scale(1) translateZ(0);
   pointer-events: auto;
+  transition-delay: 0.1s;
 }
 
 .invitation-content {
@@ -429,19 +419,30 @@ onUnmounted(() => {
   font-style: italic;
 }
 
-@keyframes pulse {
-  0%, 100% { opacity: 0.6; }
-  50% { opacity: 1; }
+@keyframes elegantPulse {
+  0%, 100% {
+    opacity: 0.4;
+    transform: scale(0.98);
+  }
+  50% {
+    opacity: 1;
+    transform: scale(1.03);
+  }
 }
 
 @media (max-width: 768px) {
   .card {
-    height: 90dvh; 
-    max-height: 680px;
+    height: 85dvh; 
+    max-height: 640px;
+    transform: rotateX(3deg) rotateY(-1deg);
+  }
+
+  .card.open {
+    transform: rotateX(5deg) rotateY(0deg) translateZ(-10px);
   }
 
   .card.open .cover {
-    transform: rotateX(140deg); 
+    transform: rotateX(-165deg); 
   }
 
   .cover {

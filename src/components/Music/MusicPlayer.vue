@@ -46,7 +46,11 @@ const playMusic = async (unmute = true) => {
             audio.value.muted = false
         }
         await audio.value.play()
-    } catch {}
+        // KHI NHẠC ĐÃ PHÁT THÀNH CÔNG LẦN ĐẦU -> GỠ BỎ TẤT CẢ LẮNG NGHE TOÀN CẦU NGAY
+        removeGlobalListeners()
+    } catch (err) {
+        console.log("Autoplay bị chặn bởi trình duyệt, đợi tương tác tiếp theo...", err)
+    }
 
     syncState()
 }
@@ -58,7 +62,7 @@ const pauseMusic = () => {
 }
 
 const toggleMusic = async (e) => {
-    e?.stopPropagation?.()
+    e?.stopPropagation?.() // Ngăn sự kiện nổi bọt để không kích hoạt ngược lại listener toàn cầu
 
     if (!audio.value) return
 
@@ -69,12 +73,33 @@ const toggleMusic = async (e) => {
     }
 }
 
+// Hàm xử lý kích hoạt nhạc từ tương tác bất kỳ (Chỉ dùng cho lần đầu)
 const handleGlobalPointer = async () => {
     if (!audio.value) return
-
     if (audio.value.paused) {
         await playMusic(true)
     }
+}
+
+// Gom các hàm đăng ký và hủy đăng ký listener toàn cầu lại cho sạch sẽ
+const addGlobalListeners = () => {
+    window.addEventListener('pointerdown', handleGlobalPointer, { passive: true })
+    window.addEventListener('pointerup', handleGlobalPointer, { passive: true })
+    window.addEventListener('touchstart', handleGlobalPointer, { passive: true })
+    window.addEventListener('touchend', handleGlobalPointer, { passive: true })
+    window.addEventListener('click', handleGlobalPointer, { passive: true })
+    window.addEventListener('keydown', handleGlobalPointer)
+    window.addEventListener('user-interact', handleGlobalPointer)
+}
+
+const removeGlobalListeners = () => {
+    window.removeEventListener('pointerdown', handleGlobalPointer)
+    window.removeEventListener('pointerup', handleGlobalPointer)
+    window.removeEventListener('touchstart', handleGlobalPointer)
+    window.removeEventListener('touchend', handleGlobalPointer)
+    window.removeEventListener('click', handleGlobalPointer)
+    window.removeEventListener('keydown', handleGlobalPointer)
+    window.removeEventListener('user-interact', handleGlobalPointer)
 }
 
 onMounted(() => {
@@ -86,27 +111,21 @@ onMounted(() => {
     syncState()
     audio.value.muted = true
 
-    window.addEventListener('pointerdown', handleGlobalPointer, { passive: true })
-    window.addEventListener('pointerup', handleGlobalPointer, { passive: true })
-    window.addEventListener('touchstart', handleGlobalPointer, { passive: true })
-    window.addEventListener('touchend', handleGlobalPointer, { passive: true })
-    window.addEventListener('click', handleGlobalPointer, { passive: true })
-    window.addEventListener('keydown', handleGlobalPointer)
-    window.addEventListener('user-interact', handleGlobalPointer)
+    // Đăng ký lắng nghe tương tác toàn trang để mồi nhạc lần đầu
+    addGlobalListeners()
 })
 
 onBeforeUnmount(() => {
-    window.removeEventListener('pointerdown', handleGlobalPointer)
-    window.removeEventListener('pointerup', handleGlobalPointer)
-    window.removeEventListener('touchstart', handleGlobalPointer)
-    window.removeEventListener('touchend', handleGlobalPointer)
-    window.removeEventListener('click', handleGlobalPointer)
-    window.removeEventListener('keydown', handleGlobalPointer)
-    window.removeEventListener('user-interact', handleGlobalPointer)
+    if (audio.value) {
+        audio.value.removeEventListener('play', syncState)
+        audio.value.removeEventListener('pause', syncState)
+    }
+    removeGlobalListeners()
 })
 </script>
 
 <style scoped>
+/* Giữ nguyên toàn bộ phần CSS ban đầu của bạn vì đã chạy rất chuẩn */
 .music-btn {
     position: fixed;
     right: 25px;
@@ -120,94 +139,26 @@ onBeforeUnmount(() => {
     align-items: center;
     justify-content: center;
     overflow: hidden;
-
     background: radial-gradient(circle at 30% 30%, #1c1c1c, #050505);
     box-shadow: 0 15px 40px rgba(0,0,0,.5);
     transition: transform .25s ease, box-shadow .25s ease;
 }
 
-.music-btn:hover {
-    transform: scale(1.08);
-}
-
-.music-btn.is-playing {
-    box-shadow:
-        0 0 25px rgba(0, 200, 255, .25),
-        0 15px 40px rgba(0,0,0,.5);
-}
-
-.cd {
-    position: absolute;
-    width: 58px;
-    height: 58px;
-    border-radius: 50%;
-    background: radial-gradient(circle at 35% 35%, #2a2a2a, #000 70%);
-    border: 1px solid rgba(255,255,255,.08);
-}
-
-.cd::before {
-    content: "";
-    position: absolute;
-    width: 12px;
-    height: 12px;
-    background: #111;
-    border-radius: 50%;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-}
-
-.music-btn.is-playing .cd {
-    animation: spin 2.8s linear infinite;
-}
-
-@keyframes spin {
-    from { transform: rotate(0deg); }
-    to { transform: rotate(360deg); }
-}
-
-.music-waves {
-    position: absolute;
-    inset: 0;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 3px;
-    opacity: 0;
-    transition: opacity .3s ease;
-}
-
-.music-btn.is-playing .music-waves {
-    opacity: 1;
-}
-
-.music-waves span {
-    width: 3px;
-    height: 14px;
-    border-radius: 3px;
-    animation: wave 0.9s infinite ease-in-out;
-}
-
+.music-btn:hover { transform: scale(1.08); }
+.music-btn.is-playing { box-shadow: 0 0 25px rgba(0, 200, 255, .25), 0 15px 40px rgba(0,0,0,.5); }
+.cd { position: absolute; width: 58px; height: 58px; border-radius: 50%; background: radial-gradient(circle at 35% 35%, #2a2a2a, #000 70%); border: 1px solid rgba(255,255,255,.08); }
+.cd::before { content: ""; position: absolute; width: 12px; height: 12px; background: #111; border-radius: 50%; top: 50%; left: 50%; transform: translate(-50%, -50%); }
+.music-btn.is-playing .cd { animation: spin 2.8s linear infinite; }
+@keyframes spin { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
+.music-waves { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; gap: 3px; opacity: 0; transition: opacity .3s ease; }
+.music-btn.is-playing .music-waves { opacity: 1; }
+.music-waves span { width: 3px; height: 14px; border-radius: 3px; animation: wave 0.9s infinite ease-in-out; }
 .music-waves span:nth-child(1) { background: #ff004c; animation-delay: 0s; }
 .music-waves span:nth-child(2) { background: #ff8a00; animation-delay: .12s; }
 .music-waves span:nth-child(3) { background: #ffe600; animation-delay: .24s; }
 .music-waves span:nth-child(4) { background: #00ff9d; animation-delay: .36s; }
 .music-waves span:nth-child(5) { background: #00c3ff; animation-delay: .48s; }
-
-@keyframes wave {
-    0%, 100% { transform: scaleY(.3); opacity: .4; }
-    50% { transform: scaleY(2.2); opacity: 1; }
-}
-
-.music-btn i {
-    position: relative;
-    z-index: 3;
-    font-size: 22px;
-    color: white;
-    transition: opacity .2s ease;
-}
-
-.music-btn.is-playing i {
-    opacity: 0;
-}
+@keyframes wave { 0%, 100% { transform: scaleY(.3); opacity: .4; } 50% { transform: scaleY(2.2); opacity: 1; } }
+.music-btn i { position: relative; z-index: 3; font-size: 22px; color: white; transition: opacity .2s ease; }
+.music-btn.is-playing i { opacity: 0; }
 </style>
