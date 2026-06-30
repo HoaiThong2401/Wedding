@@ -133,7 +133,6 @@ onUnmounted(() => {
   display: flex;
   justify-content: center;
   align-items: center;
-  background: #f3ebe1;
   padding: 16px;
   perspective: 2000px;
   cursor: pointer;
