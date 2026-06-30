@@ -79,24 +79,27 @@
 </template>
 
 <script setup>
-import { ref, onMounted, onUnmounted, nextTick } from "vue";
+import { ref, onMounted, onUnmounted, nextTick, computed } from "vue";
 
 const SCRIPT_URL =
   "https://script.google.com/macros/s/AKfycbzWXgxFNZdg6ZdeSqpd3es7OEEKKRwQ0olvp-DCc7ELh9e6DMA5AvZz7iRkEQhxHPJDDQ/exec";
 
 const name = ref("");
 const message = ref("");
-
 const loading = ref(false);
 const fetching = ref(false);
-
 const chatBox = ref(null);
-
 const wishes = ref([]);
-
 const realCount = ref(0);
-const mesCount = ref(0);
 
+const demoCount = computed(() => {
+  return wishes.value.filter(item => String(item.id).startsWith("demo-")).length;
+});
+
+const mesCount = computed(() => {
+  const total = realCount.value + demoCount.value;
+  return total > 999 ? "999+" : total;
+});
 
 let liveTimer = null;
 let demoTimer = null;
@@ -118,34 +121,37 @@ const avatarColors = [
 ];
 
 const demoMessages = [
-  {
-    name: "Hoài Thông",
-    message: "Chúc anh chị hai trăm năm hạnh phúc ❤️"
-  },
-  {
-    name: "Ngọc Anh",
-    message: "Chúc cô dâu chú rể trăm năm hạnh phúc ❤️"
-  },
-  {
-    name: "Minh Khang",
-    message: "Happy Wedding! Chúc anh chị mãi yêu thương nhau."
-  },
-  {
-    name: "Gia Bảo",
-    message: "Xin chúc gia đình nhỏ luôn tràn ngập tiếng cười."
-  },
-  {
-    name: "Thu Trang",
-    message: "Chúc hai bạn mãi mãi hạnh phúc và viên mãn."
-  },
-  {
-    name: "Quốc Đạt",
-    message: "Chúc cô dâu chú rể trăm năm tình viên mãn."
-  },
-  {
-    name: "Bảo Trân",
-    message: "Happy Wedding ❤️"
-  }
+  { name: "Hoài Thông", message: "Chúc anh chị hai trăm năm hạnh phúc ❤️" },
+  { name: "Ngọc Anh", message: "Chúc cô dâu chú rể trăm năm hạnh phúc ❤️" },
+  { name: "Minh Khang", message: "Happy Wedding! Chúc anh chị mãi yêu thương nhau." },
+  { name: "Gia Bảo", message: "Xin chúc gia đình nhỏ luôn tràn ngập tiếng cười." },
+  { name: "Thu Trang", message: "Chúc hai bạn mãi mãi hạnh phúc và viên mãn." },
+  { name: "Quốc Đạt", message: "Chúc cô dâu chú rể trăm năm tình viên mãn." },
+  { name: "Bảo Trân", message: "Happy Wedding ❤️" },
+  { name: "Phương Linh", message: "Chúc hai bạn luôn đồng hành và yêu thương nhau thật lâu." },
+  { name: "Tuấn Kiệt", message: "Chúc hôn lễ trọn vẹn và hạnh phúc dài lâu." },
+  { name: "Thảo Nguyên", message: "Mong tình yêu của hai bạn luôn bền chặt theo năm tháng." },
+  { name: "Duy Anh", message: "Chúc cuộc sống hôn nhân luôn bình yên và hạnh phúc." },
+  { name: "Kim Ngân", message: "Happy Wedding! Chúc hai bạn mãi ngọt ngào như hôm nay." },
+  { name: "Hoàng Long", message: "Chúc đôi uyên ương trăm năm viên mãn." },
+  { name: "Mỹ Duyên", message: "Chúc tình yêu của hai bạn luôn rực rỡ và bền lâu." },
+  { name: "Anh Tú", message: "Chúc hai bạn sớm có một tổ ấm thật hạnh phúc." },
+  { name: "Lan Anh", message: "Mãi mãi bên nhau nhé ❤️ Chúc mừng hạnh phúc!" },
+  { name: "Trung Kiên", message: "Chúc cô dâu chú rể sống bên nhau trọn đời." },
+  { name: "Hồng Nhung", message: "Chúc hạnh phúc ngập tràn trong từng ngày của hai bạn." },
+  { name: "Văn Hậu", message: "Happy Wedding! Chúc mọi điều tốt đẹp nhất đến với hai bạn." },
+  { name: "Bích Phương", message: "Chúc hai bạn luôn nắm tay nhau đi hết cuộc đời." },
+  { name: "Đức Minh", message: "Chúc tình yêu này mãi không phai theo thời gian." },
+  { name: "Thanh Tâm", message: "Chúc hai bạn mãi là phiên bản tốt nhất của nhau." },
+  { name: "Khánh Vy", message: "Chúc hạnh phúc viên mãn, sớm có tin vui ❤️" },
+  { name: "Gia Hân", message: "Chúc hai bạn một hành trình mới thật đẹp." },
+  { name: "Nam Phong", message: "Chúc cuộc sống hôn nhân luôn đầy ắp yêu thương." },
+  { name: "Yến Nhi", message: "Happy Wedding ❤️ chúc mãi hạnh phúc bên nhau." },
+  { name: "Minh Tâm", message: "Chúc tình yêu của hai bạn luôn vững bền." },
+  { name: "Quỳnh Anh", message: "Chúc hai bạn mãi là định mệnh của nhau." },
+  { name: "Hoàng Yến", message: "Chúc hôn lễ thật trọn vẹn và đáng nhớ." },
+  { name: "Thanh Hằng", message: "Chúc tình yêu của hai bạn luôn rực sáng." },
+  { name: "Eric Nguyen", message: "Congratulations! Wishing you a lifetime of love ❤️" }
 ];
 
 let demoIndex = 0;
@@ -155,13 +161,11 @@ const randomAvatar = () =>
 
 const showToast = (msg, type = "success") => {
   clearTimeout(toastTimer);
-
   toast.value = {
     show: true,
     msg,
     type
   };
-
   toastTimer = setTimeout(() => {
     toast.value.show = false;
   }, 3000);
@@ -169,7 +173,6 @@ const showToast = (msg, type = "success") => {
 
 const scrollToBottom = async () => {
   await nextTick();
-
   if (chatBox.value) {
     chatBox.value.scrollTop = chatBox.value.scrollHeight;
   }
@@ -177,64 +180,49 @@ const scrollToBottom = async () => {
 
 const pushDemoMessage = async () => {
   const item = demoMessages[demoIndex];
-
   wishes.value.push({
     id: `demo-${Date.now()}`,
     name: item.name,
     message: item.message,
     avatarBg: randomAvatar()
   });
-
   if (wishes.value.length > 50) {
     wishes.value.shift();
   }
-
   demoIndex++;
-
   if (demoIndex >= demoMessages.length) {
     demoIndex = 0;
   }
-
   await scrollToBottom();
 };
 
 const fetchWishes = async () => {
   if (fetching.value) return;
-
   fetching.value = true;
-
   try {
     const res = await fetch(`${SCRIPT_URL}?action=read`, {
       method: "GET",
       cache: "no-store"
     });
-
     if (!res.ok) throw new Error();
-
     const data = await res.json();
-
     if (!Array.isArray(data)) return;
+    
+    realCount.value = data.length;
+    const currentRealCount = wishes.value.filter(w => !String(w.id).startsWith("demo-")).length;
 
-    mesCount.value = data.length;
-
-    if (data.length > realCount.value) {
-      const newWishes = data
-        .slice(realCount.value)
-        .map((item, index) => ({
-          id: item.time || Date.now() + index,
-          name: item.name || "Khách",
-          message: item.message || "",
-          avatarBg: randomAvatar()
-        }));
-
-      wishes.value.push(...newWishes);
-
-      realCount.value = data.length;
-
+    if (data.length > currentRealCount) {
+      const realWishes = data.map((item, index) => ({
+        id: item.time || `real-${Date.now()}-${index}`,
+        name: item.name || "Khách",
+        message: item.message || "",
+        avatarBg: randomAvatar()
+      }));
+      const currentDemos = wishes.value.filter(item => String(item.id).startsWith("demo-"));
+      wishes.value = [...realWishes, ...currentDemos];
       if (wishes.value.length > 50) {
         wishes.value.splice(0, wishes.value.length - 50);
       }
-
       await scrollToBottom();
     }
   } catch (err) {
@@ -246,14 +234,11 @@ const fetchWishes = async () => {
 
 const submitWish = async () => {
   if (loading.value) return;
-
   if (!name.value.trim() || !message.value.trim()) {
     showToast("Vui lòng nhập đầy đủ thông tin.", "error");
     return;
   }
-
   loading.value = true;
-
   try {
     const res = await fetch(SCRIPT_URL, {
       method: "POST",
@@ -265,15 +250,11 @@ const submitWish = async () => {
         message: message.value.trim()
       })
     });
-
     const text = (await res.text()).trim().toLowerCase();
-
     if (text === "ok") {
       showToast("Gửi lời chúc thành công ❤️");
-
       name.value = "";
       message.value = "";
-
       await fetchWishes();
     } else {
       showToast("Không gửi được lời chúc.", "error");
@@ -286,13 +267,11 @@ const submitWish = async () => {
 };
 
 onMounted(async () => {
-  fetchWishes();
-
+  await fetchWishes();
   liveTimer = setInterval(fetchWishes, 2000);
-
   demoTimer = setInterval(() => {
     pushDemoMessage();
-  }, 12000);
+  }, 2000);
 });
 
 onUnmounted(() => {
@@ -505,6 +484,7 @@ textarea.form-control {
   margin: 0;
   line-height: 1.4;
   word-break: break-word;
+  white-space: pre-line;
 }
 
 .empty-chat {
