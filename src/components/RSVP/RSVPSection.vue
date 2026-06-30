@@ -43,7 +43,7 @@
           <div class="live-chat-container">
             <div class="chat-header">
               <span class="live-badge">● LIVE</span>
-              <span class="chat-title">Lời Chúc Trực Tuyến ({{ wishes.length }})</span>
+              <span class="chat-title">Lời Chúc Trực Tuyến ({{ mesCount }})</span>
             </div>
 
             <div ref="chatBox" class="chat-messages-box">
@@ -81,15 +81,25 @@
 <script setup>
 import { ref, onMounted, onUnmounted, nextTick } from "vue";
 
+const SCRIPT_URL =
+  "https://script.google.com/macros/s/AKfycbzWXgxFNZdg6ZdeSqpd3es7OEEKKRwQ0olvp-DCc7ELh9e6DMA5AvZz7iRkEQhxHPJDDQ/exec";
+
 const name = ref("");
 const message = ref("");
+
 const loading = ref(false);
 const fetching = ref(false);
+
 const chatBox = ref(null);
 
 const wishes = ref([]);
-const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbzWXgxFNZdg6ZdeSqpd3es7OEEKKRwQ0olvp-DCc7ELh9e6DMA5AvZz7iRkEQhxHPJDDQ/exec";
+
+const realCount = ref(0);
+const mesCount = ref(0);
+
+
 let liveTimer = null;
+let demoTimer = null;
 let toastTimer = null;
 
 const toast = ref({
@@ -98,14 +108,60 @@ const toast = ref({
   type: "success"
 });
 
-const avatarColors = ["#b38b4d", "#a23946", "#4a3b2f", "#8a6d3b", "#2e5a44", "#7a6b5c"];
+const avatarColors = [
+  "#b38b4d",
+  "#a23946",
+  "#4a3b2f",
+  "#8a6d3b",
+  "#2e5a44",
+  "#7a6b5c"
+];
+
+const demoMessages = [
+  {
+    name: "Hoài Thông",
+    message: "Chúc anh chị hai trăm năm hạnh phúc ❤️"
+  },
+  {
+    name: "Ngọc Anh",
+    message: "Chúc cô dâu chú rể trăm năm hạnh phúc ❤️"
+  },
+  {
+    name: "Minh Khang",
+    message: "Happy Wedding! Chúc anh chị mãi yêu thương nhau."
+  },
+  {
+    name: "Gia Bảo",
+    message: "Xin chúc gia đình nhỏ luôn tràn ngập tiếng cười."
+  },
+  {
+    name: "Thu Trang",
+    message: "Chúc hai bạn mãi mãi hạnh phúc và viên mãn."
+  },
+  {
+    name: "Quốc Đạt",
+    message: "Chúc cô dâu chú rể trăm năm tình viên mãn."
+  },
+  {
+    name: "Bảo Trân",
+    message: "Happy Wedding ❤️"
+  }
+];
+
+let demoIndex = 0;
+
+const randomAvatar = () =>
+  avatarColors[Math.floor(Math.random() * avatarColors.length)];
 
 const showToast = (msg, type = "success") => {
-  if (toastTimer) clearTimeout(toastTimer);
-  toast.value.msg = msg;
-  toast.value.type = type;
-  toast.value.show = true;
-  
+  clearTimeout(toastTimer);
+
+  toast.value = {
+    show: true,
+    msg,
+    type
+  };
+
   toastTimer = setTimeout(() => {
     toast.value.show = false;
   }, 3000);
@@ -113,38 +169,76 @@ const showToast = (msg, type = "success") => {
 
 const scrollToBottom = async () => {
   await nextTick();
+
   if (chatBox.value) {
     chatBox.value.scrollTop = chatBox.value.scrollHeight;
   }
 };
 
+const pushDemoMessage = async () => {
+  const item = demoMessages[demoIndex];
+
+  wishes.value.push({
+    id: `demo-${Date.now()}`,
+    name: item.name,
+    message: item.message,
+    avatarBg: randomAvatar()
+  });
+
+  if (wishes.value.length > 50) {
+    wishes.value.shift();
+  }
+
+  demoIndex++;
+
+  if (demoIndex >= demoMessages.length) {
+    demoIndex = 0;
+  }
+
+  await scrollToBottom();
+};
+
 const fetchWishes = async () => {
   if (fetching.value) return;
+
   fetching.value = true;
 
   try {
     const res = await fetch(`${SCRIPT_URL}?action=read`, {
       method: "GET",
-      redirect: "follow" 
+      cache: "no-store"
     });
-    
-    if (!res.ok) throw new Error("Fetch error");
-    
+
+    if (!res.ok) throw new Error();
+
     const data = await res.json();
 
-    if (Array.isArray(data) && data.length > wishes.value.length) {
-      const newWishes = data.slice(wishes.value.length).map((item, idx) => ({
-        id: Date.now() + idx,
-        name: item.name || "Khách ẩn danh",
-        message: item.message || "",
-        avatarBg: avatarColors[Math.floor(Math.random() * avatarColors.length)]
-      }));
+    if (!Array.isArray(data)) return;
+
+    mesCount.value = data.length;
+
+    if (data.length > realCount.value) {
+      const newWishes = data
+        .slice(realCount.value)
+        .map((item, index) => ({
+          id: item.time || Date.now() + index,
+          name: item.name || "Khách",
+          message: item.message || "",
+          avatarBg: randomAvatar()
+        }));
 
       wishes.value.push(...newWishes);
-      scrollToBottom();
+
+      realCount.value = data.length;
+
+      if (wishes.value.length > 50) {
+        wishes.value.splice(0, wishes.value.length - 50);
+      }
+
+      await scrollToBottom();
     }
   } catch (err) {
-    console.error("Không thể lấy data mới tự động:", err);
+    console.error(err);
   } finally {
     fetching.value = false;
   }
@@ -154,7 +248,7 @@ const submitWish = async () => {
   if (loading.value) return;
 
   if (!name.value.trim() || !message.value.trim()) {
-    showToast("Vui lòng điền đầy đủ họ tên và lời chúc nhé!", "error");
+    showToast("Vui lòng nhập đầy đủ thông tin.", "error");
     return;
   }
 
@@ -172,37 +266,39 @@ const submitWish = async () => {
       })
     });
 
-    const text = await res.text();
-    const clean = text.trim().toLowerCase();
+    const text = (await res.text()).trim().toLowerCase();
 
-    if (clean === "ok") {
-      showToast("Gửi lời chúc thành công ❤️", "success");
-      
+    if (text === "ok") {
+      showToast("Gửi lời chúc thành công ❤️");
+
       name.value = "";
       message.value = "";
-      
+
       await fetchWishes();
     } else {
-      showToast("Hệ thống bận, vui lòng thử lại sau!", "error");
+      showToast("Không gửi được lời chúc.", "error");
     }
-
-  } catch (err) {
-    console.error(err);
-    showToast("Không gửi được lời chúc, vui lòng kiểm tra mạng!", "error");
+  } catch (e) {
+    showToast("Không thể kết nối máy chủ.", "error");
   } finally {
     loading.value = false;
   }
 };
 
-onMounted(() => {
-  fetchWishes();
+onMounted(async () => {
+  await fetchWishes();
 
   liveTimer = setInterval(fetchWishes, 6000);
+
+  demoTimer = setInterval(() => {
+    pushDemoMessage();
+  }, 12000);
 });
 
 onUnmounted(() => {
-  if (liveTimer) clearInterval(liveTimer);
-  if (toastTimer) clearTimeout(toastTimer);
+  clearInterval(liveTimer);
+  clearInterval(demoTimer);
+  clearTimeout(toastTimer);
 });
 </script>
 
