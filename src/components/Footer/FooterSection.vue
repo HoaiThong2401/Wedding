@@ -12,9 +12,9 @@
         <div class="divider-diamond">✦</div>
 
         <h3 class="couple-signature">
-          Hoàng Thiện
+          T
           <span class="ampersand">&</span>
-          Phan Linh
+          L
         </h3>
 
         <small class="wedding-date">

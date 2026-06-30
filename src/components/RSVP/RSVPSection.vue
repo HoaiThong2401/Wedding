@@ -43,13 +43,13 @@
           <div class="live-chat-container">
             <div class="chat-header">
               <span class="live-badge">● LIVE</span>
-              <span class="chat-title">Lời Chúc Trực Tuyến</span>
+              <span class="chat-title">Lời Chúc Trực Tuyến ({{ wishes.length }})</span>
             </div>
 
             <div ref="chatBox" class="chat-messages-box">
               <TransitionGroup name="list">
-                <div v-for="item in wishes" :key="item.id" class="chat-item">
-                  <div class="chat-avatar" :style="{ backgroundColor: item.avatarBg }">
+                <div v-for="(item, index) in wishes" :key="item.id || index" class="chat-item">
+                  <div class="chat-avatar" :style="{ backgroundColor: item.avatarBg || '#a23946' }">
                     {{ item.name.charAt(0).toUpperCase() }}
                   </div>
                   <div class="chat-content">
@@ -58,12 +58,23 @@
                   </div>
                 </div>
               </TransitionGroup>
+              
+              <div v-if="wishes.length === 0 && !fetching" class="empty-chat">
+                Chưa có lời chúc nào. Hãy là người đầu tiên gửi nhé! ❤️
+              </div>
             </div>
           </div>
         </div>
       </div>
 
     </div>
+
+    <Transition name="toast-fade">
+      <div v-if="toast.show" class="toast-notification" :class="toast.type">
+        <span class="toast-icon">{{ toast.type === 'success' ? '❤️' : '⚠️' }}</span>
+        <span class="toast-text">{{ toast.msg }}</span>
+      </div>
+    </Transition>
   </section>
 </template>
 
@@ -73,24 +84,32 @@ import { ref, onMounted, onUnmounted, nextTick } from "vue";
 const name = ref("");
 const message = ref("");
 const loading = ref(false);
+const fetching = ref(false);
 const chatBox = ref(null);
 
-const wishes = ref([
-  { id: 1, name: "Thanh Bình", message: "Chúc hai bạn trăm năm hạnh phúc, mãi mãi bên nhau nhé! 🎉", avatarBg: "#b38b4d" },
-  { id: 2, name: "Khánh Linh", message: "Thiệp cưới xinh xuất sắc luôn hai bạn ơi. Chúc mừng hạnh phúc nha!", avatarBg: "#a23946" },
-  { id: 3, name: "Minh Triết", message: "Happy Wedding! Chúc chú rể Hoàng Thiện và cô dâu Phan Linh vạn sự như ý.", avatarBg: "#4a3b2f" }
-]);
-
-const mockMessages = [
-  { name: "Anh Tuấn", message: "Chúc hai bạn sớm đón rồng con nha! 👶❤️", avatarBg: "#8a6d3b" },
-  { name: "Ngọc Diệp", message: "Đẹp đôi quá trời luôn. Chúc mừng ngày vui của hai bạn!", avatarBg: "#a23946" },
-  { name: "Hoàng Long", message: "Mãi hạnh phúc như ngày đầu nhé! Mừng hạnh phúc hai bạn.", avatarBg: "#2e5a44" },
-  { name: "Thu Hà", message: "Chúc ngày vui tràn ngập tiếng cười và hạnh phúc viên mãn.", avatarBg: "#b38b4d" },
-  { name: "Phước Thịnh", message: "Chúc mừng hạnh phúc nha hai người bạn của tôi! Đêm nay không say không về.", avatarBg: "#4a3b2f" },
-  { name: "Thảo Nguyên", message: "Love is in the air! Cung hỷ cung hỷ song hỷ lâm môn! ✨", avatarBg: "#a23946" }
-];
-
+const wishes = ref([]);
+const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbzWXgxFNZdg6ZdeSqpd3es7OEEKKRwQ0olvp-DCc7ELh9e6DMA5AvZz7iRkEQhxHPJDDQ/exec";
 let liveTimer = null;
+let toastTimer = null;
+
+const toast = ref({
+  show: false,
+  msg: "",
+  type: "success"
+});
+
+const avatarColors = ["#b38b4d", "#a23946", "#4a3b2f", "#8a6d3b", "#2e5a44", "#7a6b5c"];
+
+const showToast = (msg, type = "success") => {
+  if (toastTimer) clearTimeout(toastTimer);
+  toast.value.msg = msg;
+  toast.value.type = type;
+  toast.value.show = true;
+  
+  toastTimer = setTimeout(() => {
+    toast.value.show = false;
+  }, 3000);
+};
 
 const scrollToBottom = async () => {
   await nextTick();
@@ -99,18 +118,50 @@ const scrollToBottom = async () => {
   }
 };
 
-const submitWish = async () => {
-  if (loading.value) return
-
-  if (!name.value.trim() || !message.value.trim()) {
-    alert("Vui lòng điền đầy đủ họ tên và lời chúc nhé ❤️")
-    return
-  }
-
-  loading.value = true
+const fetchWishes = async () => {
+  if (fetching.value) return;
+  fetching.value = true;
 
   try {
-    const res = await fetch("https://script.google.com/macros/s/AKfycbzWXgxFNZdg6ZdeSqpd3es7OEEKKRwQ0olvp-DCc7ELh9e6DMA5AvZz7iRkEQhxHPJDDQ/exec", {
+    const res = await fetch(`${SCRIPT_URL}?action=read`, {
+      method: "GET",
+      redirect: "follow" 
+    });
+    
+    if (!res.ok) throw new Error("Fetch error");
+    
+    const data = await res.json();
+
+    if (Array.isArray(data) && data.length > wishes.value.length) {
+      const newWishes = data.slice(wishes.value.length).map((item, idx) => ({
+        id: Date.now() + idx,
+        name: item.name || "Khách ẩn danh",
+        message: item.message || "",
+        avatarBg: avatarColors[Math.floor(Math.random() * avatarColors.length)]
+      }));
+
+      wishes.value.push(...newWishes);
+      scrollToBottom();
+    }
+  } catch (err) {
+    console.error("Không thể lấy data mới tự động:", err);
+  } finally {
+    fetching.value = false;
+  }
+};
+
+const submitWish = async () => {
+  if (loading.value) return;
+
+  if (!name.value.trim() || !message.value.trim()) {
+    showToast("Vui lòng điền đầy đủ họ tên và lời chúc nhé!", "error");
+    return;
+  }
+
+  loading.value = true;
+
+  try {
+    const res = await fetch(SCRIPT_URL, {
       method: "POST",
       headers: {
         "Content-Type": "application/x-www-form-urlencoded"
@@ -119,53 +170,39 @@ const submitWish = async () => {
         name: name.value.trim(),
         message: message.value.trim()
       })
-    })
+    });
 
-    const text = await res.text()
-    const clean = text.trim().toLowerCase()
+    const text = await res.text();
+    const clean = text.trim().toLowerCase();
 
     if (clean === "ok") {
-  alert("Gửi lời chúc thành công ❤️")
-
-  wishes.value.push({
-    id: Date.now(),
-    name: name.value.trim(),
-    message: message.value.trim(),
-    avatarBg: "#a23946"
-  })
-
-  name.value = ""
-  message.value = ""
-
-  scrollToBottom()
-
+      showToast("Gửi lời chúc thành công ❤️", "success");
+      
+      name.value = "";
+      message.value = "";
+      
+      await fetchWishes();
     } else {
-      alert("Lỗi gửi dữ liệu từ hệ thống Sheets")
+      showToast("Hệ thống bận, vui lòng thử lại sau!", "error");
     }
 
   } catch (err) {
-    console.error(err)
-    alert("Không gửi được lời chúc, vui lòng thử lại!")
+    console.error(err);
+    showToast("Không gửi được lời chúc, vui lòng kiểm tra mạng!", "error");
   } finally {
-    loading.value = false
+    loading.value = false;
   }
-}
+};
 
 onMounted(() => {
-  scrollToBottom();
+  fetchWishes();
 
-  liveTimer = setInterval(() => {
-    const randomMsg = mockMessages[Math.floor(Math.random() * mockMessages.length)];
-    wishes.value.push({
-      id: Date.now() + Math.random(),
-      ...randomMsg
-    });
-    scrollToBottom();
-  }, 3500);
+  liveTimer = setInterval(fetchWishes, 6000);
 });
 
 onUnmounted(() => {
   if (liveTimer) clearInterval(liveTimer);
+  if (toastTimer) clearTimeout(toastTimer);
 });
 </script>
 
@@ -173,6 +210,7 @@ onUnmounted(() => {
 .rsvp-section {
   padding: 80px 16px;
   background: #fffdfa;
+  position: relative;
 }
 
 .section-title {
@@ -373,6 +411,62 @@ textarea.form-control {
   word-break: break-word;
 }
 
+.empty-chat {
+  text-align: center;
+  color: #a39689;
+  font-style: italic;
+  font-size: 13px;
+  margin: auto 0;
+}
+
+.toast-notification {
+  position: fixed;
+  bottom: 30px;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 12px 24px;
+  border-radius: 50px;
+  box-shadow: 0 10px 30px rgba(74, 59, 47, 0.2);
+  z-index: 10000;
+  min-width: 280px;
+  justify-content: center;
+}
+
+.toast-notification.success {
+  background: #fffdfa;
+  border: 1px solid #b38b4d;
+  color: #a23946;
+}
+
+.toast-notification.error {
+  background: #fff1f2;
+  border: 1px solid #fda4af;
+  color: #be123c;
+}
+
+.toast-text {
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.toast-fade-enter-active {
+  transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+.toast-fade-leave-active {
+  transition: all 0.3s ease-in;
+}
+.toast-fade-enter-from {
+  opacity: 0;
+  transform: translate(-50%, 20px);
+}
+.toast-fade-leave-to {
+  opacity: 0;
+  transform: translate(-50%, -10px);
+}
+
 .list-enter-active {
   transition: all 0.4s ease-out;
 }
@@ -418,6 +512,12 @@ textarea.form-control {
 
   .live-chat-container {
     height: 300px;
+  }
+
+  .toast-notification {
+    bottom: 20px;
+    width: calc(100% - 32px);
+    box-sizing: border-box;
   }
 }
 </style>
