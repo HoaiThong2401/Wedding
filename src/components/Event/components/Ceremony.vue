@@ -2,7 +2,7 @@
   <div class="event-card">
     <div class="card-title-group">
       <div class="mini-line"></div>
-      <h3>💙 Lễ Thành Hôn</h3>
+      <h4>💙 Lễ Thành Hôn</h4>
       <div class="mini-line"></div>
     </div>
 
@@ -66,7 +66,7 @@
   background: linear-gradient(to right, transparent, #b38b4d, transparent);
 }
 
-.event-card h3 {
+.event-card h4 {
   font-family: serif;
   font-size: 22px;
   font-weight: 600;
