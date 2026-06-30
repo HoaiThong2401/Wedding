@@ -99,29 +99,57 @@ const scrollToBottom = async () => {
   }
 };
 
-const submitWish = () => {
-  if (loading.value) return;
+const submitWish = async () => {
+  if (loading.value) return
+
   if (!name.value.trim() || !message.value.trim()) {
-    alert("Vui lòng điền họ tên và nội dung lời chúc!");
-    return;
+    alert("Vui lòng điền đầy đủ họ tên và lời chúc nhé ❤️")
+    return
   }
 
-  loading.value = true;
+  loading.value = true
 
-  setTimeout(() => {
-    wishes.value.push({
-      id: Date.now(),
-      name: name.value.trim(),
-      message: message.value.trim(),
-      avatarBg: "#a23946"
-    });
-    
-    name.value = "";
-    message.value = "";
-    loading.value = false;
-    scrollToBottom();
-  }, 800);
-};
+  try {
+    const res = await fetch("https://script.google.com/macros/s/AKfycbzWXgxFNZdg6ZdeSqpd3es7OEEKKRwQ0olvp-DCc7ELh9e6DMA5AvZz7iRkEQhxHPJDDQ/exec", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/x-www-form-urlencoded"
+      },
+      body: new URLSearchParams({
+        name: name.value.trim(),
+        message: message.value.trim()
+      })
+    })
+
+    const text = await res.text()
+    const clean = text.trim().toLowerCase()
+
+    if (clean === "ok") {
+  alert("Gửi lời chúc thành công ❤️")
+
+  wishes.value.push({
+    id: Date.now(),
+    name: name.value.trim(),
+    message: message.value.trim(),
+    avatarBg: "#a23946"
+  })
+
+  name.value = ""
+  message.value = ""
+
+  scrollToBottom()
+
+    } else {
+      alert("Lỗi gửi dữ liệu từ hệ thống Sheets")
+    }
+
+  } catch (err) {
+    console.error(err)
+    alert("Không gửi được lời chúc, vui lòng thử lại!")
+  } finally {
+    loading.value = false
+  }
+}
 
 onMounted(() => {
   scrollToBottom();
