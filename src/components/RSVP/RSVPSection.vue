@@ -238,7 +238,7 @@ onMounted(async () => {
   liveTimer = setInterval(fetchWishes, 2000);
   demoTimer = setInterval(() => {
     pushDemoMessage();
-  }, 2000);
+  }, 6000);
 });
 
 onUnmounted(() => {
