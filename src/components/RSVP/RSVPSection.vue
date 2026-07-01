@@ -183,12 +183,14 @@ const fetchWishes = async () => {
     const currentRealCount = wishes.value.filter(w => !String(w.id).startsWith("demo-")).length;
 
     if (data.length > currentRealCount) {
-      const realWishes = data.map((item, index) => ({
-        id: item.time || `real-${Date.now()}-${index}`,
-        name: item.name || "Khách",
-        message: item.message || "",
-        avatarBg: randomAvatar()
-      }));
+      const realWishes = data
+        .map((item, index) => ({
+          id: item.time || `real-${Date.now()}-${index}`,
+          name: item.name || "Khách",
+          message: item.message || "",
+          avatarBg: randomAvatar()
+        }))
+        .reverse();
       const currentDemos = wishes.value.filter(item => String(item.id).startsWith("demo-"));
       wishes.value = [...realWishes, ...currentDemos];
       if (wishes.value.length > 50) {
