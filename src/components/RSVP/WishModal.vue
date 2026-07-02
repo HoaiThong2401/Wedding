@@ -35,13 +35,18 @@
 
 <script setup>
 import { ref } from "vue";
+import { db } from "@/firebase";
+import { ref as dbRef, push } from "firebase/database";
 
 const props = defineProps({
   modelValue: Boolean,
   scriptUrl: String
 });
 
-const emit = defineEmits(["update:modelValue", "success", "toast"]);
+const emit = defineEmits([
+  "update:modelValue",
+  "toast"
+]);
 
 const name = ref("");
 const message = ref("");
@@ -53,41 +58,48 @@ const closeModal = () => {
 
 const submitWish = async () => {
   if (loading.value) return;
-  
+
   if (!name.value.trim()) {
     emit("toast", "Hãy cho chúng mình biết bạn là ai nhé!!", "error", "🥺");
     return;
   }
-  
+
   if (!message.value.trim()) {
     emit("toast", "Bạn không có lời chúc gì gửi đến bọn mình sao!!", "error", "😥");
     return;
   }
-  
+
   loading.value = true;
+
+  const wish = {
+    name: name.value.trim(),
+    message: message.value.trim(),
+    time: Date.now()
+  };
+
   try {
-    const res = await fetch(props.scriptUrl, {
+    await push(dbRef(db, "wishes"), wish);
+
+    fetch(props.scriptUrl, {
       method: "POST",
       headers: {
         "Content-Type": "application/x-www-form-urlencoded"
       },
       body: new URLSearchParams({
-        name: name.value.trim(),
-        message: message.value.trim()
+        name: wish.name,
+        message: wish.message
       })
-    });
-    const text = (await res.text()).trim().toLowerCase();
-    if (text === "ok") {
-      emit("toast", "Gửi lời chúc thành công ❤️", "success", "❤️");
-      name.value = "";
-      message.value = "";
-      closeModal();
-      emit("success");
-    } else {
-      emit("toast", "Không gửi được lời chúc.", "error", "⚠️");
-    }
+    }).catch(() => {});
+
+    emit("toast", "Gửi lời chúc thành công ❤️", "success", "❤️");
+
+    name.value = "";
+    message.value = "";
+
+    closeModal();
   } catch (e) {
-    emit("toast", "Không thể kết nối máy chủ.", "error", "⚠️");
+    console.error(e);
+    emit("toast", "Không thể kết nối Firebase.", "error", "⚠️");
   } finally {
     loading.value = false;
   }

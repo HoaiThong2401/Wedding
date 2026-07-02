@@ -24,7 +24,7 @@
           </div>
         </TransitionGroup>
         
-        <div v-if="wishes.length === 0 && !fetching" class="empty-chat">
+        <div v-if="wishes.length === 0" class="empty-chat">
           Chưa có lời chúc nào ❤️
         </div>
       </div>
@@ -67,7 +67,6 @@
     <WishModal 
       v-model="showModal" 
       :script-url="SCRIPT_URL"
-      @success="fetchWishes"
       @toast="handleModalToast"
     />
 
@@ -92,36 +91,21 @@ import {
   onChildAdded,
   off,
   query,
-  startAt,
-  orderByChild
+  limitToLast
 } from "firebase/database";
 
 const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbzWXgxFNZdg6ZdeSqpd3es7OEEKKRwQ0olvp-DCc7ELh9e6DMA5AvZz7iRkEQhxHPJDDQ/exec";
 
-const fetching = ref(false);
 const chatBox = ref(null);
 const wishes = ref([]);
 const realCount = ref(0);
+
 const isOpen = ref(true);
 const showModal = ref(false);
 const showReactionMenu = ref(false);
 const floatingReactions = ref([]);
-const quickEmojis = ['❤️', '🥳', '🥰', '😂', '👍', '🎉'];
-let autoReactionTimer = null;
 
-const demoCount = computed(() => {
-  return wishes.value.filter(item => String(item.id).startsWith("demo-")).length;
-});
-
-const mesCount = computed(() => {
-  const total = realCount.value + demoCount.value;
-  return total > 999 ? "999+" : total;
-});
-
-let liveTimer = null;
-let demoTimer = null;
-let toastTimer = null;
-let reactionQueryRef = null; 
+const quickEmojis = ["❤️", "🥳", "🥰", "😂", "👍", "🎉"];
 
 const toast = ref({
   show: false,
@@ -140,33 +124,44 @@ const avatarColors = [
 ];
 
 let demoIndex = 0;
+let demoTimer = null;
+let toastTimer = null;
+let autoReactionTimer = null;
 
-const randomAvatar = () => avatarColors[Math.floor(Math.random() * avatarColors.length)];
+let chatRef = null;
+let reactionRef = null;
 
-const spawnRandomReaction = () => {
-  const emoji = quickEmojis[Math.floor(Math.random() * quickEmojis.length)];
-  const count = emoji === "❤️" ? 4 : 2;
-  for (let i = 0; i < count; i++) {
-    spawnFloating(emoji);
-  }
+const demoCount = computed(() => {
+  return wishes.value.filter(i => String(i.id).startsWith("demo-")).length;
+});
+
+const mesCount = computed(() => {
+  const total = realCount.value + demoCount.value;
+  return total > 999 ? "999+" : total;
+});
+
+const randomAvatar = () => {
+  return avatarColors[Math.floor(Math.random() * avatarColors.length)];
 };
 
-const spawnFloating = (emoji) => {
-  const id = Date.now() + Math.random();
-  floatingReactions.value.push({
-    id,
-    emoji,
-    left: Math.floor(Math.random() * 60),
-    duration: 2 + Math.random() * 1.5
-  });
-  setTimeout(() => {
-    floatingReactions.value = floatingReactions.value.filter(f => f.id !== id);
-  }, 4000);
+const scrollToBottom = async () => {
+  await nextTick();
+
+  if (chatBox.value) {
+    chatBox.value.scrollTop = chatBox.value.scrollHeight;
+  }
 };
 
 const showToast = (msg, type = "success", icon = "❤️") => {
   clearTimeout(toastTimer);
-  toast.value = { show: true, msg, type, icon };
+
+  toast.value = {
+    show: true,
+    msg,
+    type,
+    icon
+  };
+
   toastTimer = setTimeout(() => {
     toast.value.show = false;
   }, 3500);
@@ -176,67 +171,139 @@ const handleModalToast = (msg, type, icon) => {
   showToast(msg, type, icon);
 };
 
-const scrollToBottom = async () => {
-  await nextTick();
-  if (chatBox.value) {
-    chatBox.value.scrollTop = chatBox.value.scrollHeight;
-  }
-};
-
 const pushDemoMessage = async () => {
   const item = demoMessages[demoIndex];
+
   wishes.value.push({
-    id: `demo-${Date.now()}`,
+    id: "demo-" + Date.now(),
     name: item.name,
     message: item.message,
     avatarBg: randomAvatar()
   });
+
   if (wishes.value.length > 50) {
     wishes.value.shift();
   }
+
   demoIndex++;
+
   if (demoIndex >= demoMessages.length) {
     demoIndex = 0;
   }
+
   await scrollToBottom();
 };
 
-const fetchWishes = async () => {
-  if (fetching.value) return;
-  fetching.value = true;
-  try {
-    const res = await fetch(`${SCRIPT_URL}?action=read`, {
-      method: "GET",
-      cache: "no-store"
-    });
-    if (!res.ok) throw new Error();
-    const data = await res.json();
-    if (!Array.isArray(data)) return;
-    
-    realCount.value = data.length;
-    const currentRealCount = wishes.value.filter(w => !String(w.id).startsWith("demo-")).length;
+const spawnFloating = (emoji) => {
+  const id = Date.now() + Math.random();
 
-    if (data.length > currentRealCount) {
-      const realWishes = data
-        .map((item, index) => ({
-          id: item.time || `real-${Date.now()}-${index}`,
-          name: item.name || "Khách",
-          message: item.message || "",
-          avatarBg: randomAvatar()
-        }))
-        .reverse();
-      const currentDemos = wishes.value.filter(item => String(item.id).startsWith("demo-"));
-      wishes.value = [...realWishes, ...currentDemos];
-      if (wishes.value.length > 50) {
-        wishes.value.splice(0, wishes.value.length - 50);
-      }
+  floatingReactions.value.push({
+    id,
+    emoji,
+    left: Math.floor(Math.random() * 60),
+    duration: 2 + Math.random() * 1.5
+  });
+
+  setTimeout(() => {
+    floatingReactions.value =
+      floatingReactions.value.filter(f => f.id !== id);
+  }, 4000);
+};
+
+const spawnRandomReaction = () => {
+  const emoji =
+    quickEmojis[Math.floor(Math.random() * quickEmojis.length)];
+
+  const count = emoji === "❤️" ? 4 : 2;
+
+  for (let i = 0; i < count; i++) {
+    spawnFloating(emoji);
+  }
+};
+
+const startAutoReaction = () => {
+  const run = () => {
+    spawnRandomReaction();
+
+    autoReactionTimer = setTimeout(
+      run,
+      4000 + Math.random() * 3000
+    );
+  };
+
+  run();
+};
+
+const listenRealtimeChat = () => {
+  chatRef = query(
+    dbRef(db, "wishes"),
+    limitToLast(50)
+  );
+
+  let loaded = false;
+
+  onChildAdded(chatRef, async (snapshot) => {
+    const item = snapshot.val();
+
+    if (!item) return;
+
+    wishes.value.push({
+      id: snapshot.key,
+      name: item.name || "Khách",
+      message: item.message || "",
+      avatarBg: randomAvatar()
+    });
+
+    realCount.value = wishes.value.filter(
+      i => !String(i.id).startsWith("demo-")
+    ).length;
+
+    if (wishes.value.length > 50) {
+      wishes.value.shift();
+    }
+
+    if (loaded) {
       await scrollToBottom();
     }
-  } catch (err) {
-    console.error(err);
-  } finally {
-    fetching.value = false;
-  }
+  });
+
+  setTimeout(async () => {
+    loaded = true;
+    await scrollToBottom();
+  }, 500);
+};
+
+const listenRealtimeReaction = () => {
+  reactionRef = dbRef(db, "reactions");
+
+  let loaded = false;
+
+  onChildAdded(reactionRef, (snapshot) => {
+    if (!loaded) return;
+
+    const data = snapshot.val();
+
+    if (!data?.emoji) return;
+
+    const count = data.emoji === "❤️" ? 4 : 2;
+
+    for (let i = 0; i < count; i++) {
+      spawnFloating(data.emoji);
+    }
+  });
+
+  setTimeout(() => {
+    loaded = true;
+  }, 500);
+};
+
+const emitReaction = async (emoji) => {
+  showReactionMenu.value = false;
+
+  await push(dbRef(db, "reactions"), {
+    emoji,
+    time: Date.now()
+  });
 };
 
 const closeReactionMenu = () => {
@@ -247,59 +314,30 @@ const toggleReactionMenu = () => {
   showReactionMenu.value = !showReactionMenu.value;
 };
 
-const emitReaction = async (emoji) => {
-  showReactionMenu.value = false;
-  await push(dbRef(db, "reactions"), {
-    emoji,
-    time: Date.now()
-  });
-};
+onMounted(() => {
+  listenRealtimeChat();
+  listenRealtimeReaction();
 
-const startAutoReaction = () => {
-  const run = () => {
-    spawnRandomReaction();
-    autoReactionTimer = setTimeout(run, 4000 + Math.random() * 3000);
-  };
-  run();
-};
-
-onMounted(async () => {
-  await fetchWishes();
   startAutoReaction();
 
-  const startTime = Date.now();
-  reactionQueryRef = query(
-    dbRef(db, "reactions"),
-    orderByChild("time"),
-    startAt(startTime)
-  );
-
-  onChildAdded(reactionQueryRef, (snapshot) => {
-    const data = snapshot.val();
-    if (!data?.emoji) return;
-
-    const count = data.emoji === "❤️" ? 4 : 2;
-    for (let i = 0; i < count; i++) {
-      spawnFloating(data.emoji);
-    }
-  });
-
-  liveTimer = setInterval(fetchWishes, 2000);
   demoTimer = setInterval(pushDemoMessage, 8000);
 
   window.addEventListener("click", closeReactionMenu);
 });
 
 onUnmounted(() => {
-  clearInterval(liveTimer);
   clearInterval(demoTimer);
   clearTimeout(autoReactionTimer);
   clearTimeout(toastTimer);
 
   window.removeEventListener("click", closeReactionMenu);
 
-  if (reactionQueryRef) {
-    off(reactionQueryRef);
+  if (chatRef) {
+    off(chatRef);
+  }
+
+  if (reactionRef) {
+    off(reactionRef);
   }
 });
 </script>
