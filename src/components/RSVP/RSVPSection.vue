@@ -85,6 +85,14 @@ import { ref, onMounted, onUnmounted, nextTick, computed } from "vue";
 import { demoMessages } from "./demoMessages.js";
 import WishModal from "./WishModal.vue";
 
+import { db } from "@/firebase";
+import {
+  ref as dbRef,
+  push,
+  onChildAdded,
+  off // Thêm off để hủy lắng nghe khi unmount
+} from "firebase/database";
+
 const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbzWXgxFNZdg6ZdeSqpd3es7OEEKKRwQ0olvp-DCc7ELh9e6DMA5AvZz7iRkEQhxHPJDDQ/exec";
 
 const fetching = ref(false);
@@ -109,6 +117,7 @@ const mesCount = computed(() => {
 let liveTimer = null;
 let demoTimer = null;
 let toastTimer = null;
+let reactionQueryRef = null; // Lưu reference để dùng cho việc hủy lắng nghe
 
 const toast = ref({
   show: false,
@@ -129,6 +138,22 @@ const avatarColors = [
 let demoIndex = 0;
 
 const randomAvatar = () => avatarColors[Math.floor(Math.random() * avatarColors.length)];
+
+const spawnFloating = (emoji) => {
+  const id = Date.now() + Math.random();
+
+  floatingReactions.value.push({
+    id,
+    emoji,
+    left: Math.floor(Math.random() * 60),
+    duration: 2 + Math.random() * 1.5
+  });
+
+  setTimeout(() => {
+    floatingReactions.value =
+      floatingReactions.value.filter(f => f.id !== id);
+  }, 4000);
+};
 
 const showToast = (msg, type = "success", icon = "❤️") => {
   clearTimeout(toastTimer);
@@ -213,30 +238,51 @@ const toggleReactionMenu = () => {
   showReactionMenu.value = !showReactionMenu.value;
 };
 
-const emitReaction = (emoji) => {
-  const count = emoji === '❤️' ? 4 : 2;
-  for (let i = 0; i < count; i++) {
-    const id = Date.now() + Math.random();
-    floatingReactions.value.push({
-      id,
-      emoji,
-      left: Math.floor(Math.random() * 60),
-      duration: 2 + Math.random() * 1.5
-    });
-
-    setTimeout(() => {
-      floatingReactions.value = floatingReactions.value.filter(f => f.id !== id);
-    }, 4000);
-  }
+const emitReaction = async (emoji) => {
   showReactionMenu.value = false;
+
+  // LƯU Ý: Không cần gọi spawnFloating(emoji) ở đây nữa, 
+  // vì Firebase onChildAdded sẽ kích hoạt ngược lại ngay lập tức cho chính bạn.
+  // Điều này tránh việc emoji bị nhân đôi (2 lần bay) trên màn hình người bấm.
+
+  await push(dbRef(db, "reactions"), {
+    emoji,
+    time: Date.now()
+  });
 };
 
 onMounted(async () => {
+  // 1. Tải lời chúc ban đầu
   await fetchWishes();
+
+  // 2. Thiết lập lắng nghe Firebase Reactions chuẩn chỉnh
+  reactionQueryRef = dbRef(db, "reactions");
+  let isInitialDataLoaded = false;
+
+  onChildAdded(reactionQueryRef, (snapshot) => {
+    // Nếu vẫn đang load dữ liệu cũ có sẵn trên Firebase, bỏ qua không thả emoji bay
+    if (!isInitialDataLoaded) return;
+
+    const data = snapshot.val();
+    if (!data || !data.emoji) return;
+
+    const count = data.emoji === "❤️" ? 4 : 2;
+    for (let i = 0; i < count; i++) {
+      spawnFloating(data.emoji);
+    }
+  });
+
+  // Kỹ thuật chuẩn: Đánh dấu kết thúc load dữ liệu cũ sau khi Firebase quét xong node hiện tại
+  // Dùng một event lọt xuống cuối hàng đợi event-loop
+  await nextTick();
+  isInitialDataLoaded = true;
+
+  // 3. Khởi chạy các bộ Timer tuần hoàn
   liveTimer = setInterval(fetchWishes, 2000);
   demoTimer = setInterval(() => {
     pushDemoMessage();
   }, 8000);
+  
   window.addEventListener('click', closeReactionMenu);
 });
 
@@ -245,6 +291,11 @@ onUnmounted(() => {
   clearInterval(demoTimer);
   clearTimeout(toastTimer);
   window.removeEventListener('click', closeReactionMenu);
+  
+  // Hủy lắng nghe Firebase tránh rò rỉ bộ nhớ (Memory Leak)
+  if (reactionQueryRef) {
+    off(reactionQueryRef);
+  }
 });
 </script>
 
