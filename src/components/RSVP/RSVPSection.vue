@@ -90,7 +90,10 @@ import {
   ref as dbRef,
   push,
   onChildAdded,
-  off
+  off,
+  query,
+  startAt,
+  orderByChild
 } from "firebase/database";
 
 const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbzWXgxFNZdg6ZdeSqpd3es7OEEKKRwQ0olvp-DCc7ELh9e6DMA5AvZz7iRkEQhxHPJDDQ/exec";
@@ -141,11 +144,8 @@ let demoIndex = 0;
 const randomAvatar = () => avatarColors[Math.floor(Math.random() * avatarColors.length)];
 
 const spawnRandomReaction = () => {
-  const emoji =
-    quickEmojis[Math.floor(Math.random() * quickEmojis.length)];
-
+  const emoji = quickEmojis[Math.floor(Math.random() * quickEmojis.length)];
   const count = emoji === "❤️" ? 4 : 2;
-
   for (let i = 0; i < count; i++) {
     spawnFloating(emoji);
   }
@@ -153,17 +153,14 @@ const spawnRandomReaction = () => {
 
 const spawnFloating = (emoji) => {
   const id = Date.now() + Math.random();
-
   floatingReactions.value.push({
     id,
     emoji,
     left: Math.floor(Math.random() * 60),
     duration: 2 + Math.random() * 1.5
   });
-
   setTimeout(() => {
-    floatingReactions.value =
-      floatingReactions.value.filter(f => f.id !== id);
+    floatingReactions.value = floatingReactions.value.filter(f => f.id !== id);
   }, 4000);
 };
 
@@ -252,7 +249,6 @@ const toggleReactionMenu = () => {
 
 const emitReaction = async (emoji) => {
   showReactionMenu.value = false;
-
   await push(dbRef(db, "reactions"), {
     emoji,
     time: Date.now()
@@ -262,40 +258,31 @@ const emitReaction = async (emoji) => {
 const startAutoReaction = () => {
   const run = () => {
     spawnRandomReaction();
-
-    autoReactionTimer = setTimeout(
-      run,
-      4000 + Math.random() * 3000
-    );
+    autoReactionTimer = setTimeout(run, 4000 + Math.random() * 3000);
   };
-
   run();
 };
 
 onMounted(async () => {
   await fetchWishes();
-
   startAutoReaction();
 
-  reactionQueryRef = dbRef(db, "reactions");
-
-  let isInitialDataLoaded = false;
+  const startTime = Date.now();
+  reactionQueryRef = query(
+    dbRef(db, "reactions"),
+    orderByChild("time"),
+    startAt(startTime)
+  );
 
   onChildAdded(reactionQueryRef, (snapshot) => {
-    if (!isInitialDataLoaded) return;
-
     const data = snapshot.val();
     if (!data?.emoji) return;
 
     const count = data.emoji === "❤️" ? 4 : 2;
-
     for (let i = 0; i < count; i++) {
       spawnFloating(data.emoji);
     }
   });
-
-  await nextTick();
-  isInitialDataLoaded = true;
 
   liveTimer = setInterval(fetchWishes, 2000);
   demoTimer = setInterval(pushDemoMessage, 8000);
@@ -316,7 +303,6 @@ onUnmounted(() => {
   }
 });
 </script>
-
 <style scoped>
 .tiktok-chat-widget {
   position: fixed;
