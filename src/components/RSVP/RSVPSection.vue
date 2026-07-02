@@ -137,7 +137,7 @@ const demoCount = computed(() => {
 
 const mesCount = computed(() => {
   const total = realCount.value + demoCount.value;
-  return total > 999 ? "999+" : total;
+  return total > 99 ? "99+" : total;
 });
 
 const randomAvatar = () => {
@@ -181,7 +181,7 @@ const pushDemoMessage = async () => {
     avatarBg: randomAvatar()
   });
 
-  if (wishes.value.length > 50) {
+  if (wishes.value.length > 99) {
     wishes.value.shift();
   }
 
@@ -237,7 +237,7 @@ const startAutoReaction = () => {
 const listenRealtimeChat = () => {
   chatRef = query(
     dbRef(db, "wishes"),
-    limitToLast(50)
+    limitToLast(100)
   );
 
   let loaded = false;
