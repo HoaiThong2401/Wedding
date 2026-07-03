@@ -131,13 +131,15 @@ let autoReactionTimer = null;
 let chatRef = null;
 let reactionRef = null;
 
+let limitMess = 99;
+
 const demoCount = computed(() => {
   return wishes.value.filter(i => String(i.id).startsWith("demo-")).length;
 });
 
 const mesCount = computed(() => {
   const total = realCount.value + demoCount.value;
-  return total >= 5 ? "99+" : total;
+  return total >= limitMess ? `${limitMess}+` : total;
 });
 
 const randomAvatar = () => {
@@ -181,7 +183,7 @@ const pushDemoMessage = async () => {
     avatarBg: randomAvatar()
   });
 
-  if (wishes.value.length > 99) {
+  if (wishes.value.length > limitMess) {
     wishes.value.shift();
   }
 
@@ -237,9 +239,9 @@ const startAutoReaction = () => {
 const listenRealtimeChat = () => {
   chatRef = query(
     dbRef(db, "wishes"),
-    limitToLast(100)
+    limitToLast(limitMess + 1)
   );
-
+  
   let loaded = false;
 
   onChildAdded(chatRef, async (snapshot) => {
@@ -258,7 +260,7 @@ const listenRealtimeChat = () => {
       i => !String(i.id).startsWith("demo-")
     ).length;
 
-    if (wishes.value.length > 50) {
+    if (wishes.value.length > limitMess) {
       wishes.value.shift();
     }
 
