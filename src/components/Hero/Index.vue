@@ -93,7 +93,7 @@
                   <div class="gold-dot">✦</div>
                 </div>
 
-                <h2 class="text-nowrap">
+                <h2>
                   TRÂN TRỌNG KÍNH MỜI
                 </h2>
 
@@ -159,7 +159,7 @@
                   </p>
 
                   <span>
-                    Trung An, TP. Mỹ Tho, Tiền Giang
+                    Mỹ Tho, Tiền Giang
                   </span>
 
                 </div>
@@ -185,7 +185,7 @@
                   </p>
 
                   <span>
-                    TP. Đà Lạt, Tỉnh Lâm Đồng
+                    Đà Lạt, Lâm Đồng
                   </span>
 
                 </div>
@@ -372,10 +372,6 @@ onUnmounted(() => {
   height: 100%;
   padding: 12px;
   border: 2px solid #c8a55c;
-}
-
-.text-nowrap {
-  white-space: nowrap;
 }
 
 .cover-card {
@@ -923,9 +919,9 @@ onUnmounted(() => {
   .page-border {
     position: relative !important;
     inset: auto !important;
-    margin: 18px !important;
-    padding: 30px 18px !important;
-    height: calc(100% - 36px) !important;
+    margin: 12px !important;
+    padding: 20px 8px !important;
+    height: calc(100% - 24px) !important;
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -934,7 +930,7 @@ onUnmounted(() => {
   }
   
   .page-border::before {
-    inset: 8px !important;
+    inset: 5px !important;
   }
 
   .flower-bottom-left {
@@ -947,7 +943,7 @@ onUnmounted(() => {
   }
 
   .left-content {
-    padding: 20px 15px;
+    padding: 15px 5px;
     height: auto;
   }
 
@@ -960,8 +956,18 @@ onUnmounted(() => {
     font-size: 14px;
   }
 
-  .left-content h2 { font-size: 22px; margin-top: 5px; margin-bottom: 4px; }
-  .left-content h3 { font-size: 38px; margin-bottom: 12px; }
+  .left-content h2 { 
+    font-size: 18px; 
+    white-space: nowrap;
+    letter-spacing: 1px;
+    margin-top: 6px; 
+    margin-bottom: 4px; 
+  }
+
+  .left-content h3 { 
+    font-size: 34px; 
+    margin-bottom: 12px; 
+  }
   
   .story-paragraph {
     margin-bottom: 10px;
@@ -989,17 +995,21 @@ onUnmounted(() => {
 
   .family-section {
     flex-direction: row !important;
-    gap: 10px;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 4px;
     margin-top: 15px;
     width: 100%;
     box-sizing: border-box;
+    padding: 0;
   }
 
   .family-center-divider {
     display: flex !important;
-    height: 80px;
-    width: 30px;
-    flex-direction: column;
+    height: 70px;
+    width: 16px;
+    flex-direction: column !important;
+    align-items: center;
   }
 
   .family-center-divider .line-top,
@@ -1011,56 +1021,57 @@ onUnmounted(() => {
   }
 
   .family-center-divider .wedding-icon {
-    margin: 6px 0;
+    margin: 4px 0;
+    font-size: 14px;
+  }
+
+  .family {
+    flex: 1;
+    width: calc(50% - 10px);
   }
 
   .family h4 {
-    font-size: 18px;
+    font-size: 14px;
+    white-space: nowrap;
+    margin-bottom: 4px;
+    letter-spacing: 1px;
   }
 
   .family p {
-    font-size: 12px;
+    font-size: 11px;
+    white-space: nowrap;
+    margin: 3px 0;
+    letter-spacing: -0.2px;
   }
 
   .family span {
-    font-size: 11px;
+    font-size: 10px;
+    margin-top: 4px;
+    line-height: 1.3;
+    word-break: break-word;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
   }
   
-  .announce { margin: 20px 0 15px; font-size: 12px; }
+  .announce { margin: 20px 0 15px; font-size: 11px; }
   .groom, .bride { font-size: 42px; }
   .love-divider { margin: 15px 0; }
   .love-divider span { width: 60px; }
   .event-section { margin-top: 15px; }
-  .event-section h5 { font-size: 15px; margin-bottom: 10px; }
-  .solar { font-size: 15px; }
-  .lunar { font-size: 12px; }
+  .event-section h5 { font-size: 14px; margin-bottom: 10px; }
+  .solar { font-size: 14px; }
+  .lunar { font-size: 11px; }
   .gold-line { margin: 0 auto 12px; width: 160px; }
 }
 
 @media (max-width: 480px) {
   .family-section {
-    display: flex;
-    flex-direction: column;
-    gap: 18px;
-    align-items: stretch;
-  }
-
-  .family {
-    width: 100%;
-    text-align: center;
-  }
-
-  .family h4 {
-    margin-bottom: 10px;
-  }
-
-  .family p {
-    margin: 4px 0;
-  }
-
-  .family span {
-    display: block;
-    margin-top: 8px;
+    display: flex !important;
+    flex-direction: row !important;
+    gap: 4px;
+    align-items: flex-start;
   }
 }
 </style>
