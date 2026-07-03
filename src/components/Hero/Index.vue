@@ -194,7 +194,7 @@
 
               <p class="announce">
 
-                TRÂN TRỌNG BÁO TIN LỄ THÀNH HÔN CỦA HAI CON CHÚNG TÔI
+                TRÂN TRỌNG BÁO TIN LỄ TÂN HÔN CỦA HAI CON CHÚNG TÔI
 
               </p>
 

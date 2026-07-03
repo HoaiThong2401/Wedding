@@ -5,7 +5,7 @@
 
       <h4 class="title">
         <span class="icon">✧</span>
-        Lễ Thành Hôn
+        Lễ Tân Hôn
       </h4>
 
       <div class="mini-line"></div>
