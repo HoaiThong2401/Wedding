@@ -797,8 +797,8 @@ onUnmounted(() => {
     gap: 15px;
   }
 
-  .left-content h2 { font-size: 26px; }
-  .left-content h3 { font-size: 42px; margin-bottom: 15px; }
+  .left-content h2 { font-size: 20px; }
+  .left-content h3 { font-size: 36px; margin-bottom: 15px; }
   .left-content p { font-size: 15px; }
   .left-content .strong { font-size: 15px; margin: 12px 0; }
   .paragraph { margin-top: 14px; }
