@@ -20,8 +20,8 @@
               THE WEDDING OF
             </p>
 
-            <div class="divider-diamond">
-              ✦
+            <div class="wedding-double-happiness">
+              囍
             </div>
 
             <div class="cover-preview">
@@ -48,8 +48,8 @@
 
             </div>
 
-            <div class="divider-diamond">
-              ✦
+            <div class="cover-divider-bottom">
+              ✿
             </div>
 
             <p class="cover-footer">
@@ -86,6 +86,13 @@
 
               <div class="left-content">
 
+                <div class="quote-section">
+                  <p class="quote-text">
+                    "Yêu không chỉ là một danh từ, đó là một hành trình dài của sự thấu hiểu và cùng nhau già đi."
+                  </p>
+                  <div class="gold-dot">✦</div>
+                </div>
+
                 <h2>
                   TRÂN TRỌNG KÍNH MỜI
                 </h2>
@@ -94,36 +101,35 @@
                   Quý Vị và Các Bạn
                 </h3>
 
-                <p>
-                  Đến tham dự buổi tiệc mừng
-                </p>
+                <div class="story-paragraph">
+                  <p>
+                    Sau những năm tháng cùng nhau đi qua giông bão và bình yên,
+                  </p>
+                  <p>
+                    chúng con hiểu rằng mình đã tìm thấy một nửa trọn vẹn của cuộc đời.
+                  </p>
+                </div>
 
                 <p class="strong">
-                  VÀ CHUNG VUI CÙNG GIA ĐÌNH CHÚNG TÔI
+                  ĐẾN THAM DỰ TIỆC MỪNG & CHUNG VUI CÙNG GIA ĐÌNH CHÚNG TÔI
                 </p>
 
                 <div class="paragraph">
-
                   <p>
-                    Chúng tôi rất vinh dự được đón tiếp Quý vị
+                    Sự hiện diện, những nụ cười và lời chúc phúc của Quý vị
                   </p>
-
                   <p>
-                    trong ngày trọng đại nhất của cuộc đời mình.
+                    chính là viên gạch đầu tiên xây nên tổ ấm vững chắc của hai con.
                   </p>
-
                 </div>
 
                 <div class="paragraph">
-
                   <p>
-                    Sự hiện diện của Quý vị
+                    Sự đón tiếp nồng hậu trong ngày chung đôi này
                   </p>
-
                   <p>
-                    là niềm vinh hạnh to lớn cho chúng tôi.
+                    là niềm vinh hạnh và hạnh phúc lớn lao nhất của gia đình.
                   </p>
-
                 </div>
 
               </div>
@@ -135,18 +141,6 @@
           <div class="page right-page">
 
             <div class="page-border">
-
-              <div class="corner-flower flower-top-left">
-                <img
-                  src="/images/floral-branch.png"
-                  alt="">
-              </div>
-
-              <div class="corner-flower flower-top-right">
-                <img
-                  src="/images/flower.png"
-                  alt="">
-              </div>
 
               <div class="family-section">
 
@@ -165,9 +159,15 @@
                   </p>
 
                   <span>
-                    Xã Trung An, TP. Mỹ Tho, Tiền Giang
+                    Trung An, TP. Mỹ Tho, Tiền Giang
                   </span>
 
+                </div>
+
+                <div class="family-center-divider">
+                  <span class="line-top"></span>
+                  <span class="wedding-icon">囍</span>
+                  <span class="line-bottom"></span>
                 </div>
 
                 <div class="family">
@@ -185,7 +185,7 @@
                   </p>
 
                   <span>
-                    TP. Đà Lạt, Lâm Đồng
+                    TP. Đà Lạt, Tỉnh Lâm Đồng
                   </span>
 
                 </div>
@@ -194,7 +194,7 @@
 
               <p class="announce">
 
-                TRÂN TRỌNG BÁO TIN LỄ TÂN QUY CỦA HAI CON CHÚNG TÔI
+                TRÂN TRỌNG BÁO TIN LỄ THÀNH HÔN CỦA HAI CON CHÚNG TÔI
 
               </p>
 
@@ -212,12 +212,14 @@
 
                   <span></span>
 
-                  <div class="heart-group">
-
-                    ❤
-
-                    ❤
-
+                  <div class="interlocking-rings">
+                    <div class="ring-shadow"></div>
+                    <div class="ring groom-ring">
+                      <div class="diamond-crown"></div>
+                    </div>
+                    <div class="ring bride-ring">
+                      <div class="diamond-crown"></div>
+                    </div>
                   </div>
 
                   <span></span>
@@ -238,7 +240,7 @@
 
                 <h5>
 
-                  HÔN LỄ ĐƯỢC CỬ HÀNH TẠI TƯ GIA
+                  HÔN LỄ ĐƯỢC CỬ HÀNH TẠI TƯ GIA NHÀ TRAI
 
                 </h5>
 
@@ -391,10 +393,21 @@ onUnmounted(() => {
   text-align: center;
 }
 
-.divider-diamond {
-  margin: 22px 0;
+.wedding-double-happiness {
+  margin: 15px 0 10px;
+  color: #a22939;
+  font-size: 46px;
+  font-family: "Cormorant Garamond", "Times New Roman", serif;
+  font-weight: bold;
+  line-height: 1;
+  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.15);
+}
+
+.cover-divider-bottom {
+  margin: 15px 0;
   color: #b78b43;
-  font-size: 15px;
+  font-size: 14px;
+  opacity: 0.7;
 }
 
 .cover-preview {
@@ -492,7 +505,7 @@ onUnmounted(() => {
 }
 
 .right-page {
-  border-left: 1px solid rgba(188,162,104,.35);
+  border-left: solid 1px rgba(188,162,104,.35);
 }
 
 .page-border {
@@ -513,6 +526,7 @@ onUnmounted(() => {
 .corner-flower {
   position: absolute;
   z-index: 1;
+  pointer-events: none;
 }
 
 .corner-flower img {
@@ -525,14 +539,8 @@ onUnmounted(() => {
   bottom: -25px;
 }
 
-.flower-top-left {
-  top: -15px;
-  left: -10px;
-}
-
-.flower-top-right {
-  top: -10px;
-  right: -15px;
+.flower-bottom-left img {
+  width: 95px;
 }
 
 .left-content {
@@ -543,41 +551,83 @@ onUnmounted(() => {
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  padding: 40px;
+  padding: 30px 35px;
   text-align: center;
+}
+
+.quote-section {
+  margin-bottom: 8px;
+  max-width: 90%;
+}
+
+.quote-text {
+  font-family: "Cormorant Garamond", serif;
+  font-style: italic;
+  font-size: 16px;
+  color: #7c6853;
+  line-height: 1.5;
+  margin: 0;
+}
+
+.gold-dot {
+  color: #b48b46;
+  font-size: 11px;
+  margin-top: 4px;
 }
 
 .left-content h2 {
   font-family: "Cormorant Garamond", serif;
   color: #b48b46;
-  font-size: 44px;
+  font-size: 40px;
   letter-spacing: 3px;
-  margin-bottom: 18px;
+  margin-top: 10px;
+  margin-bottom: 8px;
 }
 
 .left-content h3 {
   font-family: "Great Vibes", cursive;
-  font-size: 62px;
+  font-size: 56px;
   color: #8d2d36;
-  margin-bottom: 35px;
+  margin-bottom: 20px;
   font-weight: normal;
+}
+
+.story-paragraph {
+  margin-bottom: 15px;
+}
+
+.story-paragraph p {
+  color: #6e5e4f;
+  font-style: italic;
+  font-size: 15px;
+  line-height: 1.6;
+  margin: 4px 0;
 }
 
 .left-content p {
   color: #5f5040;
-  font-size: 18px;
-  line-height: 1.9;
+  font-size: 16px;
+  line-height: 1.7;
 }
 
 .left-content .strong {
-  margin: 22px 0;
+  margin: 15px 0;
   color: #8f2f39;
   font-weight: 700;
-  letter-spacing: 2px;
+  letter-spacing: 0.5px;
+  font-size: 15px;
+  width: 100%;
+  max-width: 460px;
+  word-break: break-word;
+  line-height: 1.5;
 }
 
 .paragraph {
-  margin-top: 28px;
+  margin-top: 14px;
+}
+
+.paragraph p {
+  margin: 4px 0;
 }
 
 .right-page {
@@ -595,13 +645,39 @@ onUnmounted(() => {
   z-index: 2;
   display: flex;
   justify-content: space-between;
-  gap: 30px;
-  margin-top: 15px;
+  align-items: center;
+  gap: 15px;
+  margin-top: 20px;
+  padding: 0 10px;
 }
 
 .family {
   flex: 1;
   text-align: center;
+}
+
+.family-center-divider {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 80px;
+  width: 30px;
+}
+
+.family-center-divider .line-top,
+.family-center-divider .line-bottom {
+  width: 1px;
+  flex: 1;
+  background: linear-gradient(to bottom, transparent, #c8a55c, transparent);
+}
+
+.family-center-divider .wedding-icon {
+  color: #b48b46;
+  font-size: 18px;
+  margin: 8px 0;
+  font-family: "Cormorant Garamond", serif;
+  opacity: 0.85;
 }
 
 .family h4 {
@@ -628,12 +704,12 @@ onUnmounted(() => {
 }
 
 .announce {
-  margin: 35px 0 25px;
+  margin: 20px 0 15px;
   text-align: center;
-  font-size: 14px;
+  font-size: 13px;
   color: #806a50;
   letter-spacing: 2px;
-  line-height: 1.8;
+  line-height: 1.6;
   text-transform: uppercase;
 }
 
@@ -646,10 +722,10 @@ onUnmounted(() => {
 .groom,
 .bride {
   font-family: "Great Vibes", cursive;
-  font-size: 62px;
+  font-size: 60px;
   font-weight: normal;
   color: #8b2735;
-  line-height: 1.15;
+  line-height: 1.1;
 }
 
 .role {
@@ -665,55 +741,117 @@ onUnmounted(() => {
   align-items: center;
   justify-content: center;
   gap: 16px;
-  margin: 28px 0;
+  margin: 20px 0;
 }
 
 .love-divider span {
-  width: 130px;
+  width: 100px;
   height: 1px;
-  background: linear-gradient(to right, transparent, #c8a55c, transparent);
+  background: linear-gradient(to right, transparent, rgba(200, 165, 92, 0.6), transparent);
 }
 
-.heart-group {
-  color: #a22839;
-  font-size: 22px;
-  letter-spacing: 5px;
+.interlocking-rings {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  width: 54px;
+  height: 40px;
+}
+
+.ring-shadow {
+  position: absolute;
+  bottom: 0px;
+  left: 4px;
+  width: 44px;
+  height: 6px;
+  background: radial-gradient(ellipse at center, rgba(0,0,0,0.08) 0%, transparent 70%);
+  z-index: 0;
+  filter: blur(1px);
+}
+
+.ring {
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  position: absolute;
+  background: transparent;
+  box-sizing: border-box;
+}
+
+.groom-ring {
+  left: 0;
+  bottom: 4px;
+  border: 3.5px solid transparent;
+  background: 
+    linear-gradient(#fdfbf8, #fdfbf8) padding-box,
+    linear-gradient(135deg, #dfba6b 0%, #b48b46 45%, #f7efe4 70%, #9a7432 100%) border-box;
+  transform: rotate(-15deg);
+  box-shadow: 1px 3px 6px rgba(0, 0, 0, 0.12);
+  z-index: 3;
+}
+
+.bride-ring {
+  right: 0;
+  bottom: 6px;
+  border: 3px solid transparent;
+  background: 
+    linear-gradient(#fdfbf8, #fdfbf8) padding-box,
+    linear-gradient(135deg, #dfba6b 0%, #b48b46 45%, #f7efe4 70%, #9a7432 100%) border-box;
+  transform: scale(0.88) rotate(15deg);
+  box-shadow: -1px 2px 5px rgba(0, 0, 0, 0.1);
+  z-index: 2;
+}
+
+.diamond-crown {
+  position: absolute;
+  top: -6px;
+  left: 50%;
+  transform: translateX(-50%) rotate(45deg);
+  width: 6px;
+  height: 6px;
+  background: linear-gradient(135deg, #ffffff 0%, #e0e0e0 100%);
+  border: 1px solid #b48b46;
+  box-shadow: 
+    0 0 6px #fff, 
+    0 0 2px #b48b46,
+    inset 1px 1px 1px rgba(255,255,255,0.8);
 }
 
 .event-section {
   position: relative;
   z-index: 2;
   text-align: center;
-  margin-top: 30px;
+  margin-top: 20px;
 }
 
 .event-section h5 {
   font-size: 18px;
   color: #8f2f39;
   letter-spacing: 2px;
-  margin-bottom: 20px;
+  margin-bottom: 15px;
   font-weight: 600;
 }
 
 .gold-line {
-  width: 220px;
+  width: 200px;
   height: 2px;
-  margin: 0 auto 22px;
+  margin: 0 auto 15px;
   background: linear-gradient(to right, transparent, #c8a55c, transparent);
 }
 
 .solar {
-  font-size: 18px;
+  font-size: 17px;
   font-weight: 700;
   color: #504334;
   letter-spacing: 1px;
 }
 
 .lunar {
-  margin-top: 10px;
+  margin-top: 5px;
   color: #8c7a66;
   font-style: italic;
-  font-size: 14px;
+  font-size: 13px;
 }
 
 .book::after {
@@ -787,21 +925,92 @@ onUnmounted(() => {
     inset: 6px;
   }
 
+  .flower-bottom-left {
+    left: -20px;
+    bottom: -20px;
+  }
+
+  .flower-bottom-left img {
+    width: 80px;
+  }
+
   .left-content {
-    padding: 15px;
+    padding: 20px 15px;
     height: auto;
   }
 
-  .family-section {
-    flex-direction: row;
-    gap: 15px;
+  .quote-section {
+    margin-bottom: 8px;
+    max-width: 100%;
   }
 
-  .left-content h2 { font-size: 20px; }
-  .left-content h3 { font-size: 36px; margin-bottom: 15px; }
-  .left-content p { font-size: 15px; }
-  .left-content .strong { font-size: 15px; margin: 12px 0; }
-  .paragraph { margin-top: 14px; }
+  .quote-text {
+    font-size: 14px;
+  }
+
+  .left-content h2 { font-size: 22px; margin-top: 5px; margin-bottom: 4px; }
+  .left-content h3 { font-size: 38px; margin-bottom: 12px; }
+  
+  .story-paragraph {
+    margin-bottom: 10px;
+  }
+  
+  .story-paragraph p {
+    font-size: 13px;
+  }
+
+  .left-content p {
+    font-size: 14px;
+  }
+
+  .left-content .strong {
+    font-size: 13px;
+    letter-spacing: 0px;
+    margin: 10px 0;
+    line-height: 1.4;
+    white-space: normal;
+  }
+
+  .paragraph {
+    margin-top: 10px;
+  }
+
+  .family-section {
+    flex-direction: row !important;
+    gap: 10px;
+    margin-top: 15px;
+  }
+
+  .family-center-divider {
+    display: flex !important;
+    height: 80px;
+    width: 30px;
+    flex-direction: column;
+  }
+
+  .family-center-divider .line-top,
+  .family-center-divider .line-bottom {
+    width: 1px;
+    height: auto;
+    flex: 1;
+    background: linear-gradient(to bottom, transparent, #c8a55c, transparent);
+  }
+
+  .family-center-divider .wedding-icon {
+    margin: 6px 0;
+  }
+
+  .family h4 {
+    font-size: 18px;
+  }
+
+  .family p {
+    font-size: 12px;
+  }
+
+  .family span {
+    font-size: 11px;
+  }
   
   .announce { margin: 20px 0 15px; font-size: 12px; }
   .groom, .bride { font-size: 42px; }
@@ -812,10 +1021,6 @@ onUnmounted(() => {
   .solar { font-size: 15px; }
   .lunar { font-size: 12px; }
   .gold-line { margin: 0 auto 12px; width: 160px; }
-
-  .corner-flower img {
-    width: 100px;
-  }
 }
 
 @media (max-width: 480px) {
@@ -835,13 +1040,21 @@ onUnmounted(() => {
     font-size: 32px;
   }
 
+  .wedding-double-happiness {
+    font-size: 36px;
+  }
+
   .ring-icon .line {
     width: 45px;
   }
 
   .family-section {
     flex-direction: column;
-    gap: 15px;
+    gap: 10px;
+  }
+
+  .family-center-divider {
+    display: none;
   }
   
   .left-content h3 { font-size: 36px; }
