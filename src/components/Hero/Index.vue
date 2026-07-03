@@ -1073,5 +1073,11 @@ onUnmounted(() => {
     gap: 4px;
     align-items: flex-start;
   }
+
+  .name-highlight {
+    font-size: 28px !important;   
+    white-space: nowrap !important; 
+    margin: 6px 0 !important;     
+  }
 }
 </style>
