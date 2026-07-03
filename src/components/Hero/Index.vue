@@ -93,7 +93,7 @@
                   <div class="gold-dot">✦</div>
                 </div>
 
-                <h2>
+                <h2 class="text-nowrap">
                   TRÂN TRỌNG KÍNH MỜI
                 </h2>
 
@@ -372,6 +372,10 @@ onUnmounted(() => {
   height: 100%;
   padding: 12px;
   border: 2px solid #c8a55c;
+}
+
+.text-nowrap {
+  white-space: nowrap;
 }
 
 .cover-card {
@@ -888,6 +892,7 @@ onUnmounted(() => {
   }
 
   .book-content {
+    display: flex;
     flex-direction: column;
     height: 100%;
     overflow-y: auto;
@@ -901,7 +906,9 @@ onUnmounted(() => {
   .page {
     flex: none;
     min-height: auto;
-    padding: 20px 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
   }
 
   .left-page {
@@ -914,15 +921,20 @@ onUnmounted(() => {
   }
 
   .page-border {
-    position: relative;
-    inset: 0 !important;
-    margin: 10px;
-    padding: 20px 14px;
-    height: auto;
+    position: relative !important;
+    inset: auto !important;
+    margin: 18px !important;
+    padding: 30px 18px !important;
+    height: calc(100% - 36px) !important;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    box-sizing: border-box;
+    flex: 1;
   }
   
   .page-border::before {
-    inset: 6px;
+    inset: 8px !important;
   }
 
   .flower-bottom-left {
@@ -979,6 +991,8 @@ onUnmounted(() => {
     flex-direction: row !important;
     gap: 10px;
     margin-top: 15px;
+    width: 100%;
+    box-sizing: border-box;
   }
 
   .family-center-divider {
@@ -1024,40 +1038,29 @@ onUnmounted(() => {
 }
 
 @media (max-width: 480px) {
-  .hero {
-    padding: 8px;
-  }
-  
-  .card {
-    min-height: 680px;
-  }
-
-  .cover-card {
-    padding: 15px;
-  }
-
-  .name-highlight {
-    font-size: 32px;
-  }
-
-  .wedding-double-happiness {
-    font-size: 36px;
-  }
-
-  .ring-icon .line {
-    width: 45px;
-  }
-
   .family-section {
+    display: flex;
     flex-direction: column;
-    gap: 10px;
+    gap: 18px;
+    align-items: stretch;
   }
 
-  .family-center-divider {
-    display: none;
+  .family {
+    width: 100%;
+    text-align: center;
   }
-  
-  .left-content h3 { font-size: 36px; }
-  .groom, .bride { font-size: 36px; }
+
+  .family h4 {
+    margin-bottom: 10px;
+  }
+
+  .family p {
+    margin: 4px 0;
+  }
+
+  .family span {
+    display: block;
+    margin-top: 8px;
+  }
 }
 </style>
