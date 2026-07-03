@@ -137,7 +137,7 @@ const demoCount = computed(() => {
 
 const mesCount = computed(() => {
   const total = realCount.value + demoCount.value;
-  return total >= 99 ? "99+" : total;
+  return total >= 5 ? "99+" : total;
 });
 
 const randomAvatar = () => {
