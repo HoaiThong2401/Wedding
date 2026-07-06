@@ -51,6 +51,7 @@
   box-shadow: 0 20px 50px rgba(74, 59, 47, 0.05);
   max-width: 650px;
   margin: 0 auto;
+  background: #fff;
 }
 
 .card-title-group {
