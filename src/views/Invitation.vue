@@ -7,7 +7,7 @@
     <StorySection />
     <GallerySection />
     <EventSection />
-    <GiftSection />
+    <!-- <GiftSection /> -->
     <FooterSection />
   </template>
   <RSVPSection />

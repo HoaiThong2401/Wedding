@@ -26,7 +26,7 @@
 
             <div class="cover-preview">
 
-              <p class="name-highlight">
+              <p class="cover-name">
                 Lê Hoàng Thiện
               </p>
 
@@ -42,7 +42,7 @@
 
               </div>
 
-              <p class="name-highlight">
+              <p class="cover-name">
                 Phan Linh
               </p>
 
@@ -146,15 +146,13 @@
 
                 <div class="family">
 
-                  <h4>
-                    NHÀ TRAI
-                  </h4>
+                  <h4>NHÀ TRAI</h4>
 
-                  <p>
+                  <p class="parent-row">
                     ÔNG: LÊ XUYÊN TRUYỀN
                   </p>
 
-                  <p>
+                  <p class="parent-row">
                     BÀ: LÊ THỊ THANH NỮ
                   </p>
 
@@ -172,15 +170,13 @@
 
                 <div class="family">
 
-                  <h4>
-                    NHÀ GÁI
-                  </h4>
+                  <h4>NHÀ GÁI</h4>
 
-                  <p>
-                    ÔNG: [Họ tên Bố]
+                  <p class="parent-row empty">
+                    &nbsp;
                   </p>
 
-                  <p>
+                  <p class="parent-row">
                     BÀ: [Họ tên Mẹ]
                   </p>
 
@@ -199,41 +195,45 @@
               </p>
 
               <div class="couple">
+                <div class="couple-grid">
+                  
+                  <div class="couple-cell">
+                    <h1 class="person-name">Lê Hoàng Thiện</h1>
+                  </div>
+                  
+                  <div class="couple-cell cell-center row-span-3">
+                    <div class="interlocking-rings">
+                      <div class="ring-shadow"></div>
 
-                <h1 class="groom">
-                  Lê Hoàng Thiện
-                </h1>
+                      <div class="ring groom-ring">
+                        <div class="diamond-crown"></div>
+                      </div>
 
-                <span class="role">
-                  Trưởng Nam
-                </span>
-
-                <div class="love-divider">
-
-                  <span></span>
-
-                  <div class="interlocking-rings">
-                    <div class="ring-shadow"></div>
-                    <div class="ring groom-ring">
-                      <div class="diamond-crown"></div>
-                    </div>
-                    <div class="ring bride-ring">
-                      <div class="diamond-crown"></div>
+                      <div class="ring bride-ring">
+                        <div class="diamond-crown"></div>
+                      </div>
                     </div>
                   </div>
+                  
+                  <div class="couple-cell">
+                    <h1 class="person-name">Phan Linh</h1>
+                  </div>
 
-                  <span></span>
+                  <div class="couple-cell">
+                    <span class="role">Trưởng Nam</span>
+                  </div>
+                  <div class="couple-cell">
+                    <span class="role">Út Nữ</span>
+                  </div>
+
+                  <div class="couple-cell">
+                    <span class="birthday">26.06.2000</span>
+                  </div>
+                  <div class="couple-cell">
+                    <span class="birthday">26.06.2000</span>
+                  </div>
 
                 </div>
-
-                <h1 class="bride">
-                  Phan Linh
-                </h1>
-
-                <span class="role">
-                  Thứ Nữ
-                </span>
-
               </div>
 
               <div class="event-section">
@@ -248,14 +248,17 @@
 
                 <p class="solar">
 
-                  VÀO LÚC 11H00 - THỨ NĂM - 07.01.2027
+                  VÀO LÚC 11h00 - THỨ NĂM - 07.01.2027
 
                 </p>
 
                 <p class="lunar">
-
                   (Nhằm ngày 30 tháng 11 năm Bính Ngọ)
 
+                </p>
+
+                <p class="lunar">
+                  Tại: Ấp 3, Xã Trung An, Thành phố Mỹ Tho, Tỉnh Tiền Giang
                 </p>
 
               </div>
@@ -592,6 +595,13 @@ onUnmounted(() => {
   font-weight: normal;
 }
 
+.cover-name {
+  font-family: "Great Vibes", cursive;
+  font-size: 56px;
+  color: #8d2d36;
+  margin-bottom: 20px;
+  font-weight: normal;
+}
 .story-paragraph {
   margin-bottom: 15px;
 }
@@ -645,7 +655,6 @@ onUnmounted(() => {
   z-index: 2;
   display: flex;
   justify-content: space-between;
-  align-items: center;
   gap: 15px;
   margin-top: 20px;
   padding: 0 10px;
@@ -678,6 +687,18 @@ onUnmounted(() => {
   margin: 8px 0;
   font-family: "Cormorant Garamond", serif;
   opacity: 0.85;
+}
+
+.parent-row {
+  min-height: 24px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 6px 0;
+}
+
+.parent-row.empty {
+  visibility: hidden;
 }
 
 .family h4 {
@@ -716,38 +737,44 @@ onUnmounted(() => {
 .couple {
   position: relative;
   z-index: 2;
-  text-align: center;
+  width: 100%;
+  margin: 20px 0;
+  padding: 0 10px;
+  box-sizing: border-box;
 }
 
-.groom,
-.bride {
-  font-family: "Great Vibes", cursive;
-  font-size: 60px;
-  font-weight: normal;
-  color: #8b2735;
-  line-height: 1.1;
+.couple-grid {
+  display: grid;
+  grid-template-columns: 1fr 60px 1fr;
+  align-items: center;
+  row-gap: 4px;
+}
+
+.couple-cell {
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.cell-center {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.row-span-3 {
+  grid-row: span 3;
 }
 
 .role {
   display: block;
-  margin-top: 8px;
   color: #8a7862;
   font-size: 14px;
   letter-spacing: 1px;
-}
-
-.love-divider {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 16px;
-  margin: 20px 0;
-}
-
-.love-divider span {
-  width: 100px;
-  height: 1px;
-  background: linear-gradient(to right, transparent, rgba(200, 165, 92, 0.6), transparent);
+  font-weight: 600;
+  text-align: center;
 }
 
 .interlocking-rings {
@@ -868,6 +895,27 @@ onUnmounted(() => {
   inset: 0;
   pointer-events: none;
   background: linear-gradient(90deg, rgba(255,255,255,.18), transparent 12%, transparent 88%, rgba(0,0,0,.05));
+}
+
+.person-name {
+  font-family: "Great Vibes", serif;
+  font-size: 42px;
+  font-weight: 600;
+  color: #8f2f39;
+  line-height: 1.2;
+  margin: 0;
+  letter-spacing: .5px;
+  word-break: break-word;
+  text-align: center;
+}
+
+.birthday {
+  display: block;
+  font-family: "Cormorant Garamond", serif;
+  font-size: 15px;
+  color: #9b8767;
+  letter-spacing: 1px;
+  text-align: center;
 }
 
 @media (max-width: 1100px) {
@@ -1056,14 +1104,19 @@ onUnmounted(() => {
   }
   
   .announce { margin: 20px 0 15px; font-size: 11px; }
-  .groom, .bride { font-size: 42px; }
-  .love-divider { margin: 15px 0; }
-  .love-divider span { width: 60px; }
+  .couple-grid { grid-template-columns: 1fr 45px 1fr; }
+  .interlocking-rings { transform: scale(0.8); }
+  .role { font-size: 12px; }
   .event-section { margin-top: 15px; }
   .event-section h5 { font-size: 14px; margin-bottom: 10px; }
   .solar { font-size: 14px; }
   .lunar { font-size: 11px; }
   .gold-line { margin: 0 auto 12px; width: 160px; }
+
+  .parent-row {
+    min-height: 18px;
+    margin: 3px 0;
+  }
 }
 
 @media (max-width: 480px) {
@@ -1077,7 +1130,21 @@ onUnmounted(() => {
   .name-highlight {
     font-size: 28px !important;   
     white-space: nowrap !important; 
-    margin: 6px 0 !important;     
+    margin: 6px 0 !important;         
+  }
+
+  .parent-row {
+    min-height: 18px;
+    margin: 3px 0;
+  }
+
+  .person-name{
+    font-size:28px;
+  }
+
+  .birthday{
+    font-size:12px;
+    margin-top:4px;
   }
 }
 </style>
