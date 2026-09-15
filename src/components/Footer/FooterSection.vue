@@ -1,25 +1,31 @@
 <template>
-  <footer class="footer">
+  <footer class="footer-section" id="footer">
     <div class="container">
-      <div class="footer-border">
+      <div class="footer-card">
         
+        <span class="footer-sub">FROM THE BOTTOM OF OUR HEARTS</span>
         <h2 class="thank-you-title">Thank You</h2>
         
         <p class="footer-desc">
-          Cảm ơn bạn đã dành thời gian xem thiệp cưới và chung vui cùng chúng mình.
+          Sự hiện diện và lời chúc phúc của Quý vị là niềm hạnh phúc vô bờ bến đối với hai chúng mình và gia đình.
         </p>
 
-        <div class="divider-diamond">✦</div>
+        <div class="footer-monogram-wrap">
+          <div class="monogram-box">
+            <span class="monogram-letter">T</span>
+            <span class="monogram-heart">❦</span>
+            <span class="monogram-letter">L</span>
+          </div>
+          <span class="couple-sub-names">Hoàng Thiện & Phan Linh</span>
+        </div>
 
-        <h3 class="couple-signature">
-          T
-          <span class="ampersand">&</span>
-          L
-        </h3>
+        <div class="wedding-date-seal">
+          <span>07 . 01 . 2027</span>
+        </div>
 
-        <small class="wedding-date">
-          07.01.2027
-        </small>
+        <div class="made-with-love">
+          <span>Trọn vẹn yêu thương — Hạnh phúc đong đầy</span>
+        </div>
 
       </div>
     </div>
@@ -27,101 +33,130 @@
 </template>
 
 <style scoped>
-.footer {
-  padding: 80px 16px;
-  background: #fdfaf6;
-  text-align: center;
-  border-top: 1px solid rgba(179, 139, 77, 0.15);
+.footer-section {
+  padding: 80px 16px 100px;
+  position: relative;
 }
 
 .container {
-  max-width: 700px;
+  max-width: 750px;
   margin: 0 auto;
 }
 
-.footer-border {
-  border: 1px dashed rgba(179, 139, 77, 0.4);
-  border-radius: 12px;
-  padding: 60px 30px;
-  background: #fffdfa;
-  box-shadow: inset 0 0 30px rgba(179, 139, 77, 0.03);
+.footer-card {
+  background: rgba(255, 255, 255, 0.8);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1.5px solid rgba(200, 165, 92, 0.4);
+  border-radius: var(--radius-md);
+  padding: 50px 30px;
+  text-align: center;
+  box-shadow: var(--shadow-md);
+  position: relative;
+}
+
+.footer-card::before {
+  content: "";
+  position: absolute;
+  inset: 8px;
+  border: 1px dashed rgba(200, 165, 92, 0.35);
+  border-radius: 10px;
+  pointer-events: none;
+}
+
+.footer-sub {
+  font-family: var(--font-body);
+  font-size: 11px;
+  letter-spacing: 4px;
+  color: var(--primary-gold-dark);
+  font-weight: 700;
+  display: block;
+  margin-bottom: 8px;
 }
 
 .thank-you-title {
-  font-family: serif;
-  font-style: italic;
-  font-size: 54px;
-  font-weight: 500;
-  color: #b38b4d;
-  margin: 0 0 16px 0;
-  letter-spacing: 1px;
+  font-family: var(--font-script);
+  font-size: 64px;
+  color: var(--wine-red);
+  margin: 0 0 16px;
+  font-weight: 400;
+  line-height: 1.1;
 }
 
 .footer-desc {
-  max-width: 480px;
-  margin: 0 auto;
-  line-height: 1.8;
-  color: #7a6b5c;
+  max-width: 500px;
+  margin: 0 auto 30px;
+  color: var(--text-muted);
   font-size: 15px;
+  line-height: 1.7;
 }
 
-.divider-diamond {
-  color: #b38b4d;
-  font-size: 12px;
-  margin: 24px 0;
-  opacity: 0.6;
+.footer-monogram-wrap {
+  margin: 25px 0 20px;
 }
 
-.couple-signature {
-  font-family: serif;
-  font-size: 36px;
-  font-weight: 600;
-  color: #a23946;
-  margin: 0 0 12px 0;
-  letter-spacing: 0.5px;
+.monogram-box {
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
 }
 
-.ampersand {
-  font-family: serif;
-  font-style: italic;
-  color: #b38b4d;
-  margin: 0 8px;
-  font-weight: 400;
+.monogram-letter {
+  font-family: var(--font-serif);
+  font-size: 38px;
+  font-weight: 700;
+  color: var(--wine-red);
 }
 
-.wedding-date {
+.monogram-heart {
+  color: var(--primary-gold);
+  font-size: 24px;
+}
+
+.couple-sub-names {
   display: block;
-  font-size: 13px;
-  color: #a39689;
+  font-family: var(--font-serif);
+  font-size: 16px;
+  color: var(--text-main);
+  margin-top: 4px;
+  letter-spacing: 1px;
+}
+
+.wedding-date-seal {
+  display: inline-block;
+  background: rgba(200, 165, 92, 0.12);
+  border: 1px solid rgba(200, 165, 92, 0.4);
+  padding: 5px 18px;
+  border-radius: 50px;
+  font-family: var(--font-serif);
+  font-size: 14px;
   letter-spacing: 3px;
-  font-weight: 500;
+  color: var(--primary-gold-dark);
+  font-weight: 600;
+  margin-bottom: 20px;
+}
+
+.made-with-love {
+  font-size: 12.5px;
+  color: var(--text-light);
+  font-style: italic;
 }
 
 @media (max-width: 768px) {
-  .footer {
-    padding: 60px 16px;
+  .footer-section {
+    padding: 60px 16px 90px;
   }
 
-  .footer-border {
-    padding: 40px 20px;
+  .footer-card {
+    padding: 35px 16px;
   }
 
   .thank-you-title {
-    font-size: 42px;
+    font-size: 48px;
   }
 
-  .footer-desc {
-    font-size: 13px;
-    line-height: 1.6;
-  }
-
-  .couple-signature {
-    font-size: 26px;
-  }
-
-  .wedding-date {
-    font-size: 11px;
-    letter-spacing: 2px;
+  .monogram-letter {
+    font-size: 30px;
   }
 }
 </style>

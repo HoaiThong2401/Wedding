@@ -1,22 +1,23 @@
 <template>
-  <section class="event-section">
+  <section class="event-section" id="event">
     <div class="container">
 
-      <div class="section-title text-center">
-        <span class="sub-title">WEDDING EVENT</span>
-        <div class="title-group">
-          <div class="decorator-line"></div>
-          <h2>Thông Tin Lễ Cưới</h2>
-          <div class="decorator-line"></div>
+      <div class="section-header">
+        <span class="section-sub">TIME & LOCATION</span>
+        <div class="section-title-wrap">
+          <div class="line"></div>
+          <h2 class="section-main-title">Thông Tin Hôn Lễ</h2>
+          <div class="line"></div>
         </div>
+        <p class="section-desc">Trân trọng kính mời Quý vị và Các bạn đến chung vui cùng gia đình</p>
       </div>
 
-      <div class="row g-4 layout-grid">
-        <div class="col-lg-6 event-column">
+      <div class="events-grid">
+        <div class="event-col">
           <Ceremony />
         </div>
 
-        <div class="col-lg-6 event-column">
+        <div class="event-col">
           <Reception />
         </div>
       </div>
@@ -32,74 +33,39 @@ import Reception from "./components/Reception.vue"
 
 <style scoped>
 .event-section {
-  padding: 80px 16px;
+  padding: 90px 16px;
+  position: relative;
 }
 
-.section-title {
-  margin-bottom: 60px;
-}
-
-.sub-title {
-  display: block;
-  font-size: 12px;
-  font-weight: 600;
-  letter-spacing: 4px;
-  color: #b38b4d;
-  text-transform: uppercase;
-  margin-bottom: 8px;
-}
-
-.title-group {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 20px;
-}
-
-.decorator-line {
-  width: 50px;
-  height: 1px;
-  background: linear-gradient(to right, transparent, #b38b4d, transparent);
-}
-
-.section-title h2 {
-  font-family: serif;
-  font-size: 34px;
-  font-weight: 600;
-  color: #a23946;
-  margin: 0;
-  letter-spacing: 0.5px;
-}
-
-.layout-grid {
+.container {
   max-width: 1200px;
   margin: 0 auto;
 }
 
-.event-column {
+.section-desc {
+  color: var(--text-muted);
+  font-size: 14.5px;
+  margin-top: 10px;
+  font-style: italic;
+}
+
+.events-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 35px;
+  margin-top: 50px;
+}
+
+.event-col {
   display: flex;
   flex-direction: column;
 }
 
-@media (max-width: 768px) {
-  .event-section {
-    padding: 60px 16px;
-  }
-
-  .section-title {
-    margin-bottom: 40px;
-  }
-
-  .section-title h2 {
-    font-size: 26px;
-  }
-
-  .title-group {
-    gap: 12px;
-  }
-
-  .decorator-line {
-    width: 30px;
+@media (max-width: 992px) {
+  .events-grid {
+    grid-template-columns: 1fr;
+    gap: 30px;
+    margin-top: 30px;
   }
 }
 </style>

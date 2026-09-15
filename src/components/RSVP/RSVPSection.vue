@@ -1,48 +1,55 @@
 <template>
-  <div class="tiktok-chat-widget" :class="{ 'is-closed': !isOpen }">
-    <button class="chat-toggle-btn" @click="isOpen = !isOpen">
+  <div class="live-wishes-widget" :class="{ 'is-collapsed': !isOpen }">
+    <!-- NÚT BẬT/TẮT SỔ LỜI CHÚC -->
+    <button class="widget-toggle-btn" @click="isOpen = !isOpen" title="Sổ lời chúc trực tuyến">
       <span class="toggle-icon">{{ isOpen ? '✕' : '💬' }}</span>
       <span v-if="!isOpen" class="toggle-badge">{{ mesCount }}</span>
     </button>
 
-    <div v-show="isOpen" class="live-chat-container">
+    <!-- KHUNG CHAT TRỰC TUYẾN -->
+    <div v-show="isOpen" class="live-chat-panel">
       <div class="chat-header">
-        <span class="live-badge">● LIVE</span>
-        <span class="chat-title">Lời Chúc Trực Tuyến ({{ mesCount }})</span>
+        <div class="live-indicator">
+          <span class="live-dot"></span>
+          <span class="live-text">TRỰC TUYẾN</span>
+        </div>
+        <span class="chat-title">Lời Chúc Hạnh Phúc ({{ mesCount }})</span>
       </div>
 
-      <div ref="chatBox" class="chat-messages-box">
+      <div ref="chatBox" class="chat-messages-scroll">
         <TransitionGroup name="list">
-          <div v-for="(item, index) in wishes" :key="item.id || index" class="chat-item">
-            <div class="chat-avatar" :style="{ backgroundColor: item.avatarBg || '#a23946' }">
-              {{ item.name.charAt(0).toUpperCase() }}
+          <div v-for="(item, index) in wishes" :key="item.id || index" class="message-bubble">
+            <div class="user-avatar" :style="{ backgroundColor: item.avatarBg || '#8f2e36' }">
+              {{ (item.name || 'K').charAt(0).toUpperCase() }}
             </div>
-            <div class="chat-content">
-              <span class="chat-user-name">{{ item.name }}</span>
-              <p class="chat-text">{{ item.message }}</p>
+            <div class="user-content">
+              <span class="user-name">{{ item.name }}</span>
+              <p class="user-text">{{ item.message }}</p>
             </div>
           </div>
         </TransitionGroup>
-        
-        <div v-if="wishes.length === 0" class="empty-chat">
-          Chưa có lời chúc nào ❤️
+
+        <div v-if="wishes.length === 0" class="empty-notice">
+          Hãy là người đầu tiên gửi lời chúc đến cặp đôi nhé! ❤️
         </div>
       </div>
 
-      <div class="chat-footer-trigger">
-        <div class="fake-input" @click="showModal = true">Gửi lời chúc hạnh phúc...</div>
-        
-        <div class="reaction-wrapper">
-          <button class="reaction-trigger-btn" @click.stop="toggleReactionMenu">
-            💝
+      <div class="chat-action-footer">
+        <div class="trigger-input" @click="showModal = true">
+          <span>✍️ Gửi lời chúc mừng...</span>
+        </div>
+
+        <div class="reaction-trigger-wrap">
+          <button class="btn-heart-reaction" @click.stop="toggleReactionMenu" title="Thả cảm xúc">
+            💖
           </button>
-          
+
           <Transition name="pop-scale">
             <div v-if="showReactionMenu" class="reaction-popover">
-              <button 
-                v-for="emoji in quickEmojis" 
-                :key="emoji" 
-                class="emoji-btn"
+              <button
+                v-for="emoji in quickEmojis"
+                :key="emoji"
+                class="emoji-choice"
                 @click.stop="emitReaction(emoji)"
               >
                 {{ emoji }}
@@ -53,27 +60,30 @@
       </div>
     </div>
 
-    <div class="floating-reactions-container">
-      <span 
-        v-for="f in floatingReactions" 
-        :key="f.id" 
-        class="floating-emoji"
+    <!-- CÁC HẠT TIM VÀ EMOJI BAY LÊN -->
+    <div class="floating-emojis-layer">
+      <span
+        v-for="f in floatingReactions"
+        :key="f.id"
+        class="floating-item"
         :style="{ left: f.left + 'px', animationDuration: f.duration + 's' }"
       >
         {{ f.emoji }}
       </span>
     </div>
 
-    <WishModal 
-      v-model="showModal" 
+    <!-- MODAL NHẬP LỜI CHÚC -->
+    <WishModal
+      v-model="showModal"
       :script-url="SCRIPT_URL"
       @toast="handleModalToast"
     />
 
+    <!-- TOAST NOTIFICATION -->
     <Transition name="toast-fade">
-      <div v-if="toast.show" class="toast-notification" :class="toast.type">
-        <span class="toast-icon">{{ toast.icon }}</span>
-        <span class="toast-text">{{ toast.msg }}</span>
+      <div v-if="toast.show" class="global-toast" :class="toast.type">
+        <span class="toast-emoji">{{ toast.icon }}</span>
+        <span class="toast-msg">{{ toast.msg }}</span>
       </div>
     </Transition>
   </div>
@@ -100,12 +110,12 @@ const chatBox = ref(null);
 const wishes = ref([]);
 const realCount = ref(0);
 
-const isOpen = ref(true);
+const isOpen = ref(false); // Mặc định thu gọn gọn gàng để không che khuất thiệp
 const showModal = ref(false);
 const showReactionMenu = ref(false);
 const floatingReactions = ref([]);
 
-const quickEmojis = ["❤️", "🥳", "🥰", "😂", "👍", "🎉"];
+const quickEmojis = ["❤️", "🥳", "🥰", "🎉", "💐", "🥂"];
 
 const toast = ref({
   show: false,
@@ -115,12 +125,12 @@ const toast = ref({
 });
 
 const avatarColors = [
-  "#b38b4d",
+  "#8f2e36",
+  "#c8a55c",
   "#a23946",
   "#4a3b2f",
-  "#8a6d3b",
-  "#2e5a44",
-  "#7a6b5c"
+  "#b38b4d",
+  "#2e5a44"
 ];
 
 let demoIndex = 0;
@@ -148,7 +158,6 @@ const randomAvatar = () => {
 
 const scrollToBottom = async () => {
   await nextTick();
-
   if (chatBox.value) {
     chatBox.value.scrollTop = chatBox.value.scrollHeight;
   }
@@ -156,14 +165,7 @@ const scrollToBottom = async () => {
 
 const showToast = (msg, type = "success", icon = "❤️") => {
   clearTimeout(toastTimer);
-
-  toast.value = {
-    show: true,
-    msg,
-    type,
-    icon
-  };
-
+  toast.value = { show: true, msg, type, icon };
   toastTimer = setTimeout(() => {
     toast.value.show = false;
   }, 3500);
@@ -175,7 +177,6 @@ const handleModalToast = (msg, type, icon) => {
 
 const pushDemoMessage = async () => {
   const item = demoMessages[demoIndex];
-
   wishes.value.push({
     id: "demo-" + Date.now(),
     name: item.name,
@@ -187,18 +188,12 @@ const pushDemoMessage = async () => {
     wishes.value.shift();
   }
 
-  demoIndex++;
-
-  if (demoIndex >= demoMessages.length) {
-    demoIndex = 0;
-  }
-
+  demoIndex = (demoIndex + 1) % demoMessages.length;
   await scrollToBottom();
 };
 
 const spawnFloating = (emoji) => {
   const id = Date.now() + Math.random();
-
   floatingReactions.value.push({
     id,
     emoji,
@@ -207,17 +202,13 @@ const spawnFloating = (emoji) => {
   });
 
   setTimeout(() => {
-    floatingReactions.value =
-      floatingReactions.value.filter(f => f.id !== id);
+    floatingReactions.value = floatingReactions.value.filter(f => f.id !== id);
   }, 4000);
 };
 
 const spawnRandomReaction = () => {
-  const emoji =
-    quickEmojis[Math.floor(Math.random() * quickEmojis.length)];
-
-  const count = emoji === "❤️" ? 4 : 2;
-
+  const emoji = quickEmojis[Math.floor(Math.random() * quickEmojis.length)];
+  const count = emoji === "❤️" ? 3 : 1;
   for (let i = 0; i < count; i++) {
     spawnFloating(emoji);
   }
@@ -226,27 +217,17 @@ const spawnRandomReaction = () => {
 const startAutoReaction = () => {
   const run = () => {
     spawnRandomReaction();
-
-    autoReactionTimer = setTimeout(
-      run,
-      4000 + Math.random() * 3000
-    );
+    autoReactionTimer = setTimeout(run, 5000 + Math.random() * 4000);
   };
-
   run();
 };
 
 const listenRealtimeChat = () => {
-  chatRef = query(
-    dbRef(db, "wishes"),
-    limitToLast(limitMess + 1)
-  );
-  
+  chatRef = query(dbRef(db, "wishes"), limitToLast(limitMess + 1));
   let loaded = false;
 
   onChildAdded(chatRef, async (snapshot) => {
     const item = snapshot.val();
-
     if (!item) return;
 
     wishes.value.push({
@@ -256,9 +237,7 @@ const listenRealtimeChat = () => {
       avatarBg: randomAvatar()
     });
 
-    realCount.value = wishes.value.filter(
-      i => !String(i.id).startsWith("demo-")
-    ).length;
+    realCount.value = wishes.value.filter(i => !String(i.id).startsWith("demo-")).length;
 
     if (wishes.value.length > limitMess) {
       wishes.value.shift();
@@ -277,19 +256,14 @@ const listenRealtimeChat = () => {
 
 const listenRealtimeReaction = () => {
   reactionRef = dbRef(db, "reactions");
-
   let loaded = false;
 
   onChildAdded(reactionRef, (snapshot) => {
     if (!loaded) return;
-
     const data = snapshot.val();
-
     if (!data?.emoji) return;
 
-    const count = data.emoji === "❤️" ? 4 : 2;
-
-    for (let i = 0; i < count; i++) {
+    for (let i = 0; i < 2; i++) {
       spawnFloating(data.emoji);
     }
   });
@@ -301,6 +275,7 @@ const listenRealtimeReaction = () => {
 
 const emitReaction = async (emoji) => {
   showReactionMenu.value = false;
+  spawnFloating(emoji);
 
   await push(dbRef(db, "reactions"), {
     emoji,
@@ -308,22 +283,20 @@ const emitReaction = async (emoji) => {
   });
 };
 
-const closeReactionMenu = () => {
-  showReactionMenu.value = false;
-};
-
 const toggleReactionMenu = () => {
   showReactionMenu.value = !showReactionMenu.value;
+};
+
+const closeReactionMenu = () => {
+  showReactionMenu.value = false;
 };
 
 onMounted(() => {
   listenRealtimeChat();
   listenRealtimeReaction();
-
   startAutoReaction();
 
-  demoTimer = setInterval(pushDemoMessage, 8000);
-
+  demoTimer = setInterval(pushDemoMessage, 9000);
   window.addEventListener("click", closeReactionMenu);
 });
 
@@ -334,48 +307,42 @@ onUnmounted(() => {
 
   window.removeEventListener("click", closeReactionMenu);
 
-  if (chatRef) {
-    off(chatRef);
-  }
-
-  if (reactionRef) {
-    off(reactionRef);
-  }
+  if (chatRef) off(chatRef);
+  if (reactionRef) off(reactionRef);
 });
 </script>
+
 <style scoped>
-.tiktok-chat-widget {
+.live-wishes-widget {
   position: fixed;
-  left: 16px;
-  bottom: 16px;
-  z-index: 9999;
+  left: 20px;
+  bottom: 20px;
+  z-index: 9998;
   display: flex;
   flex-direction: column;
   align-items: flex-start;
   gap: 12px;
-  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-  max-width: 70%;
 }
 
-.chat-toggle-btn {
-  width: 44px;
-  height: 44px;
+.widget-toggle-btn {
+  width: 50px;
+  height: 50px;
   border-radius: 50%;
-  border: none;
-  background: linear-gradient(135deg, #a23946, #802833);
+  border: 1.5px solid #dfba73;
+  background: linear-gradient(135deg, #8f2e36, #a23946);
   color: #ffffff;
-  font-size: 18px;
+  font-size: 20px;
   cursor: pointer;
   display: flex;
   align-items: center;
   justify-content: center;
-  box-shadow: 0 4px 15px rgba(162, 57, 70, 0.3);
-  transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+  box-shadow: 0 6px 20px rgba(143, 46, 54, 0.35);
+  transition: transform 0.3s ease;
   position: relative;
 }
 
-.chat-toggle-btn:hover {
-  transform: scale(1.05);
+.widget-toggle-btn:hover {
+  transform: scale(1.08);
 }
 
 .toggle-badge {
@@ -385,152 +352,160 @@ onUnmounted(() => {
   background: #dc2626;
   color: white;
   font-size: 10px;
-  font-weight: bold;
+  font-weight: 700;
   padding: 2px 6px;
   border-radius: 10px;
-  border: 2px solid #fffdfa;
+  border: 1.5px solid #ffffff;
 }
 
-.live-chat-container {
+.live-chat-panel {
   width: 320px;
-  max-width: 100%;
-  height: 350px;
-  border: 1px solid rgba(255, 255, 255, 0.15);
-  background: rgba(255, 253, 250, 0.25);
-  backdrop-filter: blur(20px);
-  -webkit-backdrop-filter: blur(20px);
-  border-radius: 16px;
-  overflow: hidden;
+  max-width: 85vw;
+  height: 360px;
+  background: rgba(255, 255, 255, 0.88);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid rgba(200, 165, 92, 0.4);
+  border-radius: var(--radius-md);
+  box-shadow: 0 15px 45px rgba(0, 0, 0, 0.18);
   display: flex;
   flex-direction: column;
-  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.08);
-  animation: slideUp 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+  overflow: hidden;
+  animation: slidePanel 0.35s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 .chat-header {
-  background: rgba(255, 255, 255, 0.15);
   padding: 10px 14px;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  background: rgba(200, 165, 92, 0.12);
+  border-bottom: 1px solid rgba(200, 165, 92, 0.25);
   display: flex;
   align-items: center;
-  gap: 8px;
+  gap: 10px;
 }
 
-.live-badge {
+.live-indicator {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
   background: #dc2626;
-  color: #ffffff;
+  color: #fff;
+  padding: 2px 7px;
+  border-radius: 4px;
   font-size: 9px;
   font-weight: 700;
-  padding: 2px 6px;
-  border-radius: 4px;
   letter-spacing: 0.5px;
-  animation: pulse 1.5s infinite;
+}
+
+.live-dot {
+  width: 5px;
+  height: 5px;
+  background: #fff;
+  border-radius: 50%;
+  animation: pulseDot 1.5s infinite;
 }
 
 .chat-title {
-  font-size: 12px;
+  font-family: var(--font-body);
+  font-size: 12.5px;
   font-weight: 600;
-  color: #33261c;
+  color: var(--wine-red);
 }
 
-.chat-messages-box {
+.chat-messages-scroll {
   flex: 1;
   overflow-y: auto;
-  padding: 10px 14px;
+  padding: 12px;
   display: flex;
   flex-direction: column;
-  gap: 8px;
-  scroll-behavior: smooth;
+  gap: 10px;
 }
 
-.chat-item {
+.message-bubble {
   display: flex;
   gap: 8px;
   align-items: flex-start;
-  background: rgba(255, 255, 255, 0.25);
-  padding: 6px 10px;
+  background: rgba(255, 255, 255, 0.8);
+  border: 1px solid rgba(200, 165, 92, 0.2);
+  padding: 8px 10px;
   border-radius: 10px;
-  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.02);
-  max-width: 90%;
-  animation: popIn 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.03);
 }
 
-.chat-avatar {
-  width: 24px;
-  height: 24px;
+.user-avatar {
+  width: 26px;
+  height: 26px;
   border-radius: 50%;
   color: #ffffff;
   font-size: 11px;
-  font-weight: 600;
+  font-weight: 700;
   display: flex;
   align-items: center;
   justify-content: center;
   flex-shrink: 0;
 }
 
-.chat-content {
+.user-content {
   display: flex;
   flex-direction: column;
-  gap: 1px;
+  gap: 2px;
+  overflow: hidden;
 }
 
-.chat-user-name {
-  font-size: 11px;
+.user-name {
+  font-size: 11.5px;
   font-weight: 700;
-  color: #44352a;
+  color: var(--wine-red);
 }
 
-.chat-text {
+.user-text {
   font-size: 12px;
-  color: #1a120c;
+  color: var(--text-main);
   margin: 0;
-  line-height: 1.35;
+  line-height: 1.4;
   word-break: break-word;
-  white-space: pre-line;
 }
 
-.empty-chat {
+.empty-notice {
   text-align: center;
-  color: #554638;
-  font-style: italic;
+  color: var(--text-muted);
   font-size: 12px;
   margin: auto 0;
+  font-style: italic;
 }
 
-.chat-footer-trigger {
-  padding: 10px 14px;
-  background: rgba(255, 255, 255, 0.1);
-  border-top: 1px solid rgba(255, 255, 255, 0.08);
+.chat-action-footer {
+  padding: 10px 12px;
+  background: #ffffff;
+  border-top: 1px solid rgba(200, 165, 92, 0.2);
   display: flex;
   align-items: center;
-  gap: 10px;
+  gap: 8px;
 }
 
-.fake-input {
+.trigger-input {
   flex: 1;
-  background: rgba(255, 255, 255, 0.25);
-  color: #44352a;
-  font-size: 12px;
-  padding: 8px 14px;
+  background: #fbf8f3;
+  border: 1px solid rgba(200, 165, 92, 0.3);
   border-radius: 20px;
-  border: 1px solid rgba(255, 255, 255, 0.15);
-  transition: all 0.2s ease;
+  padding: 7px 12px;
+  font-size: 12px;
+  color: var(--text-muted);
   cursor: pointer;
+  transition: all 0.2s ease;
 }
 
-.fake-input:hover {
-  background: rgba(255, 255, 255, 0.4);
+.trigger-input:hover {
+  background: #ffffff;
+  border-color: var(--wine-red);
 }
 
-.reaction-wrapper {
+.reaction-trigger-wrap {
   position: relative;
-  display: inline-block;
 }
 
-.reaction-trigger-btn {
-  background: rgba(255, 255, 255, 0.3);
-  border: 1px solid rgba(255, 255, 255, 0.2);
-  font-size: 16px;
+.btn-heart-reaction {
+  background: #fbf8f3;
+  border: 1px solid rgba(200, 165, 92, 0.3);
   width: 32px;
   height: 32px;
   border-radius: 50%;
@@ -538,12 +513,12 @@ onUnmounted(() => {
   display: flex;
   align-items: center;
   justify-content: center;
-  transition: transform 0.2s;
+  font-size: 16px;
+  transition: transform 0.2s ease;
 }
 
-.reaction-trigger-btn:hover {
+.btn-heart-reaction:hover {
   transform: scale(1.15);
-  background: rgba(255, 255, 255, 0.5);
 }
 
 .reaction-popover {
@@ -556,165 +531,85 @@ onUnmounted(() => {
   display: flex;
   gap: 8px;
   box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
-  border: 1px solid rgba(0, 0, 0, 0.06);
+  border: 1px solid rgba(200, 165, 92, 0.3);
   z-index: 10;
 }
 
-.emoji-btn {
+.emoji-choice {
   background: none;
   border: none;
-  font-size: 20px;
+  font-size: 18px;
   cursor: pointer;
-  transition: transform 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-  padding: 0;
+  transition: transform 0.2s ease;
 }
 
-.emoji-btn:hover {
-  transform: scale(1.4) translateY(-4px);
+.emoji-choice:hover {
+  transform: scale(1.3);
 }
 
-.pop-scale-enter-active {
-  transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
-}
-.pop-scale-leave-active {
-  transition: all 0.2s ease-in;
-}
-.pop-scale-enter-from {
-  opacity: 0;
-  transform: scale(0.5) translateY(15px);
-}
-.pop-scale-leave-to {
-  opacity: 0;
-  transform: scale(0.8) translateY(10px);
-}
-
-.floating-reactions-container {
+.floating-emojis-layer {
   position: absolute;
-  right: 20px;
+  right: 10px;
   bottom: 60px;
-  width: 80px;
-  height: 250px;
+  width: 70px;
+  height: 240px;
   pointer-events: none;
   overflow: hidden;
   z-index: 999;
 }
 
-.floating-emoji {
+.floating-item {
   position: absolute;
   bottom: 0;
-  font-size: 24px;
+  font-size: 22px;
   opacity: 0;
-  animation: floatUp ease-in-out forwards;
+  animation: floatEmoji ease-in-out forwards;
 }
 
-.toast-notification {
+.global-toast {
   position: fixed;
   bottom: 30px;
   left: 50%;
   transform: translateX(-50%);
+  background: #ffffff;
+  border: 1.5px solid #c8a55c;
+  color: var(--wine-red);
+  padding: 10px 22px;
+  border-radius: 50px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
   display: flex;
   align-items: center;
-  gap: 12px;
-  padding: 12px 24px;
-  border-radius: 50px;
-  box-shadow: 0 10px 30px rgba(74, 59, 47, 0.2);
-  z-index: 10001;
-  min-width: 280px;
-  justify-content: center;
-}
-
-.toast-notification.success {
-  background: #fffdfa;
-  border: 1px solid #b38b4d;
-  color: #a23946;
-}
-
-.toast-notification.error {
-  background: #fff1f2;
-  border: 1px solid #fda4af;
-  color: #be123c;
-}
-
-.toast-icon {
-  font-size: 20px;
-  filter: drop-shadow(0px 2px 4px rgba(0, 0, 0, 0.15));
-  animation: popIn 0.3s ease;
-}
-
-.toast-text {
+  gap: 10px;
+  z-index: 10005;
   font-size: 13.5px;
   font-weight: 600;
-  line-height: 1.4;
 }
 
-.toast-fade-enter-active {
-  transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-}
-.toast-fade-leave-active {
-  transition: all 0.3s ease-in;
-}
-.toast-fade-enter-from {
-  opacity: 0;
-  transform: translate(-50%, 20px);
-}
-.toast-fade-leave-to {
-  opacity: 0;
-  transform: translate(-50%, -10px);
+@keyframes slidePanel {
+  from { opacity: 0; transform: translateY(15px); }
+  to { opacity: 1; transform: translateY(0); }
 }
 
-.list-enter-active {
-  transition: all 0.4s ease-out;
-}
-.list-enter-from {
-  opacity: 0;
-  transform: translateY(20px);
-}
-
-@keyframes floatUp {
-  0% {
-    transform: translateY(0) scale(0.6) translateX(0);
-    opacity: 0;
-  }
-  10% {
-    opacity: 1;
-    transform: translateY(-20px) scale(1.1) translateX(5px);
-  }
-  50% {
-    transform: translateY(-100px) scale(1) translateX(-10px);
-  }
-  80% {
-    opacity: 0.8;
-  }
-  100% {
-    transform: translateY(-240px) scale(0.8) translateX(8px);
-    opacity: 0;
-  }
-}
-
-@keyframes pulse {
+@keyframes pulseDot {
   0%, 100% { opacity: 1; }
-  50% { opacity: 0.5; }
+  50% { opacity: 0.4; }
 }
 
-@keyframes popIn {
-  from { transform: scale(0.9); opacity: 0; }
-  to { transform: scale(1); opacity: 1; }
-}
-
-@keyframes slideUp {
-  from { transform: translateY(20px); opacity: 0; }
-  to { transform: translateY(0); opacity: 1; }
+@keyframes floatEmoji {
+  0% { transform: translateY(0) scale(0.5); opacity: 0; }
+  15% { opacity: 1; }
+  50% { transform: translateY(-100px) translateX(-10px) scale(1); }
+  100% { transform: translateY(-220px) translateX(10px) scale(0.8); opacity: 0; }
 }
 
 @media (max-width: 480px) {
-  .tiktok-chat-widget {
-    left: 10px;
-    bottom: 10px;
-    max-width: 70%;
+  .live-wishes-widget {
+    left: 12px;
+    bottom: 12px;
   }
-  .live-chat-container {
-    width: 100%;
-    height: 280px;
+  .live-chat-panel {
+    width: 290px;
+    height: 310px;
   }
 }
 </style>

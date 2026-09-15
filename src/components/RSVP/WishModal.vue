@@ -2,32 +2,44 @@
   <Transition name="modal-fade">
     <div v-if="modelValue" class="wish-modal-overlay" @click.self="closeModal">
       <div class="wish-modal-content">
+        
         <div class="modal-header">
-          <h3>Gửi Lời Chúc</h3>
+          <div class="header-title-wrap">
+            <span class="header-icon">💌</span>
+            <h3>Gửi Lời Chúc Mừng</h3>
+          </div>
           <button class="modal-close" @click="closeModal">✕</button>
         </div>
+
         <div class="wish-form">
-          <div class="mb-4">
+          <div class="form-group">
+            <label class="form-label">Tên của bạn:</label>
             <input
               v-model="name"
               type="text"
               class="form-control"
-              placeholder="Họ và tên của bạn..."
+              placeholder="Nhập tên hoặc danh xưng..."
+              maxlength="50"
             >
           </div>
-          <div class="mb-4">
+
+          <div class="form-group">
+            <label class="form-label">Lời chúc phúc:</label>
             <textarea
               v-model="message"
               rows="4"
               class="form-control"
-              placeholder="Nhập lời chúc ý nghĩa gửi đến cặp đôi..."
+              placeholder="Gửi gắm những lời chúc ý nghĩa nhất đến Hoàng Thiện & Phan Linh..."
+              maxlength="300"
             ></textarea>
           </div>
+
           <button class="btn btn-submit" @click="submitWish" :disabled="loading">
-            <span v-if="loading">⏳ Đang gửi...</span>
-            <span v-else>✦ Gửi lời chúc</span>
+            <span v-if="loading">⏳ Đang gửi lời chúc...</span>
+            <span v-else>✦ Gửi Lời Chúc Hạnh Phúc</span>
           </button>
         </div>
+
       </div>
     </div>
   </Transition>
@@ -60,12 +72,12 @@ const submitWish = async () => {
   if (loading.value) return;
 
   if (!name.value.trim()) {
-    emit("toast", "Hãy cho chúng mình biết bạn là ai nhé!!", "error", "🥺");
+    emit("toast", "Hãy cho chúng mình biết bạn là ai nhé!", "error", "🥺");
     return;
   }
 
   if (!message.value.trim()) {
-    emit("toast", "Bạn không có lời chúc gì gửi đến bọn mình sao!!", "error", "😥");
+    emit("toast", "Hãy gửi vài lời chúc tốt đẹp đến cặp đôi bạn nhé!", "error", "✍️");
     return;
   }
 
@@ -80,26 +92,27 @@ const submitWish = async () => {
   try {
     await push(dbRef(db, "wishes"), wish);
 
-    fetch(props.scriptUrl, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/x-www-form-urlencoded"
-      },
-      body: new URLSearchParams({
-        name: wish.name,
-        message: wish.message
-      })
-    }).catch(() => {});
+    if (props.scriptUrl) {
+      fetch(props.scriptUrl, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/x-www-form-urlencoded"
+        },
+        body: new URLSearchParams({
+          name: wish.name,
+          message: wish.message
+        })
+      }).catch(() => {});
+    }
 
-    emit("toast", "Gửi lời chúc thành công ❤️", "success", "❤️");
+    emit("toast", "Gửi lời chúc thành công! Cảm ơn bạn rất nhiều ❤️", "success", "❤️");
 
     name.value = "";
     message.value = "";
-
     closeModal();
   } catch (e) {
     console.error(e);
-    emit("toast", "Không thể kết nối Firebase.", "error", "⚠️");
+    emit("toast", "Gửi thất bại, bạn thử lại sau nhé.", "error", "⚠️");
   } finally {
     loading.value = false;
   }
@@ -109,88 +122,105 @@ const submitWish = async () => {
 <style scoped>
 .wish-modal-overlay {
   position: fixed;
-  top: 0;
-  left: 0;
-  width: 100vw;
-  height: 100vh;
-  background: rgba(0, 0, 0, 0.4);
-  backdrop-filter: blur(4px);
-  z-index: 10000;
+  inset: 0;
+  background: rgba(15, 10, 12, 0.75);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  z-index: 10002;
   display: flex;
   align-items: center;
   justify-content: center;
   padding: 16px;
-  box-sizing: border-box;
 }
 
 .wish-modal-content {
-  background: #fffdfa;
-  border-radius: 20px;
+  background: #ffffff;
+  border-radius: var(--radius-md);
+  border: 1.5px solid #c8a55c;
   width: 100%;
-  max-width: 420px;
-  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.25);
+  max-width: 440px;
+  box-shadow: 0 25px 60px rgba(0, 0, 0, 0.35);
   overflow: hidden;
-  animation: modalZoom 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+  animation: modalZoom 0.35s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 .modal-header {
   padding: 18px 24px;
-  background: #ffffff;
-  border-bottom: 1px solid rgba(179, 139, 77, 0.12);
+  background: linear-gradient(135deg, #8f2e36, #a23946);
   display: flex;
   align-items: center;
   justify-content: space-between;
 }
 
+.header-title-wrap {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.header-icon {
+  font-size: 18px;
+}
+
 .modal-header h3 {
   margin: 0;
   font-size: 18px;
-  color: #a23946;
-  font-family: serif;
+  color: #ffd778;
+  font-family: var(--font-serif);
+  font-weight: 600;
 }
 
 .modal-close {
-  background: none;
+  background: rgba(255, 255, 255, 0.2);
   border: none;
-  font-size: 18px;
-  color: #a39689;
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  font-size: 14px;
+  color: #ffffff;
   cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .modal-close:hover {
-  color: #a23946;
+  background: rgba(255, 255, 255, 0.4);
 }
 
 .wish-form {
   padding: 24px;
-  box-sizing: border-box;
 }
 
-.mb-4 {
-  margin-bottom: 16px;
+.form-group {
+  margin-bottom: 18px;
+}
+
+.form-label {
+  display: block;
+  font-size: 13px;
+  font-weight: 600;
+  color: #4a3b2f;
+  margin-bottom: 6px;
 }
 
 .form-control {
   width: 100%;
-  border: 1px solid rgba(179, 139, 77, 0.3);
-  background: #ffffff;
+  border: 1px solid rgba(200, 165, 92, 0.4);
+  background: #fdfaf6;
   border-radius: 8px;
-  padding: 12px 16px;
-  color: #4a3b2f;
+  padding: 12px 14px;
+  color: #33261c;
   font-size: 14px;
-  box-sizing: border-box;
+  font-family: var(--font-body);
   outline: none;
   transition: all 0.3s ease;
 }
 
-.form-control::placeholder {
-  color: #a39689;
-  opacity: 0.7;
-}
-
 .form-control:focus {
-  border-color: #a23946;
-  box-shadow: 0 0 0 3px rgba(162, 57, 70, 0.08);
+  border-color: #8f2e36;
+  background: #ffffff;
+  box-shadow: 0 0 0 3px rgba(143, 46, 54, 0.1);
 }
 
 textarea.form-control {
@@ -201,20 +231,21 @@ textarea.form-control {
 .btn-submit {
   width: 100%;
   border: none;
-  background: linear-gradient(135deg, #a23946, #802833);
-  color: #fffdfa;
-  border-radius: 50px;
-  padding: 12px;
-  font-size: 14px;
+  background: linear-gradient(135deg, #8f2e36, #a23946);
+  color: #ffffff;
+  border-radius: var(--radius-pill);
+  padding: 13px;
+  font-size: 14.5px;
   font-weight: 600;
   cursor: pointer;
-  box-shadow: 0 4px 12px rgba(162, 57, 70, 0.2);
+  box-shadow: 0 4px 15px rgba(143, 46, 54, 0.25);
   transition: all 0.3s ease;
+  margin-top: 6px;
 }
 
 .btn-submit:hover {
-  transform: translateY(-1px);
-  box-shadow: 0 6px 16px rgba(162, 57, 70, 0.3);
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(143, 46, 54, 0.35);
 }
 
 .btn-submit:disabled {
@@ -223,21 +254,15 @@ textarea.form-control {
   transform: none;
 }
 
+@keyframes modalZoom {
+  from { opacity: 0; transform: scale(0.92); }
+  to { opacity: 1; transform: scale(1); }
+}
+
 .modal-fade-enter-active, .modal-fade-leave-active {
   transition: opacity 0.3s ease;
 }
 .modal-fade-enter-from, .modal-fade-leave-to {
   opacity: 0;
-}
-
-@keyframes modalZoom {
-  from { transform: scale(0.9); opacity: 0; }
-  to { transform: scale(1); opacity: 1; }
-}
-
-@media (max-width: 480px) {
-  .wish-modal-content {
-    max-width: 100%;
-  }
 }
 </style>

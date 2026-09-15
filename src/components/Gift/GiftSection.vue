@@ -1,403 +1,468 @@
 <template>
-  <section class="gift-section">
+  <section class="gift-section" id="gift">
     <div class="container">
 
-      <div class="section-title text-center">
-        <span class="sub-title">WEDDING GIFT</span>
-        <div class="title-group">
-          <div class="decorator-line"></div>
-          <h2>Phong Bao Mừng Cưới</h2>
-          <div class="decorator-line"></div>
+      <div class="section-header">
+        <span class="section-sub">WEDDING GIFT</span>
+        <div class="section-title-wrap">
+          <div class="line"></div>
+          <h2 class="section-main-title">Hộp Mừng Cưới</h2>
+          <div class="line"></div>
         </div>
-        <p class="title-desc">Nhấn vào phong bao để mở mã QR</p>
+        <p class="section-desc">Gửi trao yêu thương & lời chúc phúc may mắn đến đôi uyên ương</p>
       </div>
 
-      <button class="envelope-btn" @click="open = true">
-        <div class="coin coin-1"></div>
-        <div class="coin coin-2"></div>
-        <div class="coin coin-3"></div>
-        <div class="coin coin-4"></div>
-        <div class="coin coin-5"></div>
-        <div class="coin coin-6"></div>
-        <div class="coin coin-7"></div>
-        <div class="coin coin-8"></div>
-        <div class="coin coin-9"></div>
-        <div class="coin coin-10"></div>
+      <!-- NÚT PHONG BAO MỪNG CƯỚI -->
+      <div class="envelope-container">
+        <button class="royal-envelope-btn" @click="openModal = true">
+          <div class="envelope-shimmer"></div>
 
-        <span class="spark s1">✦</span>
-        <span class="spark s2">✦</span>
-        <span class="spark s3">✦</span>
+          <!-- Các hạt lấp lánh & tiền xu bay bay -->
+          <span class="sparkle sp-1">✦</span>
+          <span class="sparkle sp-2">✦</span>
+          <span class="sparkle sp-3">✦</span>
+          <span class="sparkle sp-4">✦</span>
 
-        <div class="envelope">
-          <div class="envelope-lines">
-            <div class="corner tl"></div>
-            <div class="corner tr"></div>
-            <div class="corner bl"></div>
-            <div class="corner br"></div>
-            <div class="seal">囍</div>
-          </div>
-        </div>
-      </button>
-
-      <div v-if="open" class="modal" @click.self="open = false">
-        <div class="modal-box">
-          <div class="modal-header">
-            <div class="header-blank"></div>
-            <h3>QR Mừng Cưới</h3>
-            <button class="close-icon" @click="open = false">✕</button>
-          </div>
-
-          <div class="modal-body">
-            <div class="qr-wrapper">
-              <img src="/images/bank.jpg" alt="QR" />
-            </div>
-
-            <div class="actions">
-              <button class="btn download" @click="downloadQR">
-                📍 Tải mã QR về máy
-              </button>
+          <div class="envelope-body">
+            <div class="envelope-border-inner">
+              <div class="envelope-wax-seal">
+                <span>囍</span>
+              </div>
+              <p class="envelope-text">MỪNG CƯỚI</p>
+              <span class="envelope-hint">Chạm để mở QR mừng cưới</span>
             </div>
           </div>
-        </div>
+        </button>
       </div>
+
+      <!-- MODAL QR MỪNG CƯỚI -->
+      <Transition name="modal-fade">
+        <div v-if="openModal" class="gift-modal-overlay" @click.self="openModal = false">
+          <div class="gift-modal-card">
+            
+            <div class="modal-top-bar">
+              <h3 class="modal-heading">Gửi Mừng Hạnh Phúc</h3>
+              <button class="btn-close-modal" @click="openModal = false">✕</button>
+            </div>
+
+            <div class="modal-content-body">
+              <p class="modal-subtext">
+                Cảm ơn tình cảm yêu thương và sự chúc phúc quý báu từ Quý vị!
+              </p>
+
+              <div class="qr-display-box">
+                <img src="/images/bank.jpg" alt="Mã QR mừng cưới" class="qr-image" />
+              </div>
+
+              <!-- Thông tin chuyển khoản & Copy STK -->
+              <div class="bank-details-box">
+                <div class="bank-info-row">
+                  <span class="bank-label">Ngân hàng:</span>
+                  <strong class="bank-val">MB BANK</strong>
+                </div>
+
+                <div class="bank-info-row">
+                  <span class="bank-label">Chủ tài khoản:</span>
+                  <strong class="bank-val">LE HOANG THIEN</strong>
+                </div>
+
+                <div class="bank-info-row account-num-row">
+                  <span class="bank-label">Số tài khoản:</span>
+                  <strong class="bank-val stk-highlight">{{ accountNumber }}</strong>
+                  <button class="btn-copy-stk" @click="copyAccountNumber">
+                    {{ copied ? '✓ Đã chép' : '📋 Sao chép' }}
+                  </button>
+                </div>
+              </div>
+
+              <div class="modal-actions">
+                <button class="btn-download-qr" @click="downloadQR">
+                  📥 Tải mã QR về máy
+                </button>
+              </div>
+            </div>
+
+          </div>
+        </div>
+      </Transition>
+
+      <!-- Toast thông báo -->
+      <Transition name="toast-fade">
+        <div v-if="toastShow" class="copy-toast">
+          <span>✨ {{ toastMessage }}</span>
+        </div>
+      </Transition>
 
     </div>
   </section>
 </template>
 
 <script setup>
-import { ref } from "vue"
+import { ref } from 'vue'
 
-const open = ref(false)
+const openModal = ref(false)
+const accountNumber = ref('0908889999') // Số tài khoản ngân hàng
+const copied = ref(false)
+const toastShow = ref(false)
+const toastMessage = ref('')
+
+const showToast = (msg) => {
+  toastMessage.value = msg
+  toastShow.value = true
+  setTimeout(() => {
+    toastShow.value = false
+  }, 3000)
+}
+
+const copyAccountNumber = async () => {
+  try {
+    await navigator.clipboard.writeText(accountNumber.value)
+    copied.value = true
+    showToast('Đã sao chép số tài khoản vào bộ nhớ đệm!')
+    setTimeout(() => {
+      copied.value = false
+    }, 2500)
+  } catch (err) {
+    showToast('Không thể tự động sao chép, bạn vui lòng chép thủ công nhé!')
+  }
+}
 
 const downloadQR = () => {
-  const link = document.createElement("a")
-  link.href = "/images/bank.jpg"
-  link.download = "qr-mung-cuoi.jpg"
+  const link = document.createElement('a')
+  link.href = '/images/bank.jpg'
+  link.download = 'qr-mung-cuoi-hoang-thien-phan-linh.jpg'
   link.click()
+  showToast('Đang tải mã QR...')
 }
 </script>
 
 <style scoped>
 .gift-section {
-  padding: 80px 16px;
+  padding: 90px 16px;
+  position: relative;
   text-align: center;
 }
 
-.section-title {
-  margin-bottom: 40px;
+.container {
+  max-width: 900px;
+  margin: 0 auto;
 }
 
-.sub-title {
-  display: block;
-  font-size: 12px;
-  font-weight: 600;
-  letter-spacing: 4px;
-  color: #b38b4d;
-  text-transform: uppercase;
-  margin-bottom: 8px;
-}
-
-.title-group {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 20px;
-}
-
-.decorator-line {
-  width: 50px;
-  height: 1px;
-  background: linear-gradient(to right, transparent, #b38b4d, transparent);
-}
-
-.section-title h2 {
-  font-family: serif;
-  font-size: 34px;
-  font-weight: 600;
-  color: #a23946;
-  margin: 0;
-  letter-spacing: 0.5px;
-}
-
-.title-desc {
-  font-size: 14px;
-  color: #7a6b5c;
+.section-desc {
+  color: var(--text-muted);
+  font-size: 14.5px;
   margin-top: 10px;
   font-style: italic;
 }
 
-.envelope-btn {
-  width: 240px;
+.envelope-container {
+  margin: 40px auto 0;
+  display: flex;
+  justify-content: center;
+}
+
+.royal-envelope-btn {
+  position: relative;
+  width: 260px;
   height: 320px;
-  position: relative;
-  margin: 20px auto 0;
-  border: none;
   background: transparent;
+  border: none;
   cursor: pointer;
-  overflow: visible;
-  display: block;
   outline: none;
+  transition: transform 0.4s ease;
 }
 
-.envelope {
-  width: 150px;
-  height: 220px;
-  margin: 0 auto;
-  position: relative;
-  border-radius: 12px;
-  background: linear-gradient(145deg, #a23946, #802833);
-  border: 1px solid rgba(179, 139, 77, 0.3);
-  box-shadow: 0 15px 40px rgba(74, 59, 47, 0.18);
-  padding: 6px;
-  box-sizing: border-box;
-  animation: shake 3s ease-in-out infinite;
+.royal-envelope-btn:hover {
+  transform: scale(1.04);
 }
 
-.envelope-lines {
+.envelope-body {
   width: 100%;
   height: 100%;
-  border: 1px solid rgba(179, 139, 77, 0.4);
-  border-radius: 8px;
+  border-radius: 16px;
+  background: linear-gradient(145deg, #a23946 0%, #802833 70%, #59161e 100%);
+  border: 2px solid #c8a55c;
+  padding: 10px;
+  box-sizing: border-box;
+  box-shadow: 0 20px 50px rgba(143, 46, 54, 0.25);
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  overflow: hidden;
+  animation: gentleWiggle 4s ease-in-out infinite;
+}
+
+.envelope-border-inner {
+  width: 100%;
+  height: 100%;
+  border: 1px dashed rgba(255, 215, 0, 0.5);
+  border-radius: 10px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  box-sizing: border-box;
   position: relative;
 }
 
-.seal {
-  width: 54px;
-  height: 54px;
+.envelope-wax-seal {
+  width: 68px;
+  height: 68px;
   border-radius: 50%;
-  background: linear-gradient(135deg, #fff3c4, #b38b4d);
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
+  background: radial-gradient(circle at 35% 35%, #ffd778 0%, #c8a55c 80%, #916c27 100%);
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
   display: flex;
   align-items: center;
   justify-content: center;
+  margin-bottom: 20px;
+  border: 2px solid #ffffff;
+}
+
+.envelope-wax-seal span {
+  font-family: var(--font-serif);
+  font-size: 30px;
+  color: #802833;
   font-weight: bold;
-  font-size: 24px;
-  color: #a23946;
-  border: 1px solid #ffffff;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
 }
 
-.corner {
-  position: absolute;
-  width: 16px;
-  height: 16px;
+.envelope-text {
+  font-family: var(--font-serif);
+  font-size: 20px;
+  letter-spacing: 4px;
+  color: #ffd778;
+  font-weight: 700;
+  margin: 0 0 6px;
 }
 
-.tl { top: 6px; left: 6px; border-top: 2px solid rgba(179, 139, 77, 0.6); border-left: 2px solid rgba(179, 139, 77, 0.6); }
-.tr { top: 6px; right: 6px; border-top: 2px solid rgba(179, 139, 77, 0.6); border-right: 2px solid rgba(179, 139, 77, 0.6); }
-.bl { bottom: 6px; left: 6px; border-bottom: 2px solid rgba(179, 139, 77, 0.6); border-left: 2px solid rgba(179, 139, 77, 0.6); }
-.br { bottom: 6px; right: 6px; border-bottom: 2px solid rgba(179, 139, 77, 0.6); border-right: 2px solid rgba(179, 139, 77, 0.6); }
-
-.coin {
-  position: absolute;
-  border-radius: 50%;
-  background: radial-gradient(circle, #fff3c4, #b38b4d);
-  border: 1px solid #ffffff;
-  box-shadow: 0 3px 8px rgba(74, 59, 47, 0.15);
-  opacity: 0;
-  animation: floatWide 3.5s linear infinite;
-}
-
-.coin-1  { width: 20px; height: 20px; left: -10%; top: 70%; animation-delay: 0s }
-.coin-2  { width: 14px; height: 14px; left: 0%;   top: 80%; animation-delay: 0.3s }
-.coin-3  { width: 18px; height: 18px; left: 15%;  top: 85%; animation-delay: 0.6s }
-.coin-4  { width: 16px; height: 16px; left: 30%;  top: 85%; animation-delay: 0.9s }
-.coin-5  { width: 22px; height: 22px; left: 45%;  top: 80%; animation-delay: 1.2s }
-.coin-6  { width: 14px; height: 14px; left: 60%;  top: 85%; animation-delay: 1.5s }
-.coin-7  { width: 18px; height: 18px; left: 75%;  top: 80%; animation-delay: 1.8s }
-.coin-8  { width: 16px; height: 16px; left: 90%;  top: 80%; animation-delay: 2.1s }
-.coin-9  { width: 12px; height: 12px; left: 100%; top: 75%; animation-delay: 2.4s }
-.coin-10 { width: 24px; height: 24px; left: 50%;  top: 88%; animation-delay: 2.7s }
-
-.spark {
-  position: absolute;
-  color: #b38b4d;
+.envelope-hint {
   font-size: 12px;
-  opacity: 0;
-  animation: pulse 2s infinite;
+  color: #fce7b2;
+  font-weight: 400;
+  opacity: 0.9;
 }
 
-.s1 { top: 20%; left: 15%; animation-delay: 0s; }
-.s2 { top: 45%; right: 10%; animation-delay: 0.7s; }
-.s3 { bottom: 30%; left: 10%; animation-delay: 1.4s; }
-
-@keyframes floatWide {
-  0% { transform: translateY(0) scale(0.7); opacity: 0; }
-  15% { opacity: 1; }
-  50% { transform: translateY(-120px) translateX(-20px) scale(1); }
-  100% { transform: translateY(-260px) translateX(30px) scale(1.1); opacity: 0; }
-}
-
-@keyframes shake {
-  0%, 100% { transform: rotate(0deg); }
-  20% { transform: rotate(1.5deg); }
-  40% { transform: rotate(-1.5deg); }
-  60% { transform: rotate(1deg); }
-  80% { transform: rotate(-1deg); }
-}
-
-.hint {
+.sparkle {
   position: absolute;
-  bottom: 15px;
-  left: 50%;
-  transform: translateX(-50%);
-  font-size: 13px;
-  color: #b38b4d;
-  letter-spacing: 1px;
-  font-weight: 500;
+  color: #ffd778;
+  font-size: 16px;
+  pointer-events: none;
+  animation: sparkleTwinkle 2.5s infinite ease-in-out;
 }
 
-.envelope-btn:hover .envelope {
-  border-color: #b38b4d;
-  box-shadow: 0 20px 50px rgba(162, 57, 70, 0.25);
-  transform: scale(1.02);
+.sp-1 { top: 10%; left: -10px; animation-delay: 0s; }
+.sp-2 { top: 20%; right: -10px; animation-delay: 0.7s; }
+.sp-3 { bottom: 15%; left: -5px; animation-delay: 1.4s; }
+.sp-4 { bottom: 25%; right: -15px; animation-delay: 2.1s; }
+
+@keyframes gentleWiggle {
+  0%, 100% { transform: rotate(0deg); }
+  25% { transform: rotate(1deg); }
+  75% { transform: rotate(-1deg); }
+}
+
+@keyframes sparkleTwinkle {
+  0%, 100% { opacity: 0.2; transform: scale(0.8); }
+  50% { opacity: 1; transform: scale(1.3); }
 }
 
 /* MODAL */
-.modal {
+.gift-modal-overlay {
   position: fixed;
   inset: 0;
-  background: rgba(74, 59, 47, 0.4);
-  display: flex;
-  align-items: center;
-  justify-content: center;
+  background: rgba(15, 10, 12, 0.75);
   backdrop-filter: blur(8px);
-  z-index: 9999;
-}
-
-.modal-box {
-  width: 340px;
-  border-radius: 16px;
-  overflow: hidden;
-  background: #fffdfa;
-  border: 1px solid rgba(179, 139, 77, 0.25);
-  box-shadow: 0 25px 60px rgba(74, 59, 47, 0.25);
-  animation: modalFadeIn 0.4s cubic-bezier(0.16, 1, 0.3, 1);
-}
-
-@keyframes modalFadeIn {
-  from { opacity: 0; transform: translateY(15px) scale(0.97); }
-  to { opacity: 1; transform: translateY(0) scale(1); }
-}
-
-.modal-header {
-  background: linear-gradient(135deg, #a23946, #802833);
-  color: #fffdfa;
-  padding: 14px 20px;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  border-bottom: 1px solid rgba(179, 139, 77, 0.2);
-}
-
-.header-blank {
-  width: 28px;
-}
-
-.modal-header h3 {
-  font-family: serif;
-  font-size: 18px;
-  font-weight: 500;
-  margin: 0;
-  letter-spacing: 1px;
-}
-
-.close-icon {
-  border: none;
-  background: rgba(255, 255, 255, 0.15);
-  width: 28px;
-  height: 28px;
-  border-radius: 50%;
-  cursor: pointer;
-  color: #fffdfa;
+  -webkit-backdrop-filter: blur(8px);
+  z-index: 10000;
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 12px;
-  transition: background 0.2s ease;
+  padding: 16px;
 }
 
-.close-icon:hover {
-  background: rgba(255, 255, 255, 0.3);
+.gift-modal-card {
+  width: 100%;
+  max-width: 420px;
+  background: #ffffff;
+  border-radius: var(--radius-md);
+  border: 2px solid #c8a55c;
+  overflow: hidden;
+  box-shadow: 0 25px 60px rgba(0, 0, 0, 0.35);
+  animation: zoomModal 0.35s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
-.modal-body {
-  padding: 24px;
+.modal-top-bar {
+  background: linear-gradient(135deg, #8f2e36, #a23946);
+  color: #ffffff;
+  padding: 16px 20px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.modal-heading {
+  font-family: var(--font-serif);
+  font-size: 19px;
+  color: #ffd778;
+  margin: 0;
+}
+
+.btn-close-modal {
+  background: rgba(255, 255, 255, 0.2);
+  border: none;
+  color: #ffffff;
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  font-size: 15px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.modal-content-body {
+  padding: 24px 20px;
   display: flex;
   flex-direction: column;
   align-items: center;
 }
 
-.qr-wrapper {
-  background: #ffffff;
-  border: 1px solid rgba(179, 139, 77, 0.2);
+.modal-subtext {
+  font-size: 13.5px;
+  color: var(--text-muted);
+  text-align: center;
+  margin-bottom: 18px;
+  line-height: 1.5;
+}
+
+.qr-display-box {
+  background: #fffdfa;
+  border: 1.5px solid rgba(200, 165, 92, 0.4);
   padding: 12px;
   border-radius: 12px;
-  box-shadow: 0 10px 30px rgba(74, 59, 47, 0.05);
+  box-shadow: var(--shadow-sm);
   margin-bottom: 20px;
 }
 
-.qr-wrapper img {
-  width: 200px;
-  height: 200px;
-  object-fit: cover;
+.qr-image {
+  width: 210px;
+  height: 210px;
+  object-fit: contain;
   display: block;
 }
 
-.actions {
+.bank-details-box {
+  width: 100%;
+  background: rgba(200, 165, 92, 0.08);
+  border: 1px dashed rgba(200, 165, 92, 0.4);
+  border-radius: 10px;
+  padding: 14px 16px;
+  margin-bottom: 18px;
+  text-align: left;
+}
+
+.bank-info-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 8px;
+  font-size: 13.5px;
+}
+
+.bank-info-row:last-child {
+  margin-bottom: 0;
+}
+
+.bank-label {
+  color: var(--text-muted);
+}
+
+.bank-val {
+  color: var(--text-main);
+  font-weight: 600;
+}
+
+.stk-highlight {
+  color: var(--wine-red);
+  font-size: 15px;
+  letter-spacing: 1px;
+}
+
+.btn-copy-stk {
+  background: #ffffff;
+  border: 1px solid var(--primary-gold);
+  color: var(--wine-red);
+  font-size: 12px;
+  font-weight: 600;
+  padding: 4px 10px;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.btn-copy-stk:hover {
+  background: var(--wine-red);
+  color: #fff;
+  border-color: var(--wine-red);
+}
+
+.modal-actions {
   width: 100%;
 }
 
-.btn {
+.btn-download-qr {
   width: 100%;
-  padding: 11px;
+  padding: 12px;
+  background: linear-gradient(135deg, #8f2e36, #a23946);
+  color: #ffffff;
   border: none;
-  border-radius: 50px;
-  cursor: pointer;
+  border-radius: var(--radius-pill);
   font-size: 14px;
   font-weight: 600;
+  cursor: pointer;
+  box-shadow: 0 4px 15px rgba(143, 46, 54, 0.25);
   transition: all 0.3s ease;
-  box-sizing: border-box;
 }
 
-.download {
-  background: #fffdfa;
-  border: 1px solid #b38b4d;
-  color: #a23946;
-  box-shadow: 0 4px 15px rgba(74, 59, 47, 0.08);
-}
-
-.download:hover {
-  background: #a23946;
-  color: #fffdfa;
-  border-color: #a23946;
+.btn-download-qr:hover {
   transform: translateY(-2px);
-  box-shadow: 0 6px 20px rgba(162, 57, 70, 0.2);
+  box-shadow: 0 6px 20px rgba(143, 46, 54, 0.35);
 }
 
-@media (max-width: 768px) {
-  .gift-section {
-    padding: 60px 16px;
-  }
+/* TOAST */
+.copy-toast {
+  position: fixed;
+  bottom: 40px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: #1a120c;
+  color: #ffd778;
+  padding: 12px 24px;
+  border-radius: 50px;
+  font-size: 14px;
+  font-weight: 500;
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.35);
+  z-index: 10001;
+}
 
-  .section-title {
-    margin-bottom: 30px;
-  }
+@keyframes zoomModal {
+  from { opacity: 0; transform: scale(0.92); }
+  to { opacity: 1; transform: scale(1); }
+}
 
-  .section-title h2 {
-    font-size: 26px;
-  }
+.modal-fade-enter-active, .modal-fade-leave-active {
+  transition: opacity 0.3s ease;
+}
+.modal-fade-enter-from, .modal-fade-leave-to {
+  opacity: 0;
+}
 
-  .title-group {
-    gap: 12px;
-  }
-
-  .decorator-line {
-    width: 30px;
-  }
+.toast-fade-enter-active, .toast-fade-leave-active {
+  transition: all 0.3s ease;
+}
+.toast-fade-enter-from, .toast-fade-leave-to {
+  opacity: 0;
+  transform: translate(-50%, 20px);
 }
 </style>

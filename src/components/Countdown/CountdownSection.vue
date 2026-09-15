@@ -2,50 +2,99 @@
   <section class="countdown-section" id="countdown">
     <div class="container">
 
-      <div class="text-center mb-5">
-        <p class="sub-title">CHÚNG MÌNH SẮP VỀ CHUNG MỘT NHÀ</p>
+      <div class="section-header">
+        <span class="section-sub">COUNTING DOWN</span>
+        <div class="section-title-wrap">
+          <div class="line"></div>
+          <h2 class="section-main-title">Save The Date</h2>
+          <div class="line"></div>
+        </div>
+        <p class="section-desc">Cùng đếm từng khoảnh khắc đến ngày chúng mình chính thức về chung một nhà</p>
+      </div>
 
-        <div class="title-group">
-          <div class="decorator-line"></div>
-          <h2 class="title">Đếm ngược đến ngày cưới</h2>
-          <div class="decorator-line"></div>
+      <div class="countdown-grid">
+        <div class="time-card">
+          <div class="card-glass">
+            <span class="number-val">{{ days }}</span>
+            <span class="label-text">NGÀY</span>
+          </div>
+        </div>
+
+        <div class="time-card">
+          <div class="card-glass">
+            <span class="number-val">{{ hours }}</span>
+            <span class="label-text">GIỜ</span>
+          </div>
+        </div>
+
+        <div class="time-card">
+          <div class="card-glass">
+            <span class="number-val">{{ minutes }}</span>
+            <span class="label-text">PHÚT</span>
+          </div>
+        </div>
+
+        <div class="time-card">
+          <div class="card-glass">
+            <span class="number-val">{{ seconds }}</span>
+            <span class="label-text">GIÂY</span>
+          </div>
         </div>
       </div>
 
-      <div class="row justify-content-center g-4">
-        <div class="col-6 col-md-3">
-          <div class="time-box">
-            <div class="box-inner">
-              <h1>{{ days }}</h1>
-              <span>Ngày</span>
+      <div class="wedding-calendar-card">
+        <div class="calendar-card-inner">
+          <div class="calendar-header">
+            <span class="cal-ornament">✦</span>
+            <div class="cal-title-wrap">
+              <span class="cal-month-sub">JANUARY 2027</span>
+              <h3 class="cal-month-title">Tháng 01 — 2027</h3>
+            </div>
+            <span class="cal-ornament">✦</span>
+          </div>
+
+          <div class="calendar-weekdays">
+            <span v-for="day in weekdays" :key="day" class="weekday-name">{{ day }}</span>
+          </div>
+
+          <div class="calendar-days-grid">
+            <div
+              v-for="(day, idx) in calendarDays"
+              :key="idx"
+              :class="[
+                'calendar-day-cell',
+                {
+                  'empty-day': !day,
+                  'wedding-day': day === specialDay
+                }
+              ]"
+            >
+              <template v-if="day">
+                <span v-if="day === specialDay" class="wedding-heart-badge">♥</span>
+                <span class="day-number">{{ day }}</span>
+              </template>
             </div>
           </div>
-        </div>
 
-        <div class="col-6 col-md-3">
-          <div class="time-box">
-            <div class="box-inner">
-              <h1>{{ hours }}</h1>
-              <span>Giờ</span>
-            </div>
+          <div class="calendar-footer-note">
+            <span class="cal-pin-dot">✦</span>
+            <span class="cal-note-text">Hôn lễ cử hành vào <strong>Thứ Năm, ngày 07/01/2027</strong> (30/11 Âm lịch)</span>
+            <span class="cal-pin-dot">✦</span>
           </div>
-        </div>
 
-        <div class="col-6 col-md-3">
-          <div class="time-box">
-            <div class="box-inner">
-              <h1>{{ minutes }}</h1>
-              <span>Phút</span>
-            </div>
-          </div>
-        </div>
-
-        <div class="col-6 col-md-3">
-          <div class="time-box">
-            <div class="box-inner">
-              <h1>{{ seconds }}</h1>
-              <span>Giây</span>
-            </div>
+          <!-- NÚT LƯU LỊCH TÍCH HỢP TRỰC TIẾP TRONG BẢNG LỊCH -->
+          <div class="calendar-action-inline">
+            <a
+              :href="googleCalendarUrl"
+              target="_blank"
+              rel="noopener noreferrer"
+              class="btn-calendar-inline"
+              title="Lưu ngày cưới vào Google Calendar"
+            >
+              <span class="btn-icon">📅</span>
+              <span class="btn-text">Lưu Ngày Cưới</span>
+              <span class="btn-sparkle">✦</span>
+            </a>
           </div>
         </div>
       </div>
@@ -55,9 +104,18 @@
 </template>
 
 <script setup>
-import { ref, onMounted, onUnmounted } from 'vue'
+import { ref, computed, onMounted, onUnmounted } from 'vue'
 
 const weddingDate = new Date('2027-01-07T11:00:00')
+
+// Dữ liệu bảng lịch Tháng 1 / 2027
+// Ngày 01/01/2027 rơi vào Thứ Sáu (index 4 nếu tuần bắt đầu từ T2)
+const weekdays = ['T2', 'T3', 'T4', 'T5', 'T6', 'T7', 'CN']
+const calendarDays = [
+  null, null, null, null, // 4 ô trống trước Thứ 6 ngày 1
+  1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31
+]
+const specialDay = 7
 
 const days = ref('00')
 const hours = ref('00')
@@ -93,137 +151,376 @@ const updateCountdown = () => {
   seconds.value = formatNumber(s)
 }
 
+const googleCalendarUrl = computed(() => {
+  const title = encodeURIComponent('💍 Lễ Cưới: Hoàng Thiện & Phan Linh')
+  const details = encodeURIComponent('Trân trọng kính mời bạn đến tham dự lễ tân hôn của chúng mình tại Ấp 3, Xã Trung An, TP. Mỹ Tho, Tỉnh Tiền Giang!')
+  const location = encodeURIComponent('Ấp 3, Xã Trung An, TP. Mỹ Tho, Tỉnh Tiền Giang')
+  const start = '20270107T040000Z' // UTC time
+  const end = '20270107T090000Z'
+  return `https://calendar.google.com/calendar/render?action=TEMPLATE&text=${title}&dates=${start}/${end}&details=${details}&location=${location}`
+})
+
 onMounted(() => {
   updateCountdown()
   timer = setInterval(updateCountdown, 1000)
 })
 
 onUnmounted(() => {
-  clearInterval(timer)
+  if (timer) clearInterval(timer)
 })
 </script>
 
 <style scoped>
 .countdown-section {
-  padding: 80px 16px;
+  padding: 90px 16px;
+  position: relative;
 }
 
-.title-group {
-  display: flex;
-  align-items: center;
-  justify-content: center;
+.container {
+  max-width: 900px;
+  margin: 0 auto;
+}
+
+.section-desc {
+  color: var(--text-muted);
+  font-size: 14.5px;
+  margin-top: 10px;
+  font-style: italic;
+}
+
+/* ĐẾM NGƯỢC */
+.countdown-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
   gap: 20px;
-  margin-top: 8px;
+  margin: 40px 0 35px;
 }
 
-.decorator-line {
-  width: 50px;
-  height: 1px;
-  background: linear-gradient(to right, transparent, #b38b4d, transparent);
+.time-card {
+  perspective: 1000px;
 }
 
-.title {
-  font-family: serif;
-  font-size: 34px;
-  font-weight: 600;
-  color: #a23946;
-  margin: 0;
-  letter-spacing: 0.5px;
-
-  white-space: nowrap;
+.card-glass {
+  background: rgba(255, 255, 255, 0.75);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(200, 165, 92, 0.35);
+  border-radius: var(--radius-md);
+  padding: 28px 12px;
   text-align: center;
+  box-shadow: var(--shadow-md);
+  transition: all 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+  position: relative;
+  overflow: hidden;
 }
 
-.sub-title {
-  color: #b38b4d;
-  font-size: 12px;
-  font-weight: 600;
-  letter-spacing: 4px;
-  margin: 0;
+.card-glass::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 3px;
+  background: linear-gradient(90deg, #dfba73, #8f2e36, #dfba73);
+  opacity: 0.7;
 }
 
-.time-box {
-  border: 1px solid rgba(179, 139, 77, 0.2);
-  border-radius: 16px;
-  padding: 6px;
-  box-sizing: border-box;
-  box-shadow: 0 15px 45px rgba(74, 59, 47, 0.04);
-  transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.4s ease;
+.time-card:hover .card-glass {
+  transform: translateY(-6px);
+  box-shadow: var(--shadow-gold);
+  border-color: rgba(200, 165, 92, 0.6);
+  background: rgba(255, 255, 255, 0.95);
 }
 
-.box-inner {
-  border: 1px dashed rgba(179, 139, 77, 0.4);
-  border-radius: 12px;
-  padding: 30px 15px;
-  text-align: center;
-}
-
-.time-box h1 {
-  font-family: serif;
+.number-val {
+  font-family: var(--font-serif);
   font-size: 52px;
-  font-weight: 600;
-  margin: 0 0 4px 0;
-  color: #a23946;
-  line-height: 1.1;
+  font-weight: 700;
+  color: var(--wine-red);
+  line-height: 1;
+  display: block;
+  margin-bottom: 6px;
+  letter-spacing: -1px;
 }
 
-.time-box span {
-  font-size: 13px;
-  color: #7a6b5c;
-  letter-spacing: 2px;
-  font-weight: 500;
-  text-transform: uppercase;
+.label-text {
+  font-family: var(--font-body);
+  font-size: 12px;
+  letter-spacing: 3px;
+  color: var(--primary-gold-dark);
+  font-weight: 600;
   display: block;
 }
 
-.time-box:hover {
-  transform: translateY(-6px);
-  box-shadow: 0 25px 60px rgba(162, 57, 70, 0.08);
-  border-color: rgba(162, 57, 70, 0.3);
+/* LỊCH CƯỚI THÁNG 1 / 2027 */
+.wedding-calendar-card {
+  max-width: 460px;
+  margin: 30px auto 0;
+  background: rgba(255, 255, 255, 0.88);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1.5px solid rgba(200, 165, 92, 0.45);
+  border-radius: var(--radius-md);
+  padding: 10px;
+  box-shadow: 0 20px 45px rgba(74, 59, 47, 0.09);
+  transition: all 0.35s ease;
+}
+
+.wedding-calendar-card:hover {
+  border-color: rgba(200, 165, 92, 0.7);
+  box-shadow: 0 25px 50px rgba(143, 46, 54, 0.12);
+}
+
+.calendar-card-inner {
+  border: 1px dashed rgba(200, 165, 92, 0.4);
+  border-radius: 12px;
+  padding: 22px 18px 18px;
+  background: radial-gradient(circle at center, #ffffff 0%, #faf5ec 100%);
+  position: relative;
+}
+
+.calendar-header {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 16px;
+  margin-bottom: 20px;
+  text-align: center;
+}
+
+.cal-ornament {
+  color: var(--primary-gold);
+  font-size: 14px;
+}
+
+.cal-month-sub {
+  font-family: var(--font-body);
+  font-size: 10px;
+  letter-spacing: 4px;
+  color: var(--primary-gold-dark);
+  font-weight: 700;
+  display: block;
+}
+
+.cal-month-title {
+  font-family: var(--font-serif);
+  font-size: 22px;
+  color: var(--wine-red);
+  margin: 2px 0 0;
+  font-weight: 700;
+}
+
+.calendar-weekdays {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  text-align: center;
+  margin-bottom: 10px;
+  padding-bottom: 8px;
+  border-bottom: 1px solid rgba(200, 165, 92, 0.25);
+}
+
+.weekday-name {
+  font-family: var(--font-body);
+  font-size: 11.5px;
+  font-weight: 700;
+  color: var(--wine-red);
+  letter-spacing: 1px;
+}
+
+.calendar-days-grid {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 6px;
+  text-align: center;
+}
+
+.calendar-day-cell {
+  aspect-ratio: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  border-radius: 8px;
+  font-family: var(--font-serif);
+  font-size: 14px;
+  font-weight: 600;
+  color: #4a3b2f;
+  position: relative;
+  transition: all 0.25s ease;
+}
+
+.calendar-day-cell:not(.empty-day):not(.wedding-day):hover {
+  background: rgba(200, 165, 92, 0.15);
+  color: var(--wine-red);
+  transform: scale(1.05);
+}
+
+.calendar-day-cell.wedding-day {
+  background: linear-gradient(135deg, #8f2e36 0%, #a23946 100%);
+  color: #ffffff;
+  box-shadow: 0 4px 15px rgba(143, 46, 54, 0.4);
+  border: 1.5px solid #dfba73;
+  transform: scale(1.12);
+  z-index: 2;
+  animation: weddingDayGlow 2.5s infinite ease-in-out;
+}
+
+.wedding-heart-badge {
+  font-size: 9px;
+  color: #ffd778;
+  line-height: 1;
+  position: absolute;
+  top: 2px;
+  animation: heartBeat 1.5s infinite ease-in-out;
+}
+
+.calendar-day-cell.wedding-day .day-number {
+  font-weight: 700;
+  font-size: 15px;
+  margin-top: 5px;
+  color: #ffffff;
+}
+
+.calendar-footer-note {
+  margin-top: 18px;
+  padding-top: 12px;
+  border-top: 1px dashed rgba(200, 165, 92, 0.3);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  font-size: 12.5px;
+  color: #6e5e4f;
+  text-align: center;
+}
+
+.calendar-footer-note strong {
+  color: var(--wine-red);
+}
+
+.cal-pin-dot {
+  color: var(--primary-gold);
+  font-size: 10px;
+}
+
+/* NÚT LƯU LỊCH TÍCH HỢP TRONG CARD */
+.calendar-action-inline {
+  text-align: center;
+  margin-top: 16px;
+  display: flex;
+  justify-content: center;
+}
+
+.btn-calendar-inline {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 8px 24px;
+  border-radius: 50px;
+  background: linear-gradient(135deg, #8f2e36 0%, #a23946 100%);
+  border: 1.5px solid #ffd778;
+  color: #ffd778;
+  font-family: var(--font-serif);
+  font-size: 13.5px;
+  font-weight: 700;
+  letter-spacing: 0.5px;
+  box-shadow: 0 4px 15px rgba(143, 46, 54, 0.3);
+  transition: all 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+  cursor: pointer;
+  text-decoration: none;
+}
+
+.btn-calendar-inline:hover {
+  background: linear-gradient(135deg, #a23946 0%, #c24d5b 100%);
+  color: #ffffff;
+  border-color: #ffffff;
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(143, 46, 54, 0.45);
+}
+
+.btn-icon {
+  font-size: 14px;
+}
+
+.btn-sparkle {
+  font-size: 10px;
+  color: #ffd778;
+  transition: transform 0.3s ease;
+}
+
+.btn-calendar-inline:hover .btn-sparkle {
+  color: #ffffff;
+  transform: rotate(45deg) scale(1.2);
+}
+
+@keyframes weddingDayGlow {
+  0%, 100% {
+    box-shadow: 0 4px 15px rgba(143, 46, 54, 0.35);
+  }
+  50% {
+    box-shadow: 0 6px 20px rgba(223, 186, 115, 0.55), 0 0 10px rgba(143, 46, 54, 0.35);
+  }
+}
+
+@keyframes heartBeat {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.3); }
 }
 
 @media (max-width: 768px) {
-
   .countdown-section {
     padding: 60px 16px;
   }
 
-  .title {
-    font-size: 18px;
-    white-space: nowrap;
-    letter-spacing: 0.3px;
+  .countdown-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 14px;
+    margin: 30px 0 25px;
   }
 
-  .title-group {
-    gap: 10px;
+  .card-glass {
+    padding: 18px 10px;
   }
 
-  .decorator-line {
-    width: 30px;
-  }
-
-  .sub-title {
-    letter-spacing: 2px;
-    font-size: 11px;
-  }
-
-  .box-inner {
-    padding: 20px 10px;
-  }
-
-  .time-box h1 {
+  .number-val {
     font-size: 38px;
   }
 
-  .time-box span {
+  .label-text {
     font-size: 11px;
-    letter-spacing: 1px;
+    letter-spacing: 2px;
   }
-}
 
-@media (max-width: 360px) {
-  .title {
-    font-size: 16px;
+  .wedding-calendar-card {
+    margin: 20px auto 0;
+    padding: 6px;
+  }
+
+  .calendar-card-inner {
+    padding: 16px 10px 14px;
+  }
+
+  .cal-month-title {
+    font-size: 19px;
+  }
+
+  .calendar-days-grid {
+    gap: 4px;
+  }
+
+  .calendar-day-cell {
+    font-size: 13px;
+  }
+
+  .calendar-footer-note {
+    font-size: 11.5px;
+    flex-wrap: wrap;
+  }
+
+  .btn-calendar-inline {
+    padding: 10px 14px;
+    font-size: 12.5px;
   }
 }
 </style>

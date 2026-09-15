@@ -1,5 +1,6 @@
 <template>
   <div>
+    <!-- THANH ĐIỀU HƯỚNG BÊN TRÁI (DESKTOP) -->
     <nav class="desktop-dots-nav">
       <div
         v-for="section in sections"
@@ -12,9 +13,11 @@
       </div>
     </nav>
 
+    <!-- NÚT MENU MOBILE -->
     <button
-        class="mobile-nav-toggle"
-        @click.stop="isOpen = !isOpen"
+      class="mobile-nav-toggle"
+      @click.stop="isOpen = !isOpen"
+      title="Menu điều hướng"
     >
       <svg
         v-if="!isOpen"
@@ -45,6 +48,7 @@
       </svg>
     </button>
 
+    <!-- MENU POPUP MOBILE -->
     <Transition name="mobile-menu">
       <nav
         v-if="isOpen"
@@ -71,13 +75,6 @@
               stroke-linecap="round"
               stroke-linejoin="round"
             />
-
-            <circle
-              v-if="section.id === 'gallery'"
-              cx="12"
-              cy="12"
-              r="3"
-            />
           </svg>
 
           <span class="mobile-label">
@@ -95,33 +92,27 @@ import { ref, onMounted, onUnmounted } from 'vue'
 const sections = [
   {
     id: 'countdown',
-    label: 'Đếm ngược ngày cưới',
-    labelShort: 'Đếm ngược',
+    label: 'Save The Date',
+    labelShort: 'Countdown',
     iconPath: 'M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z'
   },
   {
     id: 'couple',
-    label: 'Cô dâu & Chú rể',
-    labelShort: 'Cặp đôi',
+    label: 'Bride & Groom',
+    labelShort: 'Couple',
     iconPath: 'M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z'
   },
   {
     id: 'story',
-    label: 'Câu chuyện tình yêu',
-    labelShort: 'Câu chuyện',
+    label: 'Our Love Story',
+    labelShort: 'Story',
     iconPath: 'M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253'
   },
   {
     id: 'gallery',
-    label: 'Album hình cưới',
-    labelShort: 'Hình ảnh',
+    label: 'Wedding Gallery',
+    labelShort: 'Gallery',
     iconPath: 'M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 002-2H6a2 2 0 00-2 2v12a2 2 0 002 2z'
-  },
-  {
-    id: 'event',
-    label: 'Thời gian & Địa điểm',
-    labelShort: 'Sự kiện',
-    iconPath: 'M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z'
   }
 ]
 
@@ -130,7 +121,6 @@ const isOpen = ref(false)
 
 const scrollTo = (id) => {
   const el = document.getElementById(id)
-
   if (!el) return
 
   el.scrollIntoView({
@@ -146,7 +136,6 @@ const handleScroll = () => {
 
   for (const section of sections) {
     const el = document.getElementById(section.id)
-
     if (!el) continue
 
     const top = el.offsetTop
@@ -180,7 +169,6 @@ onMounted(() => {
   window.addEventListener('scroll', handleScroll)
   window.addEventListener('resize', handleResize)
   document.addEventListener('click', handleClickOutside)
-
   handleScroll()
 })
 
@@ -194,13 +182,13 @@ onUnmounted(() => {
 <style scoped>
 .desktop-dots-nav {
   position: fixed;
-  left: 40px;
+  left: 30px;
   top: 50%;
   transform: translateY(-50%);
   z-index: 100;
   display: flex;
   flex-direction: column;
-  gap: 24px;
+  gap: 22px;
 }
 
 .dot-item {
@@ -213,39 +201,40 @@ onUnmounted(() => {
 .dot-circle {
   width: 24px;
   text-align: center;
-  font-size: 11px;
-  color: #b38b4d;
-  opacity: .35;
-  transition: .35s;
+  font-size: 12px;
+  color: #c8a55c;
+  opacity: 0.4;
+  transition: all 0.35s ease;
 }
 
 .dot-label {
   position: absolute;
-  left: 35px;
+  left: 32px;
   opacity: 0;
   visibility: hidden;
   white-space: nowrap;
   font-size: 13px;
-  font-family: "Playfair Display", serif;
-  font-style: italic;
-  color: #7a6b5c;
-  background: rgba(255,253,250,.96);
-  border: 1px solid rgba(179,139,77,.2);
+  font-family: var(--font-body);
+  font-weight: 500;
+  color: #4a3b2f;
+  background: rgba(255, 255, 255, 0.95);
+  border: 1px solid rgba(200, 165, 92, 0.35);
   border-radius: 20px;
   padding: 5px 14px;
-  box-shadow: 0 4px 12px rgba(179,139,77,.08);
-  transition: .3s;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+  transition: all 0.3s ease;
+  transform: translateX(-10px);
 }
 
 .dot-item:hover .dot-label {
   opacity: 1;
   visibility: visible;
-  transform: translateX(5px);
+  transform: translateX(0);
 }
 
 .dot-item:hover .dot-circle,
 .dot-item.active .dot-circle {
-  color: #a23946;
+  color: #8f2e36;
   opacity: 1;
 }
 
@@ -258,8 +247,7 @@ onUnmounted(() => {
   display: none;
 }
 
-@media (max-width:768px) {
-
+@media (max-width: 768px) {
   .desktop-dots-nav {
     display: none;
   }
@@ -268,46 +256,48 @@ onUnmounted(() => {
     position: fixed;
     top: 16px;
     right: 16px;
-    width: 48px;
-    height: 48px;
+    width: 44px;
+    height: 44px;
     border: none;
     border-radius: 50%;
-    background: rgba(255,253,249,.96);
-    color: #a23946;
+    background: rgba(255, 255, 255, 0.92);
+    color: var(--wine-red);
     display: flex;
     align-items: center;
     justify-content: center;
-    box-shadow: 0 10px 25px rgba(0,0,0,.15);
-    backdrop-filter: blur(12px);
-    -webkit-backdrop-filter: blur(12px);
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
     cursor: pointer;
     z-index: 1001;
-    transition: .3s;
+    transition: transform 0.3s ease;
+    border: 1px solid rgba(200, 165, 92, 0.3);
   }
 
   .mobile-nav-toggle:hover {
-    transform: scale(1.05);
+    transform: scale(1.06);
   }
 
   .mobile-nav-toggle svg {
-    width: 22px;
-    height: 22px;
+    width: 20px;
+    height: 20px;
   }
 
   .mobile-top-nav {
     position: fixed;
-    top: 72px;
+    top: 68px;
     right: 16px;
-    width: 210px;
+    width: 220px;
     display: flex;
     flex-direction: column;
     gap: 4px;
     padding: 10px;
-    background: rgba(255,254,252,.98);
-    border-radius: 18px;
-    box-shadow: 0 20px 40px rgba(0,0,0,.15);
+    background: rgba(255, 255, 255, 0.96);
+    border-radius: 16px;
+    box-shadow: 0 15px 40px rgba(0, 0, 0, 0.18);
     backdrop-filter: blur(12px);
     -webkit-backdrop-filter: blur(12px);
+    border: 1px solid rgba(200, 165, 92, 0.35);
     z-index: 1000;
   }
 
@@ -315,20 +305,22 @@ onUnmounted(() => {
     display: flex;
     align-items: center;
     gap: 12px;
-    padding: 11px 12px;
-    border-radius: 12px;
-    color: #8d8174;
+    padding: 10px 12px;
+    border-radius: 10px;
+    color: var(--text-muted);
     cursor: pointer;
-    transition: .25s;
+    transition: all 0.25s ease;
   }
 
   .mobile-item:hover {
-    background: #f8f3ec;
+    background: #fbf6ef;
+    color: var(--wine-red);
   }
 
   .mobile-item.active {
-    background: rgba(162,57,70,.08);
-    color: #a23946;
+    background: rgba(143, 46, 54, 0.1);
+    color: var(--wine-red);
+    font-weight: 600;
   }
 
   .mobile-icon {
@@ -340,25 +332,18 @@ onUnmounted(() => {
 
   .mobile-label {
     font-size: 13px;
-    font-family: "Montserrat", sans-serif;
-    font-weight: 500;
+    font-family: var(--font-body);
   }
 
   .mobile-menu-enter-active,
   .mobile-menu-leave-active {
-    transition: all .25s ease;
+    transition: all 0.25s ease;
   }
 
   .mobile-menu-enter-from,
   .mobile-menu-leave-to {
     opacity: 0;
-    transform: translateY(-12px) scale(.95);
-  }
-
-  .mobile-menu-enter-to,
-  .mobile-menu-leave-from {
-    opacity: 1;
-    transform: translateY(0) scale(1);
+    transform: translateY(-10px) scale(0.95);
   }
 }
 </style>
