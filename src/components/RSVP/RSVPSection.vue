@@ -133,7 +133,7 @@ const avatarColors = [
   "#2e5a44"
 ];
 
-let demoIndex = 0;
+let lastDemoIndex = -1;
 let demoTimer = null;
 let toastTimer = null;
 let autoReactionTimer = null;
@@ -149,7 +149,8 @@ const demoCount = computed(() => {
 
 const mesCount = computed(() => {
   const total = realCount.value + demoCount.value;
-  return total >= limitMess ? `${limitMess}+` : total;
+  return `${limitMess}+`;
+  // return total >= limitMess ? `${limitMess}+` : total;
 });
 
 const randomAvatar = () => {
@@ -176,9 +177,17 @@ const handleModalToast = (msg, type, icon) => {
 };
 
 const pushDemoMessage = async () => {
-  const item = demoMessages[demoIndex];
+  if (!demoMessages || demoMessages.length === 0) return;
+
+  let randomIndex = Math.floor(Math.random() * demoMessages.length);
+  if (demoMessages.length > 1 && randomIndex === lastDemoIndex) {
+    randomIndex = (randomIndex + 1) % demoMessages.length;
+  }
+  lastDemoIndex = randomIndex;
+
+  const item = demoMessages[randomIndex];
   wishes.value.push({
-    id: "demo-" + Date.now(),
+    id: "demo-" + Date.now() + "-" + Math.random().toString(36).substring(2, 6),
     name: item.name,
     message: item.message,
     avatarBg: randomAvatar()
@@ -188,7 +197,6 @@ const pushDemoMessage = async () => {
     wishes.value.shift();
   }
 
-  demoIndex = (demoIndex + 1) % demoMessages.length;
   await scrollToBottom();
 };
 

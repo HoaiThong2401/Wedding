@@ -78,7 +78,7 @@
 
           <div class="calendar-footer-note">
             <span class="cal-pin-dot">✦</span>
-            <span class="cal-note-text">Hôn lễ cử hành vào <strong>Thứ Năm, ngày 07/01/2027</strong> (30/11 Âm lịch)</span>
+            <span class="cal-note-text">Hôn lễ cử hành vào <strong>Thứ Tư, ngày 06/01/2027</strong> (29/11 Âm lịch)</span>
             <span class="cal-pin-dot">✦</span>
           </div>
 
@@ -106,7 +106,7 @@
 <script setup>
 import { ref, computed, onMounted, onUnmounted } from 'vue'
 
-const weddingDate = new Date('2027-01-07T11:00:00')
+const weddingDate = new Date('2027-01-06T11:00:00')
 
 // Dữ liệu bảng lịch Tháng 1 / 2027
 // Ngày 01/01/2027 rơi vào Thứ Sáu (index 4 nếu tuần bắt đầu từ T2)
@@ -115,7 +115,7 @@ const calendarDays = [
   null, null, null, null, // 4 ô trống trước Thứ 6 ngày 1
   1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31
 ]
-const specialDay = 7
+const specialDay = 6
 
 const days = ref('00')
 const hours = ref('00')
@@ -155,8 +155,8 @@ const googleCalendarUrl = computed(() => {
   const title = encodeURIComponent('💍 Lễ Cưới: Hoàng Thiện & Phan Linh')
   const details = encodeURIComponent('Trân trọng kính mời bạn đến tham dự lễ tân hôn của chúng mình tại Ấp 3, Xã Trung An, TP. Mỹ Tho, Tỉnh Tiền Giang!')
   const location = encodeURIComponent('Ấp 3, Xã Trung An, TP. Mỹ Tho, Tỉnh Tiền Giang')
-  const start = '20270107T040000Z' // UTC time
-  const end = '20270107T090000Z'
+  const start = '20270106T040000Z' // UTC time
+  const end = '20270106T090000Z'
   return `https://calendar.google.com/calendar/render?action=TEMPLATE&text=${title}&dates=${start}/${end}&details=${details}&location=${location}`
 })
 

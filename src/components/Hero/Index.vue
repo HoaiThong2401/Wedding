@@ -43,7 +43,7 @@
               </div>
 
               <div class="wedding-date-tag">
-                <span class="date-text">07 . 01 . 2027</span>
+                <span class="date-text">06 . 01 . 2027</span>
               </div>
 
               <p class="save-the-date">SAVE OUR SPECIAL DAY</p>
@@ -137,7 +137,6 @@
                   <span>TRÂN TRỌNG BÁO TIN LỄ TÂN HÔN CỦA HAI CON</span>
                 </div>
 
-                <!-- Tên Cô dâu Chú rể & Nhẫn cưới -->
                 <div class="couple-highlight-box">
                   <div class="couple-person">
                     <h3 class="name-display">Lê Hoàng Thiện</h3>
@@ -167,12 +166,12 @@
                   <div class="schedule-content-layout">
                     <div class="schedule-info">
                       <div class="solar-time">
-                        VÀO LÚC <strong>11:00 — THỨ NĂM</strong>
-                        <div class="date-large">07 . 01 . 2027</div>
+                        VÀO LÚC <strong>11:00 — THỨ TƯ</strong>
+                        <div class="date-large">06 . 01 . 2027</div>
                       </div>
 
                       <div class="lunar-time">
-                        (Nhằm ngày 30 tháng 11 năm Bính Ngọ)
+                        (Nhằm ngày 29 tháng 11 năm Bính Ngọ)
                       </div>
 
                       <div class="venue-address">
@@ -253,7 +252,7 @@ onUnmounted(() => {
   display: flex;
   justify-content: center;
   align-items: center;
-  padding: 30px 16px;
+  padding: 20px 16px;
   perspective: 2500px;
   background: radial-gradient(circle at center, #fbf7ef 0%, #f0e6d5 100%);
   position: relative;
@@ -262,9 +261,10 @@ onUnmounted(() => {
 
 .invitation-card {
   position: relative;
-  width: 1100px;
-  max-width: 100%;
-  height: 720px;
+  width: 960px;
+  max-width: 92vw;
+  height: min(600px, calc(100dvh - 40px));
+  min-height: 520px;
   transform-style: preserve-3d;
   transition: all 0.9s cubic-bezier(0.16, 1, 0.3, 1);
 }
@@ -293,7 +293,7 @@ onUnmounted(() => {
 .cover-frame-outer {
   width: 100%;
   height: 100%;
-  padding: 14px;
+  padding: 12px;
   border: 2px solid #c8a55c;
   box-sizing: border-box;
 }
@@ -307,7 +307,7 @@ onUnmounted(() => {
   align-items: center;
   justify-content: center;
   background: radial-gradient(circle at center, #ffffff 0%, #faf3eb 100%);
-  padding: 30px;
+  padding: 20px 24px;
   box-sizing: border-box;
 }
 
@@ -324,7 +324,7 @@ onUnmounted(() => {
 
 .cover-content {
   text-align: center;
-  max-width: 600px;
+  max-width: 580px;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -332,25 +332,25 @@ onUnmounted(() => {
 
 .cover-tagline {
   font-family: var(--font-body);
-  font-size: 12px;
-  letter-spacing: 6px;
+  font-size: 11px;
+  letter-spacing: 5px;
   font-weight: 600;
   color: #b38b4d;
   text-transform: uppercase;
-  margin-bottom: 15px;
+  margin-bottom: 12px;
 }
 
 /* WAX SEAL */
 .wax-seal {
-  width: 76px;
-  height: 76px;
+  width: 64px;
+  height: 64px;
   border-radius: 50%;
   background: radial-gradient(circle at 35% 35%, #b53847 0%, #851b27 75%, #590f18 100%);
-  box-shadow: 0 8px 25px rgba(133, 27, 39, 0.4), inset 0 2px 4px rgba(255, 255, 255, 0.3);
+  box-shadow: 0 6px 20px rgba(133, 27, 39, 0.35), inset 0 2px 4px rgba(255, 255, 255, 0.3);
   display: flex;
   align-items: center;
   justify-content: center;
-  margin-bottom: 24px;
+  margin-bottom: 16px;
   position: relative;
   animation: sealFloat 4s ease-in-out infinite;
 }
@@ -364,8 +364,8 @@ onUnmounted(() => {
 }
 
 .wax-seal-inner {
-  width: 58px;
-  height: 58px;
+  width: 48px;
+  height: 48px;
   border-radius: 50%;
   border: 1.5px solid rgba(255, 215, 0, 0.4);
   display: flex;
@@ -375,19 +375,19 @@ onUnmounted(() => {
 
 .wax-seal-symbol {
   font-family: var(--font-serif);
-  font-size: 32px;
+  font-size: 26px;
   font-weight: bold;
   color: #ffd778;
   text-shadow: 0 2px 4px rgba(0, 0, 0, 0.4);
 }
 
 .couple-names-wrap {
-  margin: 10px 0 20px;
+  margin: 6px 0 14px;
 }
 
 .groom-name, .bride-name {
   font-family: var(--font-script);
-  font-size: 58px;
+  font-size: 48px;
   color: #8f2e36;
   font-weight: 400;
   margin: 0;
@@ -399,58 +399,58 @@ onUnmounted(() => {
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 16px;
-  margin: 8px 0;
+  gap: 14px;
+  margin: 6px 0;
 }
 
 .connector-line {
-  width: 80px;
+  width: 60px;
   height: 1px;
   background: linear-gradient(90deg, transparent, #c8a55c, transparent);
 }
 
 .heart-icon {
   color: #8f2e36;
-  font-size: 18px;
+  font-size: 16px;
 }
 
 .wedding-date-tag {
   background: rgba(200, 165, 92, 0.12);
   border: 1px solid rgba(200, 165, 92, 0.35);
-  padding: 6px 20px;
+  padding: 4px 18px;
   border-radius: 50px;
-  margin-bottom: 12px;
+  margin-bottom: 10px;
 }
 
 .date-text {
   font-family: var(--font-serif);
-  font-size: 16px;
-  letter-spacing: 3px;
+  font-size: 15px;
+  letter-spacing: 2.5px;
   color: #8f7a60;
   font-weight: 600;
 }
 
 .save-the-date {
-  font-size: 11px;
-  letter-spacing: 5px;
+  font-size: 10.5px;
+  letter-spacing: 4px;
   color: #b38b4d;
   font-weight: 600;
   text-transform: uppercase;
 }
 
 .open-hint-btn {
-  margin-top: 30px;
+  margin-top: 20px;
   position: relative;
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  padding: 10px 24px;
+  padding: 8px 22px;
   border-radius: 50px;
   background: linear-gradient(135deg, #8f2e36, #a23946);
   color: #fff;
-  font-size: 14px;
+  font-size: 13.5px;
   font-weight: 500;
-  box-shadow: 0 8px 20px rgba(143, 46, 54, 0.3);
+  box-shadow: 0 6px 18px rgba(143, 46, 54, 0.28);
   transition: transform 0.3s ease;
 }
 
@@ -508,7 +508,7 @@ onUnmounted(() => {
   flex: 1;
   position: relative;
   background: radial-gradient(circle at center, #ffffff 0%, #faf4ea 100%);
-  padding: 16px;
+  padding: 12px;
   box-sizing: border-box;
 }
 
@@ -524,18 +524,18 @@ onUnmounted(() => {
   width: 100%;
   height: 100%;
   border: 1.5px solid #c8a55c;
-  padding: 20px 24px;
+  padding: 16px 20px;
   box-sizing: border-box;
   position: relative;
   display: flex;
   flex-direction: column;
-  justify-content: center;
+  justify-content: space-between;
 }
 
 .page-ornament-border::before {
   content: "";
   position: absolute;
-  inset: 6px;
+  inset: 5px;
   border: 1px solid rgba(200, 165, 92, 0.4);
   pointer-events: none;
 }
@@ -545,18 +545,19 @@ onUnmounted(() => {
   text-align: center;
   display: flex;
   flex-direction: column;
-  align-items: center;
-  gap: 12px;
+  justify-content: space-between;
+  height: 100%;
+  gap: 8px;
 }
 
 .quote-box {
-  max-width: 90%;
-  margin-bottom: 6px;
+  max-width: 95%;
+  margin-bottom: 4px;
 }
 
 .quote-mark {
   font-family: var(--font-serif);
-  font-size: 32px;
+  font-size: 26px;
   color: #c8a55c;
   line-height: 1;
   display: block;
@@ -565,27 +566,27 @@ onUnmounted(() => {
 .quote-text {
   font-family: var(--font-serif);
   font-style: italic;
-  font-size: 15px;
+  font-size: 13.5px;
   color: #6e5e4f;
-  line-height: 1.6;
+  line-height: 1.5;
   margin: 0;
 }
 
 .quote-diamond {
   color: #c8a55c;
-  font-size: 10px;
-  margin-top: 4px;
+  font-size: 9px;
+  margin-top: 3px;
   display: block;
 }
 
 .invitation-intro {
-  margin: 4px 0;
+  margin: 2px 0;
 }
 
 .sub-heading {
   font-family: var(--font-serif);
-  font-size: 15px;
-  letter-spacing: 3px;
+  font-size: 13.5px;
+  letter-spacing: 2.5px;
   color: #b38b4d;
   font-weight: 600;
   display: block;
@@ -593,47 +594,48 @@ onUnmounted(() => {
 
 .guest-title {
   font-family: var(--font-script);
-  font-size: 48px;
+  font-size: 42px;
   color: #8f2e36;
-  margin: 4px 0 8px;
+  margin: 2px 0 6px;
   font-weight: normal;
 }
 
 .invitation-message {
   max-width: 440px;
+  margin: 0 auto;
 }
 
 .msg-para {
-  font-size: 14.5px;
+  font-size: 13.5px;
   color: #5f5040;
-  line-height: 1.6;
-  margin-bottom: 12px;
+  line-height: 1.5;
+  margin-bottom: 8px;
 }
 
 .event-callout {
   font-family: var(--font-serif);
-  font-size: 14px;
+  font-size: 13px;
   font-weight: 700;
   color: #8f2e36;
   letter-spacing: 0.5px;
-  line-height: 1.5;
+  line-height: 1.4;
   background: rgba(143, 46, 54, 0.06);
-  padding: 8px 12px;
+  padding: 6px 10px;
   border-radius: 6px;
-  margin: 10px 0;
+  margin: 6px 0;
 }
 
 .msg-sub {
-  font-size: 13.5px;
+  font-size: 12.5px;
   color: #7a6b5c;
-  line-height: 1.6;
+  line-height: 1.5;
   margin: 0;
 }
 
 .bottom-ornament {
   color: #c8a55c;
-  font-size: 14px;
-  margin-top: 8px;
+  font-size: 13px;
+  margin-top: 4px;
 }
 
 /* NỘI DUNG TRANG PHẢI */
@@ -649,7 +651,7 @@ onUnmounted(() => {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: 10px;
+  gap: 8px;
 }
 
 .parent-side {
@@ -659,19 +661,19 @@ onUnmounted(() => {
 .family-badge {
   display: inline-block;
   font-family: var(--font-serif);
-  font-size: 14px;
+  font-size: 13px;
   font-weight: 700;
-  letter-spacing: 2px;
+  letter-spacing: 1.5px;
   color: #8f2e36;
-  margin-bottom: 6px;
+  margin-bottom: 4px;
   border-bottom: 1px solid #c8a55c;
   padding-bottom: 2px;
 }
 
 .parent-name {
-  font-size: 13.5px;
+  font-size: 12.5px;
   color: #4e4337;
-  margin: 3px 0;
+  margin: 2px 0;
 }
 
 .parent-name strong {
@@ -684,17 +686,17 @@ onUnmounted(() => {
 
 .hometown {
   display: block;
-  font-size: 12px;
+  font-size: 11.5px;
   color: #847460;
-  margin-top: 4px;
+  margin-top: 2px;
 }
 
 .family-divider {
   display: flex;
   flex-direction: column;
   align-items: center;
-  height: 60px;
-  width: 24px;
+  height: 50px;
+  width: 20px;
 }
 
 .div-line {
@@ -706,29 +708,29 @@ onUnmounted(() => {
 .div-symbol {
   font-family: var(--font-serif);
   color: #c8a55c;
-  font-size: 16px;
-  margin: 4px 0;
+  font-size: 15px;
+  margin: 3px 0;
 }
 
 .wedding-announcement {
-  font-size: 11.5px;
-  letter-spacing: 2px;
+  font-size: 10.5px;
+  letter-spacing: 1.5px;
   color: #806a50;
   font-weight: 600;
   text-transform: uppercase;
-  margin: 8px 0;
+  margin: 5px 0;
 }
 
 .couple-highlight-box {
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 16px;
+  gap: 12px;
   background: rgba(200, 165, 92, 0.07);
   border: 1px dashed rgba(200, 165, 92, 0.4);
-  border-radius: 10px;
-  padding: 10px 14px;
-  margin: 4px 0;
+  border-radius: 8px;
+  padding: 8px 12px;
+  margin: 2px 0;
 }
 
 .couple-person {
@@ -737,34 +739,34 @@ onUnmounted(() => {
 
 .name-display {
   font-family: var(--font-script);
-  font-size: 32px;
+  font-size: 28px;
   color: #8f2e36;
   margin: 0;
-  line-height: 1.2;
+  line-height: 1.15;
 }
 
 .rank-title {
   display: block;
-  font-size: 12px;
+  font-size: 11px;
   color: #8a7862;
   font-weight: 600;
-  letter-spacing: 1px;
+  letter-spacing: 0.5px;
 }
 
 .rings-union {
   display: flex;
   align-items: center;
   position: relative;
-  width: 42px;
-  height: 28px;
+  width: 38px;
+  height: 24px;
 }
 
 .ring-gold {
   position: absolute;
-  width: 22px;
-  height: 22px;
+  width: 19px;
+  height: 19px;
   border-radius: 50%;
-  border: 3px solid #dfba73;
+  border: 2.5px solid #dfba73;
   box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
 }
 
@@ -773,63 +775,63 @@ onUnmounted(() => {
 
 .diamond-sparkle {
   position: absolute;
-  top: -4px;
+  top: -3px;
   left: 50%;
   transform: translateX(-50%);
-  width: 5px;
-  height: 5px;
+  width: 4px;
+  height: 4px;
   background: #ffffff;
   border-radius: 50%;
-  box-shadow: 0 0 5px #fff, 0 0 10px #dfba73;
+  box-shadow: 0 0 4px #fff, 0 0 8px #dfba73;
 }
 
 .ceremony-schedule-card {
   background: #fff;
   border: 1px solid rgba(200, 165, 92, 0.3);
   border-radius: 8px;
-  padding: 12px 16px;
-  margin-top: 6px;
+  padding: 8px 12px;
+  margin-top: 4px;
 }
 
 .ceremony-title {
   font-family: var(--font-serif);
-  font-size: 13px;
+  font-size: 12px;
   letter-spacing: 1px;
   color: #8f2e36;
-  margin: 0 0 6px;
+  margin: 0 0 4px;
   font-weight: 700;
 }
 
 .gold-separator {
-  width: 40px;
+  width: 36px;
   height: 1px;
   background: #c8a55c;
-  margin: 0 auto 8px;
+  margin: 0 auto 6px;
 }
 
 .solar-time {
-  font-size: 13.5px;
+  font-size: 12.5px;
   color: #4a3b2f;
 }
 
 .date-large {
   font-family: var(--font-serif);
-  font-size: 20px;
+  font-size: 18px;
   font-weight: 700;
   color: #8f2e36;
-  letter-spacing: 2px;
-  margin: 2px 0;
+  letter-spacing: 1.5px;
+  margin: 1px 0;
 }
 
 .lunar-time {
-  font-size: 12px;
+  font-size: 11px;
   color: #7a6b5c;
   font-style: italic;
-  margin-bottom: 4px;
+  margin-bottom: 3px;
 }
 
 .venue-address {
-  font-size: 12px;
+  font-size: 11.5px;
   color: #4a3b2f;
   font-weight: 500;
 }
@@ -842,7 +844,7 @@ onUnmounted(() => {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: 12px;
+  gap: 10px;
 }
 
 .schedule-info {
@@ -860,8 +862,8 @@ onUnmounted(() => {
 .btn-mini-direction {
   display: inline-flex;
   align-items: center;
-  gap: 6px;
-  padding: 6px 14px;
+  gap: 5px;
+  padding: 5px 12px;
   background: linear-gradient(135deg, #ffffff 0%, #faf3e6 100%);
   border: 1.5px solid #c8a55c;
   border-radius: 50px;
@@ -882,7 +884,7 @@ onUnmounted(() => {
 }
 
 .direction-compass {
-  font-size: 15px;
+  font-size: 14px;
   line-height: 1;
   transition: transform 0.4s ease;
 }
@@ -893,7 +895,7 @@ onUnmounted(() => {
 
 .direction-text {
   font-family: var(--font-serif);
-  font-size: 12px;
+  font-size: 11.5px;
   font-weight: 700;
   letter-spacing: 0.5px;
   line-height: 1;

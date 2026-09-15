@@ -20,7 +20,7 @@
         </div>
 
         <div class="wedding-date-seal">
-          <span>07 . 01 . 2027</span>
+          <span>06 . 01 . 2027</span>
         </div>
 
         <div class="made-with-love">

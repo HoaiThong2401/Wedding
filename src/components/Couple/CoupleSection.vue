@@ -38,7 +38,7 @@
                 <div class="role-ribbon groom-ribbon">CHÚ RỂ</div>
               </div>
 
-              <h3 class="couple-name">Lê Hoàng Thiện</h3>
+              <h3 class="couple-name">Hoàng Thiện</h3>
             
 
               <div class="quote-bubble">

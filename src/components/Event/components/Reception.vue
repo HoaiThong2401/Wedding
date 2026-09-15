@@ -15,8 +15,8 @@
         <div class="info-cell">
           <div class="cell-icon">🥂</div>
           <span class="cell-label">THỜI GIAN</span>
-          <p class="cell-primary">11:00 — Thứ Năm</p>
-          <p class="cell-secondary">Ngày 07 / 01 / 2027</p>
+          <p class="cell-primary">11:00 — Thứ Tư</p>
+          <p class="cell-secondary">Ngày 06 / 01 / 2027</p>
           <span class="cell-lunar">(Khai tiệc mừng chung vui)</span>
         </div>
 
