@@ -1,20 +1,17 @@
 <template>
-  <!-- HIỆU ỨNG CÁNH HOA RƠI LÃNG MẠN (CANVAS FALLING PETALS) -->
+  
   <canvas ref="petalsCanvas" class="falling-petals-canvas" aria-hidden="true"></canvas>
 
-  <!-- BÌA MỞ THIỆP (HERO INVITATION) -->
   <HeroSection @opened="unlockPage" />
 
-  <!-- CÁC PHẦN NỘI DUNG SAU KHI MỞ THIỆP -->
   <template v-if="pageUnlocked">
     <CountdownSection id="countdown" />
     <CoupleSection id="couple" />
     <StorySection id="story" />
     <GallerySection id="gallery" />
-    <!-- <EventSection id="event" /> -->
+    
     <FooterSection id="footer" />
 
-    
     <QuickNav />
   </template>
 
@@ -48,7 +45,6 @@ watch(pageUnlocked, value => {
   document.body.style.overflow = value ? 'auto' : 'hidden'
 })
 
-// HIỆU ỨNG CÁNH HOA RƠI NHẸ NHÀNG (FALLING ROSE PETALS)
 const initPetalsEffect = () => {
   const canvas = petalsCanvas.value
   if (!canvas) return
@@ -80,7 +76,7 @@ const initPetalsEffect = () => {
       this.rotation = Math.random() * 360
       this.rotSpeed = (Math.random() - 0.5) * 1.5
       this.opacity = 0.35 + Math.random() * 0.35
-      this.color = Math.random() > 0.3 ? '#f3c5c9' : '#dfba73' // Cánh hồng phớt & cánh vàng kim
+      this.color = Math.random() > 0.3 ? '#f3c5c9' : '#dfba73' 
     }
 
     update() {

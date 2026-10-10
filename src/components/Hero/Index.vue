@@ -4,53 +4,225 @@
     class="hero-container"
     @click="closeLetter">
 
-    <div
-      class="invitation-card"
-      :class="{ 'is-open': isOpen }">
+    <div class="hero-stage" :class="{ 'is-opened-stage': animState === 'opened' }">
 
-      <!-- BÌA THIỆP CƯỚI (FRONT COVER) -->
       <div
-        class="card-cover"
-        @click.stop="onCoverClick">
+        v-if="animState !== 'opened' && animState !== 'unfolding'"
+        class="envelope-back"
+        :class="animState">
+        <div class="envelope-inner-liner">
+          <div class="liner-pattern-bg"></div>
+        </div>
+      </div>
 
-        <div class="cover-frame-outer">
-          <div class="cover-frame-inner">
+      <div
+        v-if="animState !== 'opened' && animState !== 'unfolding'"
+        class="envelope-flap-top"
+        :class="[
+          animState,
+          { 'flap-open': animState !== 'closed' }
+        ]"
+        @click.stop="animState === 'closed' ? openInvitation() : null">
+        <div class="flap-triangle">
+          <div class="flap-v-gold-trim"></div>
+          <div class="flap-crest-ornament">✦ ❦ ✦</div>
+        </div>
 
-            <!-- Hoa văn 4 góc mạ vàng -->
-            <div class="corner-ornament tl">✦</div>
-            <div class="corner-ornament tr">✦</div>
-            <div class="corner-ornament bl">✦</div>
-            <div class="corner-ornament br">✦</div>
+        <div
+          class="wax-seal"
+          :class="{ 'seal-broken': animState !== 'closed' }">
+          <div class="wax-seal-drip"></div>
+          <div class="wax-seal-inner">
+            <span class="wax-seal-symbol">囍</span>
+          </div>
+        </div>
+      </div>
 
-            <div class="cover-content">
-              <span class="cover-tagline">WEDDING INVITATION</span>
-              
-              <!-- Con dấu sáp cưới hoàng gia (Royal Wax Seal) -->
-              <div class="wax-seal">
-                <div class="wax-seal-inner">
-                  <span class="wax-seal-symbol">囍</span>
+      <div
+        class="invitation-card"
+        :class="[
+          animState,
+          {
+            'is-opened': isCardUnfolded
+          }
+        ]"
+        @click.stop="animState === 'closed' ? openInvitation() : null">
+
+        <div
+          class="card-cover-unfold"
+          :class="{ 'unfolded': isCardUnfolded }">
+          <div class="cover-shimmer-beam"></div>
+          <div class="cover-frame-outer">
+            <div class="cover-frame-inner">
+              <div class="corner-ornament tl">✦</div>
+              <div class="corner-ornament tr">✦</div>
+              <div class="corner-ornament bl">✦</div>
+              <div class="corner-ornament br">✦</div>
+
+              <div class="cover-content">
+                <div class="cover-monogram">
+                  <span class="mono-char">T</span>
+                  <span class="mono-symbol">❦</span>
+                  <span class="mono-char">L</span>
                 </div>
-              </div>
 
-              <div class="couple-names-wrap">
-                <h1 class="groom-name">Lê Hoàng Thiện</h1>
-                <div class="couple-connector">
-                  <span class="connector-line"></span>
-                  <span class="heart-icon">❦</span>
-                  <span class="connector-line"></span>
+                <span class="cover-tagline">WEDDING INVITATION</span>
+
+                <div class="couple-names-wrap">
+                  <h1 class="groom-name">Lê Hoàng Thiện</h1>
+                  <div class="couple-connector">
+                    <span class="connector-line"></span>
+                    <span class="heart-icon">❦</span>
+                    <span class="connector-line"></span>
+                  </div>
+                  <h1 class="bride-name">Phan Thị Linh</h1>
                 </div>
-                <h1 class="bride-name">Phan Thị Linh</h1>
+
+                <div class="wedding-date-tag">
+                  <span class="date-text">06 . 01 . 2027</span>
+                </div>
+
+                <p class="save-the-date">SAVE OUR SPECIAL DAY</p>
               </div>
+            </div>
+          </div>
+        </div>
 
-              <div class="wedding-date-tag">
-                <span class="date-text">06 . 01 . 2027</span>
+        <div class="card-book">
+          <div class="book-spine-shadow"></div>
+
+          <div class="book-pages-wrapper">
+
+            <div class="book-page page-left">
+              <div class="page-ornament-border">
+                
+                <div class="left-page-body">
+                  <div class="quote-box">
+                    <p class="quote-text">
+                      “Yêu không chỉ là một danh từ, đó là một hành trình dài của sự thấu hiểu, sẻ chia và cùng nhau già đi.”
+                    </p>
+                    <span class="quote-diamond">✦ ✦ ✦</span>
+                  </div>
+
+                  <div class="invitation-intro">
+                    <span class="sub-heading">TRÂN TRỌNG KÍNH MỜI</span>
+                    <h2 class="guest-title">Quý Vị & Các Bạn</h2>
+                  </div>
+
+                  <div class="invitation-message">
+                    <p class="msg-para">
+                      Sau những năm tháng cùng nhau đi qua giông bão và bình yên, chúng con hiểu rằng mình đã tìm thấy một nửa trọn vẹn của cuộc đời.
+                    </p>
+                    
+                    <div class="event-callout">
+                      ĐẾN THAM DỰ TIỆC MỪNG & CHUNG VUI CÙNG GIA ĐÌNH CHÚNG TÔI
+                    </div>
+
+                    <p class="msg-sub">
+                      Sự hiện diện, những nụ cười và lời chúc phúc của Quý vị chính là món quà ý nghĩa nhất và là niềm vinh hạnh to lớn cho hai gia đình trong ngày trọng đại này.
+                    </p>
+                  </div>
+
+                  <div class="bottom-ornament">
+                    <span>❧</span> ❦ <span>☙</span>
+                  </div>
+                </div>
+
               </div>
+            </div>
 
-              <p class="save-the-date">SAVE OUR SPECIAL DAY</p>
+            <div class="book-page page-right">
+              <div class="page-ornament-border">
+                
+                <div class="right-page-body">
 
-              <div v-if="!isOpen" class="open-hint-btn">
-                <span class="hint-pulse-ring"></span>
-                <span class="hint-text">✉ Chạm để mở thiệp</span>
+                  <div class="parents-section">
+                    <div class="parent-side groom-side">
+                      <span class="family-badge">NHÀ TRAI</span>
+                      <p class="parent-name">Ông: <strong>Lê Xuyên Truyền</strong></p>
+                      <p class="parent-name">Bà: <strong>Lê Thị Thanh Nữ</strong></p>
+                      <span class="hometown">Phường Trung An, Tỉnh Đồng Tháp</span>
+                    </div>
+
+                    <div class="family-divider">
+                      <span class="div-line"></span>
+                      <span class="div-symbol">囍</span>
+                      <span class="div-line"></span>
+                    </div>
+
+                    <div class="parent-side bride-side">
+                      <span class="family-badge">NHÀ GÁI</span>
+                      <p class="parent-name empty-placeholder">&nbsp;</p>
+                      <p class="parent-name">Bà: <strong>Đỗ Thị Vinh</strong></p>
+                      <span class="hometown">Sao Mai, Quảng Lập, Lâm Đồng</span>
+                    </div>
+                  </div>
+
+                  <div class="wedding-announcement">
+                    <span>TRÂN TRỌNG BÁO TIN LỄ TÂN HÔN CỦA HAI CON</span>
+                  </div>
+
+                  <div class="couple-highlight-box">
+                    <div class="couple-person">
+                      <h3 class="name-display">Lê Hoàng Thiện</h3>
+                      <span class="rank-title">Trưởng Nam</span>
+                    </div>
+
+                    <div class="rings-union">
+                      <div class="ring-gold ring-left">
+                        <div class="diamond-sparkle"></div>
+                      </div>
+                      <div class="ring-gold ring-right">
+                        <div class="diamond-sparkle"></div>
+                      </div>
+                    </div>
+
+                    <div class="couple-person">
+                      <h3 class="name-display">Phan Thị Linh</h3>
+                      <span class="rank-title">Út Nữ</span>
+                    </div>
+                  </div>
+
+                  <div class="ceremony-schedule-card">
+                    <h4 class="ceremony-title">HÔN LỄ ĐƯỢC CỬ HÀNH TẠI TƯ GIA NHÀ TRAI</h4>
+                    <div class="gold-separator"></div>
+
+                    <div class="schedule-content-layout">
+                      <div class="schedule-info">
+                        <div class="solar-time">
+                          VÀO LÚC <strong>11:00 — THỨ TƯ</strong>
+                          <div class="date-large">06 . 01 . 2027</div>
+                        </div>
+
+                        <div class="lunar-time">
+                          (Nhằm ngày 29 tháng 11 năm Bính Ngọ)
+                        </div>
+
+                        <div class="venue-address">
+                          <span class="pin-icon">📍</span>
+                          Phường Trung An, Tỉnh Đồng Tháp
+                        </div>
+                      </div>
+
+                      <div class="schedule-direction-wrap">
+                        <a
+                          href="https://maps.app.goo.gl/yAcU4wFFd8jT2qM46"
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          class="btn-mini-direction"
+                          title="Chỉ dẫn đường đi trên Google Maps"
+                          @click.stop
+                        >
+                          <span class="direction-compass">🧭</span>
+                          <span class="direction-text">Chỉ Đường</span>
+                          <span class="direction-arrow">↗</span>
+                        </a>
+                      </div>
+                    </div>
+                  </div>
+
+                </div>
+
               </div>
             </div>
 
@@ -59,150 +231,21 @@
 
       </div>
 
-      <!-- NỘI DUNG BÊN TRONG THIỆP (BOOK PAGES) -->
-      <div class="card-book">
-        <div class="book-spine-shadow"></div>
-
-        <div class="book-pages-wrapper">
-
-          <!-- TRANG TRÁI (LEFT PAGE): LỜI MỜI & TÂM SỰ -->
-          <div class="book-page page-left">
-            <div class="page-ornament-border">
-              
-              <div class="left-page-body">
-                <div class="quote-box">
-                  <p class="quote-text">
-                    “Yêu không chỉ là một danh từ, đó là một hành trình dài của sự thấu hiểu, sẻ chia và cùng nhau già đi.”
-                  </p>
-                  <span class="quote-diamond">✦ ✦ ✦</span>
-                </div>
-
-                <div class="invitation-intro">
-                  <span class="sub-heading">TRÂN TRỌNG KÍNH MỜI</span>
-                  <h2 class="guest-title">Quý Vị & Các Bạn</h2>
-                </div>
-
-                <div class="invitation-message">
-                  <p class="msg-para">
-                    Sau những năm tháng cùng nhau đi qua giông bão và bình yên, chúng con hiểu rằng mình đã tìm thấy một nửa trọn vẹn của cuộc đời.
-                  </p>
-                  
-                  <div class="event-callout">
-                    ĐẾN THAM DỰ TIỆC MỪNG & CHUNG VUI CÙNG GIA ĐÌNH CHÚNG TÔI
-                  </div>
-
-                  <p class="msg-sub">
-                    Sự hiện diện, những nụ cười và lời chúc phúc của Quý vị chính là món quà ý nghĩa nhất và là niềm vinh hạnh to lớn cho hai gia đình trong ngày trọng đại này.
-                  </p>
-                </div>
-
-                <div class="bottom-ornament">
-                  <span>❧</span> ❦ <span>☙</span>
-                </div>
-              </div>
-
-            </div>
-          </div>
-
-          <!-- TRANG PHẢI (RIGHT PAGE): GIA ĐÌNH & THỜI GIAN ĐỊA ĐIỂM -->
-          <div class="book-page page-right">
-            <div class="page-ornament-border">
-              
-              <div class="right-page-body">
-
-                <!-- Thông tin song thân -->
-                <div class="parents-section">
-                  <div class="parent-side groom-side">
-                    <span class="family-badge">NHÀ TRAI</span>
-                    <p class="parent-name">Ông: <strong>Lê Xuyên Truyền</strong></p>
-                    <p class="parent-name">Bà: <strong>Lê Thị Thanh Nữ</strong></p>
-                    <span class="hometown">Phường Trung An, Tỉnh Đồng Tháp</span>
-                  </div>
-
-                  <div class="family-divider">
-                    <span class="div-line"></span>
-                    <span class="div-symbol">囍</span>
-                    <span class="div-line"></span>
-                  </div>
-
-                  <div class="parent-side bride-side">
-                    <span class="family-badge">NHÀ GÁI</span>
-                    <p class="parent-name empty-placeholder">&nbsp;</p>
-                    <p class="parent-name">Bà: <strong>Đỗ Thị Vinh</strong></p>
-                    <span class="hometown">Sao Mai, Quảng Lập, Lâm Đồng</span>
-                  </div>
-                </div>
-
-                <div class="wedding-announcement">
-                  <span>TRÂN TRỌNG BÁO TIN LỄ TÂN HÔN CỦA HAI CON</span>
-                </div>
-
-                <div class="couple-highlight-box">
-                  <div class="couple-person">
-                    <h3 class="name-display">Lê Hoàng Thiện</h3>
-                    <span class="rank-title">Trưởng Nam</span>
-                  </div>
-
-                  <div class="rings-union">
-                    <div class="ring-gold ring-left">
-                      <div class="diamond-sparkle"></div>
-                    </div>
-                    <div class="ring-gold ring-right">
-                      <div class="diamond-sparkle"></div>
-                    </div>
-                  </div>
-
-                  <div class="couple-person">
-                    <h3 class="name-display">Phan Thị Linh</h3>
-                    <span class="rank-title">Út Nữ</span>
-                  </div>
-                </div>
-
-                <!-- Thời gian & Địa điểm Hôn Lễ -->
-                <div class="ceremony-schedule-card">
-                  <h4 class="ceremony-title">HÔN LỄ ĐƯỢC CỬ HÀNH TẠI TƯ GIA NHÀ TRAI</h4>
-                  <div class="gold-separator"></div>
-
-                  <div class="schedule-content-layout">
-                    <div class="schedule-info">
-                      <div class="solar-time">
-                        VÀO LÚC <strong>11:00 — THỨ TƯ</strong>
-                        <div class="date-large">06 . 01 . 2027</div>
-                      </div>
-
-                      <div class="lunar-time">
-                        (Nhằm ngày 29 tháng 11 năm Bính Ngọ)
-                      </div>
-
-                      <div class="venue-address">
-                        <span class="pin-icon">📍</span>
-                        Phường Trung An, Tỉnh Đồng Tháp
-                      </div>
-                    </div>
-
-                    <div class="schedule-direction-wrap">
-                      <a
-                        href="https://maps.app.goo.gl/yAcU4wFFd8jT2qM46"
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        class="btn-mini-direction"
-                        title="Chỉ dẫn đường đi trên Google Maps"
-                        @click.stop
-                      >
-                        <span class="direction-compass">🧭</span>
-                        <span class="direction-text">Chỉ Đường</span>
-                        <span class="direction-arrow">↗</span>
-                      </a>
-                    </div>
-                  </div>
-                </div>
-
-              </div>
-
-            </div>
-          </div>
-
+      <div
+        v-if="animState !== 'opened' && animState !== 'unfolding'"
+        class="envelope-pocket"
+        :class="animState"
+        @click.stop="animState === 'closed' ? openInvitation() : null">
+        <div class="pocket-base">
+          <div class="pocket-base-pattern"></div>
         </div>
+        <div class="pocket-left"></div>
+        <div class="pocket-right"></div>
+        <div class="pocket-bottom"></div>
+        <div class="pocket-v-trim"></div>
+
+        <div class="pocket-corner bl">❧</div>
+        <div class="pocket-corner br">☙</div>
       </div>
 
     </div>
@@ -214,7 +257,9 @@
 import { ref, onMounted, onUnmounted } from 'vue'
 
 const heroRef = ref(null)
-const isOpen = ref(false)
+
+const animState = ref('closed')
+const isCardUnfolded = ref(false)
 let observer = null
 
 const emit = defineEmits(['opened'])
@@ -223,19 +268,39 @@ const playMusic = () => {
   window.dispatchEvent(new Event('user-interact'))
 }
 
-const onCoverClick = () => {
-  if (isOpen.value) return
-  isOpen.value = true
-  emit('opened')
+const openInvitation = () => {
+  if (animState.value !== 'closed') return
+
   playMusic()
+
+  animState.value = 'opening'
+
+  setTimeout(() => {
+    animState.value = 'sliding'
+  }, 250)
+
+  setTimeout(() => {
+    animState.value = 'centering'
+  }, 950)
+
+  setTimeout(() => {
+    animState.value = 'unfolding'
+  }, 2300)
+
+  setTimeout(() => {
+    isCardUnfolded.value = true
+  }, 2500)
+
+  setTimeout(() => {
+    animState.value = 'opened'
+    emit('opened')
+  }, 4400)
 }
 
 const closeLetter = () => {
-  // Cho phép bấm nền ngoài để đóng lại nếu muốn
 }
 
 onMounted(() => {
-  // Có thể tự mở sau vài giây nếu cần hoặc đợi tương tác
 })
 
 onUnmounted(() => {
@@ -259,34 +324,416 @@ onUnmounted(() => {
   overflow: hidden;
 }
 
-.invitation-card {
+.hero-stage {
   position: relative;
   width: 960px;
   max-width: 92vw;
   height: min(600px, calc(100dvh - 40px));
   min-height: 520px;
-  transform-style: preserve-3d;
-  transition: all 0.9s cubic-bezier(0.16, 1, 0.3, 1);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  perspective: 2500px;
 }
 
-/* BÌA THIỆP */
-.card-cover {
+.envelope-back {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%) scale(0.68);
+  width: 960px;
+  max-width: 92vw;
+  height: min(600px, calc(100dvh - 40px));
+  min-height: 520px;
+  background: linear-gradient(135deg, #fbf7ee 0%, #f4e9db 50%, #ede0cd 100%);
+  border-radius: 16px;
+  border: 1.5px solid #d4af37;
+  overflow: hidden;
+  z-index: 5;
+  box-shadow: 0 35px 80px rgba(74, 59, 47, 0.28), 0 12px 30px rgba(74, 59, 47, 0.15), inset 0 0 0 1px rgba(212, 175, 55, 0.4);
+  transition: opacity 0.8s ease, transform 1.0s cubic-bezier(0.22, 1, 0.36, 1);
+  user-select: none;
+}
+
+.envelope-back.centering,
+.envelope-back.unfolding,
+.envelope-back.opened {
+  opacity: 0;
+  pointer-events: none;
+}
+
+.envelope-inner-liner {
+  position: absolute;
+  inset: 10px;
+  border-radius: 12px;
+  background: radial-gradient(circle at center, #ffffff 0%, #faefe2 100%);
+  border: 1px dashed rgba(200, 165, 92, 0.55);
+  overflow: hidden;
+}
+
+.liner-pattern-bg {
+  position: absolute;
+  inset: 0;
+  background-image: radial-gradient(rgba(200, 165, 92, 0.22) 1px, transparent 1px);
+  background-size: 16px 16px;
+  opacity: 0.75;
+}
+
+.envelope-flap-top {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%) scale(0.68);
+  width: 960px;
+  max-width: 92vw;
+  height: min(600px, calc(100dvh - 40px));
+  min-height: 520px;
+  z-index: 40;
+  cursor: pointer;
+  transform-style: preserve-3d;
+  perspective: 1500px;
+  transition: opacity 0.8s ease;
+  user-select: none;
+}
+
+.envelope-flap-top.flap-open {
+  z-index: 4;
+}
+
+.envelope-flap-top.centering,
+.envelope-flap-top.unfolding,
+.envelope-flap-top.opened {
+  opacity: 0;
+  pointer-events: none;
+}
+
+.flap-triangle {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 44%;
+  background: linear-gradient(to bottom, #ffffff 0%, #fcf8f0 60%, #eee1cf 100%);
+  clip-path: polygon(0 0, 100% 0, 50% 100%);
+  border-top-left-radius: 16px;
+  border-top-right-radius: 16px;
+  box-shadow: 0 12px 28px rgba(74, 59, 47, 0.22);
+  transform-origin: top center;
+  transition: transform 0.85s cubic-bezier(0.33, 1, 0.68, 1);
+  transform-style: preserve-3d;
+}
+
+.flap-v-gold-trim {
+  position: absolute;
+  inset: 0;
+  clip-path: polygon(0 0, 50% 100%, 100% 0, calc(100% - 2.5px) 0, 50% calc(100% - 3.5px), 2.5px 0);
+  background: linear-gradient(135deg, #d4af37 0%, #ffe699 50%, #b8860b 100%);
+  filter: drop-shadow(0 2px 4px rgba(74, 59, 47, 0.15));
+  pointer-events: none;
+}
+
+.flap-crest-ornament {
+  position: absolute;
+  top: 10px;
+  left: 50%;
+  transform: translateX(-50%);
+  font-size: 12px;
+  color: #c8a55c;
+  letter-spacing: 5px;
+  opacity: 0.85;
+  pointer-events: none;
+}
+
+.envelope-flap-top.flap-open .flap-triangle {
+  transform: rotateX(180deg);
+}
+
+.envelope-pocket {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%) scale(0.68);
+  width: 960px;
+  max-width: 92vw;
+  height: min(600px, calc(100dvh - 40px));
+  min-height: 520px;
+  z-index: 30;
+  cursor: pointer;
+  user-select: none;
+  transition: opacity 0.8s ease, transform 1.0s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.envelope-pocket.centering,
+.envelope-pocket.unfolding,
+.envelope-pocket.opened {
+  opacity: 0;
+  pointer-events: none;
+}
+
+.pocket-base {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(180deg, #fdfaf4 0%, #f4e9db 60%, #ede0cd 100%);
+  border-radius: 16px;
+  border: 1.5px solid #d4af37;
+  overflow: hidden;
+}
+
+.pocket-base-pattern {
+  position: absolute;
+  inset: 0;
+  background-image: radial-gradient(rgba(200, 165, 92, 0.16) 1px, transparent 1px);
+  background-size: 18px 18px;
+}
+
+.pocket-left {
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  top: 0;
+  width: 52%;
+  background: linear-gradient(135deg, #fefdfb 0%, #f5e8da 100%);
+  clip-path: polygon(0 0, 0 100%, 100% 100%);
+  border-bottom-left-radius: 16px;
+  filter: drop-shadow(3px 0 8px rgba(74, 59, 47, 0.1));
+}
+
+.pocket-right {
+  position: absolute;
+  right: 0;
+  bottom: 0;
+  top: 0;
+  width: 52%;
+  background: linear-gradient(225deg, #fefdfb 0%, #f5e8da 100%);
+  clip-path: polygon(100% 0, 0 100%, 100% 100%);
+  border-bottom-right-radius: 16px;
+  filter: drop-shadow(-3px 0 8px rgba(74, 59, 47, 0.1));
+}
+
+.pocket-bottom {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 65%;
+  background: linear-gradient(to top, #ebdccc 0%, #faf5ec 100%);
+  clip-path: polygon(0 100%, 50% 15%, 100% 100%);
+  border-bottom-left-radius: 16px;
+  border-bottom-right-radius: 16px;
+  box-shadow: 0 -5px 16px rgba(74, 59, 47, 0.14);
+}
+
+.pocket-v-trim {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 48%;
+  clip-path: polygon(0 0, 50% 92%, 100% 0, 100% 2.5px, 50% calc(92% + 2.5px), 0 2.5px);
+  background: linear-gradient(90deg, #b8860b 0%, #ffd778 50%, #b8860b 100%);
+  box-shadow: 0 2px 6px rgba(74, 59, 47, 0.12);
+  pointer-events: none;
+  z-index: 24;
+}
+
+.pocket-corner {
+  position: absolute;
+  bottom: 12px;
+  font-size: 16px;
+  color: #c8a55c;
+  opacity: 0.85;
+  pointer-events: none;
+}
+
+.pocket-corner.bl {
+  left: 14px;
+}
+
+.pocket-corner.br {
+  right: 14px;
+}
+
+.wax-seal {
+  position: absolute;
+  top: 44%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 72px;
+  height: 72px;
+  border-radius: 50%;
+  background: radial-gradient(circle at 35% 35%, #c73748 0%, #941b29 60%, #5e0e17 100%);
+  box-shadow: 0 12px 32px rgba(148, 27, 41, 0.55), 0 4px 12px rgba(0, 0, 0, 0.28), inset 0 2px 4px rgba(255, 255, 255, 0.45), inset 0 -3px 6px rgba(0, 0, 0, 0.4);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 45;
+  transition: all 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
+  animation: sealPulse 3.5s ease-in-out infinite;
+}
+
+.wax-seal.seal-broken {
+  animation: none;
+  transform: translate(-50%, -50%) scale(1.35);
+  opacity: 0;
+  filter: brightness(1.4) drop-shadow(0 0 22px rgba(255, 215, 0, 0.95));
+}
+
+.wax-seal-drip {
+  position: absolute;
+  inset: -4px;
+  border-radius: 46% 54% 52% 48% / 48% 52% 48% 52%;
+  border: 2px solid rgba(255, 215, 120, 0.65);
+  box-shadow: 0 0 10px rgba(212, 175, 55, 0.35);
+}
+
+.wax-seal-inner {
+  width: 54px;
+  height: 54px;
+  border-radius: 50%;
+  border: 1.5px solid rgba(255, 220, 130, 0.75);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: radial-gradient(circle at center, rgba(255, 215, 0, 0.25) 0%, transparent 80%);
+}
+
+.wax-seal-symbol {
+  font-family: var(--font-serif);
+  font-size: 32px;
+  font-weight: 700;
+  color: #ffe082;
+  text-shadow: 0 2px 5px rgba(0, 0, 0, 0.6), 0 0 14px rgba(255, 215, 0, 0.6);
+}
+
+.seal-tap-badge {
+  position: absolute;
+  top: 105%;
+  left: 50%;
+  transform: translateX(-50%);
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  white-space: nowrap;
+  background: rgba(255, 255, 255, 0.94);
+  backdrop-filter: blur(8px);
+  padding: 5px 16px;
+  border-radius: 50px;
+  border: 1px solid rgba(200, 165, 92, 0.6);
+  box-shadow: 0 6px 18px rgba(74, 59, 47, 0.12);
+  font-family: var(--font-serif);
+  font-size: 11px;
+  letter-spacing: 1.5px;
+  color: #851b27;
+  font-weight: 700;
+  text-transform: uppercase;
+  animation: tapBadgeFloat 2.5s ease-in-out infinite;
+}
+
+.badge-spark {
+  color: #c8a55c;
+  font-size: 10px;
+}
+
+@keyframes sealPulse {
+  0%, 100% {
+    transform: translate(-50%, -50%) scale(1);
+    box-shadow: 0 12px 32px rgba(148, 27, 41, 0.55), 0 4px 12px rgba(0, 0, 0, 0.28);
+  }
+  50% {
+    transform: translate(-50%, -50%) scale(1.04);
+    box-shadow: 0 15px 38px rgba(148, 27, 41, 0.7), 0 0 22px rgba(255, 215, 0, 0.45);
+  }
+}
+
+@keyframes tapBadgeFloat {
+  0%, 100% {
+    transform: translateX(-50%) translateY(0);
+  }
+  50% {
+    transform: translateX(-50%) translateY(-3px);
+  }
+}
+
+.invitation-card {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%) scale(0.68);
+  width: 960px;
+  max-width: 92vw;
+  height: min(600px, calc(100dvh - 40px));
+  min-height: 520px;
+  perspective: 2500px;
+  transform-style: preserve-3d;
+  z-index: 15;
+  transition: transform 1.35s cubic-bezier(0.16, 1, 0.3, 1), 
+              box-shadow 1.35s ease;
+  will-change: transform;
+}
+
+.invitation-card.sliding {
+  transform: translate(-50%, calc(-50% - 190px)) scale(0.68);
+  box-shadow: 0 35px 80px rgba(74, 59, 47, 0.32);
+  z-index: 15;
+  transition: transform 0.72s cubic-bezier(0.25, 0.1, 0.25, 1);
+}
+
+.invitation-card.centering {
+  transform: translate(-50%, -50%) scale(1);
+  box-shadow: 0 30px 70px rgba(74, 59, 47, 0.22);
+  z-index: 60;
+  transition: transform 1.35s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.invitation-card.unfolding,
+.invitation-card.opened {
+  transform: translate(-50%, -50%) scale(1);
+  z-index: 60;
+}
+
+.card-cover-unfold {
   position: absolute;
   inset: 0;
   z-index: 20;
   transform-origin: left center;
-  transition: transform 1.2s cubic-bezier(0.65, 0.05, 0.36, 1), box-shadow 1.2s ease;
+  transition: transform 2.0s cubic-bezier(0.25, 1, 0.35, 1), 
+              opacity 1.4s ease 0.6s, 
+              box-shadow 2.0s ease;
   cursor: pointer;
   border-radius: 16px;
   overflow: hidden;
-  background: linear-gradient(135deg, #fdfbf7 0%, #f4eae0 50%, #eae0cf 100%);
-  box-shadow: 0 25px 60px rgba(74, 59, 47, 0.2), inset 0 0 0 1px rgba(200, 165, 92, 0.4);
+  background: linear-gradient(135deg, #fefdf9 0%, #f6ebe0 50%, #eee1cf 100%);
+  box-shadow: 0 25px 60px rgba(74, 59, 47, 0.2), inset 0 0 0 1px rgba(200, 165, 92, 0.45);
   backface-visibility: hidden;
+  will-change: transform, opacity;
 }
 
-.invitation-card.is-open .card-cover {
-  transform: rotateY(-170deg);
-  box-shadow: 5px 15px 30px rgba(0, 0, 0, 0.15);
+.cover-shimmer-beam {
+  position: absolute;
+  top: -50%;
+  left: -50%;
+  width: 200%;
+  height: 200%;
+  background: linear-gradient(45deg, transparent 45%, rgba(255, 255, 255, 0.3) 50%, transparent 55%);
+  transform: rotate(25deg);
+  pointer-events: none;
+  animation: shimmerPass 6s ease-in-out infinite;
+}
+
+@keyframes shimmerPass {
+  0%, 100% {
+    transform: rotate(25deg) translateY(-80%);
+    opacity: 0;
+  }
+  30%, 60% {
+    transform: rotate(25deg) translateY(80%);
+    opacity: 1;
+  }
+}
+
+.card-cover-unfold.unfolded {
+  transform: rotateY(-135deg) scale(0.98);
+  opacity: 0;
   pointer-events: none;
 }
 
@@ -294,14 +741,14 @@ onUnmounted(() => {
   width: 100%;
   height: 100%;
   padding: 12px;
-  border: 2px solid #c8a55c;
+  border: 2px solid #d4af37;
   box-sizing: border-box;
 }
 
 .cover-frame-inner {
   width: 100%;
   height: 100%;
-  border: 1px solid rgba(200, 165, 92, 0.6);
+  border: 1px solid rgba(200, 165, 92, 0.65);
   position: relative;
   display: flex;
   align-items: center;
@@ -313,9 +760,9 @@ onUnmounted(() => {
 
 .corner-ornament {
   position: absolute;
-  color: #c8a55c;
-  font-size: 14px;
-  opacity: 0.8;
+  color: #d4af37;
+  font-size: 15px;
+  opacity: 0.85;
 }
 .corner-ornament.tl { top: 8px; left: 8px; }
 .corner-ornament.tr { top: 8px; right: 8px; }
@@ -330,6 +777,27 @@ onUnmounted(() => {
   align-items: center;
 }
 
+.cover-monogram {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  margin-bottom: 6px;
+}
+
+.mono-char {
+  font-family: var(--font-script);
+  font-size: 38px;
+  color: #b38b4d;
+  font-weight: 600;
+  line-height: 1;
+}
+
+.mono-symbol {
+  font-size: 15px;
+  color: #8f2e36;
+}
+
 .cover-tagline {
   font-family: var(--font-body);
   font-size: 11px;
@@ -337,58 +805,19 @@ onUnmounted(() => {
   font-weight: 600;
   color: #b38b4d;
   text-transform: uppercase;
-  margin-bottom: 12px;
-}
-
-/* WAX SEAL */
-.wax-seal {
-  width: 64px;
-  height: 64px;
-  border-radius: 50%;
-  background: radial-gradient(circle at 35% 35%, #b53847 0%, #851b27 75%, #590f18 100%);
-  box-shadow: 0 6px 20px rgba(133, 27, 39, 0.35), inset 0 2px 4px rgba(255, 255, 255, 0.3);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  margin-bottom: 16px;
-  position: relative;
-  animation: sealFloat 4s ease-in-out infinite;
-}
-
-.wax-seal::after {
-  content: "";
-  position: absolute;
-  inset: -4px;
-  border-radius: 50%;
-  border: 1px dashed rgba(200, 165, 92, 0.5);
-}
-
-.wax-seal-inner {
-  width: 48px;
-  height: 48px;
-  border-radius: 50%;
-  border: 1.5px solid rgba(255, 215, 0, 0.4);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.wax-seal-symbol {
-  font-family: var(--font-serif);
-  font-size: 26px;
-  font-weight: bold;
-  color: #ffd778;
-  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.4);
+  margin-bottom: 10px;
 }
 
 .couple-names-wrap {
-  margin: 6px 0 14px;
+  margin: 4px 0 12px;
 }
 
 .groom-name, .bride-name {
   font-family: var(--font-script);
   font-size: 48px;
-  color: #8f2e36;
+  background: linear-gradient(135deg, #8f2e36 0%, #b53847 60%, #8f2e36 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
   font-weight: 400;
   margin: 0;
   line-height: 1.15;
@@ -406,7 +835,7 @@ onUnmounted(() => {
 .connector-line {
   width: 60px;
   height: 1px;
-  background: linear-gradient(90deg, transparent, #c8a55c, transparent);
+  background: linear-gradient(90deg, transparent, #d4af37, transparent);
 }
 
 .heart-icon {
@@ -416,10 +845,10 @@ onUnmounted(() => {
 
 .wedding-date-tag {
   background: rgba(200, 165, 92, 0.12);
-  border: 1px solid rgba(200, 165, 92, 0.35);
+  border: 1px solid rgba(200, 165, 92, 0.4);
   padding: 4px 18px;
   border-radius: 50px;
-  margin-bottom: 10px;
+  margin-bottom: 8px;
 }
 
 .date-text {
@@ -431,42 +860,13 @@ onUnmounted(() => {
 }
 
 .save-the-date {
-  font-size: 10.5px;
+  font-size: 10px;
   letter-spacing: 4px;
   color: #b38b4d;
   font-weight: 600;
   text-transform: uppercase;
 }
 
-.open-hint-btn {
-  margin-top: 20px;
-  position: relative;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  padding: 8px 22px;
-  border-radius: 50px;
-  background: linear-gradient(135deg, #8f2e36, #a23946);
-  color: #fff;
-  font-size: 13.5px;
-  font-weight: 500;
-  box-shadow: 0 6px 18px rgba(143, 46, 54, 0.28);
-  transition: transform 0.3s ease;
-}
-
-.open-hint-btn:hover {
-  transform: translateY(-2px);
-}
-
-.hint-pulse-ring {
-  position: absolute;
-  inset: -4px;
-  border-radius: 50px;
-  border: 2px solid #a23946;
-  animation: pulseRing 2s infinite;
-}
-
-/* RUỘT THIỆP (BOOK INSIDE) */
 .card-book {
   position: absolute;
   inset: 0;
@@ -475,12 +875,13 @@ onUnmounted(() => {
   background: #fdfaf6;
   box-shadow: 0 30px 70px rgba(74, 59, 47, 0.18);
   opacity: 0;
-  transform: scale(0.95);
+  transform: scale(0.96);
   pointer-events: none;
-  transition: opacity 0.8s ease 0.2s, transform 0.8s ease 0.2s;
+  transition: opacity 1.1s cubic-bezier(0.16, 1, 0.3, 1) 0.2s, 
+              transform 1.1s cubic-bezier(0.16, 1, 0.3, 1) 0.2s;
 }
 
-.invitation-card.is-open .card-book {
+.invitation-card.is-opened .card-book {
   opacity: 1;
   transform: scale(1);
   pointer-events: auto;
@@ -540,7 +941,6 @@ onUnmounted(() => {
   pointer-events: none;
 }
 
-/* NỘI DUNG TRANG TRÁI */
 .left-page-body {
   text-align: center;
   display: flex;
@@ -553,14 +953,6 @@ onUnmounted(() => {
 .quote-box {
   max-width: 95%;
   margin-bottom: 4px;
-}
-
-.quote-mark {
-  font-family: var(--font-serif);
-  font-size: 26px;
-  color: #c8a55c;
-  line-height: 1;
-  display: block;
 }
 
 .quote-text {
@@ -638,7 +1030,6 @@ onUnmounted(() => {
   margin-top: 4px;
 }
 
-/* NỘI DUNG TRANG PHẢI */
 .right-page-body {
   text-align: center;
   display: flex;
@@ -913,11 +1304,6 @@ onUnmounted(() => {
   transform: translate(2px, -2px);
 }
 
-@keyframes sealFloat {
-  0%, 100% { transform: translateY(0); }
-  50% { transform: translateY(-4px); }
-}
-
 @keyframes pulseRing {
   0% { transform: scale(0.95); opacity: 0.8; }
   50% { transform: scale(1.08); opacity: 0; }
@@ -931,30 +1317,55 @@ onUnmounted(() => {
     min-height: 100dvh;
   }
 
-  .invitation-card {
+  .hero-stage {
     width: 100%;
     max-width: 480px;
     height: min(640px, calc(100dvh - 40px));
     min-height: 520px;
   }
 
-  .invitation-card.is-open {
-    max-width: 600px;
-    height: auto;
-    min-height: auto;
+  .envelope-back,
+  .envelope-pocket,
+  .envelope-flap-top {
+    width: 100%;
+    max-width: 480px;
+    height: min(640px, calc(100dvh - 40px));
+    min-height: 520px;
+    transform: translate(-50%, -50%) scale(0.68);
   }
 
-  .invitation-card.is-open .card-cover {
-    display: none;
+  .invitation-card {
+    width: 100%;
+    max-width: 480px;
+    height: min(640px, calc(100dvh - 40px));
+    min-height: 520px;
+    transform: translate(-50%, -50%) scale(0.68);
+  }
+
+  .invitation-card.sliding {
+    transform: translate(-50%, calc(-50% - 160px)) scale(0.68);
+  }
+
+  .invitation-card.centering,
+  .invitation-card.unfolding,
+  .invitation-card.opened {
+    transform: translate(-50%, -50%) scale(1);
+  }
+
+  .card-cover-unfold.unfolded {
+    transform: rotateY(-110deg) scale(0.92);
   }
 
   .card-book {
-    position: relative;
-    height: auto;
+    position: absolute;
+    inset: 0;
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
   }
 
   .book-pages-wrapper {
     flex-direction: column;
+    min-height: 100%;
   }
 
   .book-spine-shadow {
@@ -971,7 +1382,7 @@ onUnmounted(() => {
   }
 
   .groom-name, .bride-name {
-    font-size: 42px;
+    font-size: 38px;
   }
 
   .guest-title {
@@ -989,16 +1400,39 @@ onUnmounted(() => {
     justify-content: center;
   }
 
-  .invitation-card {
+  .hero-stage {
+    width: 100%;
     max-width: 390px;
-    height: min(580px, calc(100dvh - 24px));
+    height: min(560px, calc(100dvh - 24px));
     min-height: 480px;
   }
 
-  .invitation-card.is-open {
-    max-width: 100%;
-    height: auto;
-    min-height: auto;
+  .envelope-back,
+  .envelope-pocket,
+  .envelope-flap-top {
+    width: 100%;
+    max-width: 360px;
+    height: min(560px, calc(100dvh - 24px));
+    min-height: 440px;
+    transform: translate(-50%, -50%) scale(0.58);
+  }
+
+  .invitation-card {
+    width: 100%;
+    max-width: 360px;
+    height: min(560px, calc(100dvh - 24px));
+    min-height: 440px;
+    transform: translate(-50%, -50%) scale(0.58);
+  }
+
+  .invitation-card.sliding {
+    transform: translate(-50%, calc(-50% - 130px)) scale(0.58);
+  }
+
+  .invitation-card.centering,
+  .invitation-card.unfolding,
+  .invitation-card.opened {
+    transform: translate(-50%, -50%) scale(1);
   }
 
   .cover-frame-outer {
@@ -1009,16 +1443,29 @@ onUnmounted(() => {
     padding: 16px 12px;
   }
 
+  .groom-name, .bride-name {
+    font-size: 28px;
+    line-height: 1.15;
+  }
+
   .cover-tagline {
-    font-size: 10px;
+    font-size: 9.5px;
     letter-spacing: 3px;
     margin-bottom: 8px;
+  }
+
+  .seal-tap-badge {
+    padding: 3px 12px;
+    font-size: 9.5px;
+  }
+
+  .mono-char {
+    font-size: 28px;
   }
 
   .wax-seal {
     width: 52px;
     height: 52px;
-    margin-bottom: 10px;
   }
 
   .wax-seal-inner {
@@ -1027,50 +1474,13 @@ onUnmounted(() => {
   }
 
   .wax-seal-symbol {
-    font-size: 20px;
-  }
-
-  .couple-names-wrap {
-    margin: 4px 0 10px;
-  }
-
-  .groom-name, .bride-name {
-    font-size: 30px;
-    line-height: 1.15;
-  }
-
-  .couple-connector {
-    margin: 4px 0;
-    gap: 10px;
-  }
-
-  .connector-line {
-    width: 40px;
-  }
-
-  .heart-icon {
-    font-size: 13px;
-  }
-
-  .wedding-date-tag {
-    padding: 4px 14px;
-    margin-bottom: 6px;
-  }
-
-  .date-text {
-    font-size: 12.5px;
-    letter-spacing: 2px;
-  }
-
-  .save-the-date {
-    font-size: 9.5px;
-    letter-spacing: 3px;
+    font-size: 22px;
   }
 
   .open-hint-btn {
-    margin-top: 12px;
-    padding: 8px 18px;
-    font-size: 12.5px;
+    margin-top: 8px;
+    padding: 6px 16px;
+    font-size: 12px;
   }
 
   .page-ornament-border {
