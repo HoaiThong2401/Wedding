@@ -14,6 +14,7 @@
     <!-- <EventSection id="event" /> -->
     <FooterSection id="footer" />
 
+    
     <QuickNav />
   </template>
 
