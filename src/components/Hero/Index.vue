@@ -39,7 +39,7 @@
                   <span class="heart-icon">❦</span>
                   <span class="connector-line"></span>
                 </div>
-                <h1 class="bride-name">Phan Linh</h1>
+                <h1 class="bride-name">Phan Thị Linh</h1>
               </div>
 
               <div class="wedding-date-tag">
@@ -116,7 +116,7 @@
                     <span class="family-badge">NHÀ TRAI</span>
                     <p class="parent-name">Ông: <strong>Lê Xuyên Truyền</strong></p>
                     <p class="parent-name">Bà: <strong>Lê Thị Thanh Nữ</strong></p>
-                    <span class="hometown">Mỹ Tho, Tiền Giang</span>
+                    <span class="hometown">Phường Trung An, Tỉnh Đồng Tháp</span>
                   </div>
 
                   <div class="family-divider">
@@ -128,8 +128,8 @@
                   <div class="parent-side bride-side">
                     <span class="family-badge">NHÀ GÁI</span>
                     <p class="parent-name empty-placeholder">&nbsp;</p>
-                    <p class="parent-name">Bà: <strong>[Họ tên Mẹ]</strong></p>
-                    <span class="hometown">Đà Lạt, Lâm Đồng</span>
+                    <p class="parent-name">Bà: <strong>Đỗ Thị Vinh</strong></p>
+                    <span class="hometown">Sao Mai, Quảng Lập, Lâm Đồng</span>
                   </div>
                 </div>
 
@@ -153,7 +153,7 @@
                   </div>
 
                   <div class="couple-person">
-                    <h3 class="name-display">Phan Linh</h3>
+                    <h3 class="name-display">Phan Thị Linh</h3>
                     <span class="rank-title">Út Nữ</span>
                   </div>
                 </div>
@@ -176,13 +176,13 @@
 
                       <div class="venue-address">
                         <span class="pin-icon">📍</span>
-                        Ấp 3, Xã Trung An, TP. Mỹ Tho, Tỉnh Tiền Giang
+                        Phường Trung An, Tỉnh Đồng Tháp
                       </div>
                     </div>
 
                     <div class="schedule-direction-wrap">
                       <a
-                        href="https://www.google.com/maps?q=10.371986,106.324576"
+                        href="https://maps.app.goo.gl/yAcU4wFFd8jT2qM46"
                         target="_blank"
                         rel="noopener noreferrer"
                         class="btn-mini-direction"

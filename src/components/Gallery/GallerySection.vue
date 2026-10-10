@@ -164,58 +164,46 @@
 </template>
 
 <script setup>
-import { ref, onMounted, onUnmounted } from 'vue'
+import { ref, computed, onMounted, onUnmounted } from 'vue'
 import { useImageMap } from '@/composables/useImageMap'
 
-const { getImage, fetchImages } = useImageMap()
+const { imageMap, getImage, fetchImages } = useImageMap()
 
-const photos = [
-  {
-    id: 1,
-    fallbackSrc: "https://images.unsplash.com/photo-1583939003579-730e3918a45a?w=800&auto=format&fit=crop&q=80",
-    caption: "Ánh mắt trao nhau"
-  },
-  {
-    id: 2,
-    fallbackSrc: "https://images.unsplash.com/photo-1519225421980-715cb0215aed?w=800&auto=format&fit=crop&q=80",
-    caption: "Cùng nhau qua năm tháng"
-  },
-  {
-    id: 3,
-    fallbackSrc: "https://images.unsplash.com/photo-1511285560929-80b456fea0bc?w=800&auto=format&fit=crop&q=80",
-    caption: "Nụ cười rạng rỡ"
-  },
-  {
-    id: 4,
-    fallbackSrc: "https://images.unsplash.com/photo-1465495976277-4387d4b0b4c6?w=800&auto=format&fit=crop&q=80",
-    caption: "Bình yên bên anh"
-  },
-  {
-    id: 5,
-    fallbackSrc: "https://images.unsplash.com/photo-1537633552985-df8429e8048b?w=800&auto=format&fit=crop&q=80",
-    caption: "Chạm vào hạnh phúc"
-  },
-  {
-    id: 6,
-    fallbackSrc: "https://images.unsplash.com/photo-1520854221256-17451cc331bf?w=800&auto=format&fit=crop&q=80",
-    caption: "Ngày chung đôi"
-  },
-  {
-    id: 7,
-    fallbackSrc: "https://images.unsplash.com/photo-1545232979-fbf68fe9b1af?w=800&auto=format&fit=crop&q=80",
-    caption: "Trọn vẹn lời hứa"
-  },
-  {
-    id: 8,
-    fallbackSrc: "https://images.unsplash.com/photo-1606800052052-a08af7148866?w=800&auto=format&fit=crop&q=80",
-    caption: "Hành trình ngập tràn nắng"
-  },
-  {
-    id: 9,
-    fallbackSrc: "https://images.unsplash.com/photo-1529636798458-92182e662485?w=800&auto=format&fit=crop&q=80",
-    caption: "Mãi mãi một tình yêu"
-  }
+// Danh sách fallback mặc định
+const initialPhotos = [
+  { id: 1, fallbackSrc: "https://images.unsplash.com/photo-1583939003579-730e3918a45a?w=800&auto=format&fit=crop&q=80", caption: "Ánh mắt trao nhau" },
+  { id: 2, fallbackSrc: "https://images.unsplash.com/photo-1519225421980-715cb0215aed?w=800&auto=format&fit=crop&q=80", caption: "Cùng nhau qua năm tháng" },
+  { id: 3, fallbackSrc: "https://images.unsplash.com/photo-1511285560929-80b456fea0bc?w=800&auto=format&fit=crop&q=80", caption: "Nụ cười rạng rỡ" },
+  { id: 4, fallbackSrc: "https://images.unsplash.com/photo-1465495976277-4387d4b0b4c6?w=800&auto=format&fit=crop&q=80", caption: "Bình yên bên anh" },
+  { id: 5, fallbackSrc: "https://images.unsplash.com/photo-1537633552985-df8429e8048b?w=800&auto=format&fit=crop&q=80", caption: "Chạm vào hạnh phúc" },
+  { id: 6, fallbackSrc: "https://images.unsplash.com/photo-1520854221256-17451cc331bf?w=800&auto=format&fit=crop&q=80", caption: "Ngày chung đôi" },
+  { id: 7, fallbackSrc: "https://images.unsplash.com/photo-1545232979-fbf68fe9b1af?w=800&auto=format&fit=crop&q=80", caption: "Trọn vẹn lời hứa" },
+  { id: 8, fallbackSrc: "https://images.unsplash.com/photo-1606800052052-a08af7148866?w=800&auto=format&fit=crop&q=80", caption: "Hành trình ngập tràn nắng" },
+  { id: 9, fallbackSrc: "https://images.unsplash.com/photo-1529636798458-92182e662485?w=800&auto=format&fit=crop&q=80", caption: "Mãi mãi một tình yêu" }
 ]
+
+// Tự động nhận diện tất cả ID số có trong Google Sheet (1, 2, ..., 10, 11, 12, ...)
+const photos = computed(() => {
+  const mapKeys = Object.keys(imageMap.value || {})
+  const numericIds = mapKeys
+    .map(k => Number(k))
+    .filter(n => !isNaN(n) && n > 0)
+    .sort((a, b) => a - b)
+
+  // Nếu trong Sheet có các ID số
+  if (numericIds.length > 0) {
+    return numericIds.map((id, index) => {
+      const existing = initialPhotos.find(p => p.id === id)
+      return {
+        id,
+        fallbackSrc: existing?.fallbackSrc || `https://picsum.photos/800/1000?random=${id}`,
+        caption: existing?.caption || `Khoảnh khắc ngọt ngào #${id}`
+      }
+    })
+  }
+
+  return initialPhotos
+})
 
 const currentIndex = ref(0)
 const lightboxOpen = ref(false)
@@ -225,7 +213,7 @@ const formatNumber = (num) => String(num).padStart(2, '0')
 
 // Tính toán khoảng cách offset tương đối so với thẻ active (vòng tròn lặp)
 const getOffset = (index) => {
-  const n = photos.length
+  const n = photos.value.length || 1
   let diff = (index - currentIndex.value) % n
   if (diff < -Math.floor(n / 2)) diff += n
   if (diff > Math.floor(n / 2)) diff -= n
@@ -304,11 +292,13 @@ const goToSlide = (idx) => {
 }
 
 const nextPhoto = () => {
-  currentIndex.value = (currentIndex.value + 1) % photos.length
+  const len = photos.value.length || 1
+  currentIndex.value = (currentIndex.value + 1) % len
 }
 
 const prevPhoto = () => {
-  currentIndex.value = (currentIndex.value - 1 + photos.length) % photos.length
+  const len = photos.value.length || 1
+  currentIndex.value = (currentIndex.value - 1 + len) % len
 }
 
 const handleCardClick = (index) => {

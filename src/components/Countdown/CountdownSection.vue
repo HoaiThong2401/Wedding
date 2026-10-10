@@ -152,9 +152,9 @@ const updateCountdown = () => {
 }
 
 const googleCalendarUrl = computed(() => {
-  const title = encodeURIComponent('💍 Lễ Cưới: Hoàng Thiện & Phan Linh')
-  const details = encodeURIComponent('Trân trọng kính mời bạn đến tham dự lễ tân hôn của chúng mình tại Ấp 3, Xã Trung An, TP. Mỹ Tho, Tỉnh Tiền Giang!')
-  const location = encodeURIComponent('Ấp 3, Xã Trung An, TP. Mỹ Tho, Tỉnh Tiền Giang')
+  const title = encodeURIComponent('💍 Lễ Cưới: Hoàng Thiện & Thị Linh')
+  const details = encodeURIComponent('Trân trọng kính mời bạn đến tham dự lễ tân hôn của chúng mình tại Phường Trung An, Tỉnh Đồng Tháp!')
+  const location = encodeURIComponent('Phường Trung An, Tỉnh Đồng Tháp')
   const start = '20270106T040000Z' // UTC time
   const end = '20270106T090000Z'
   return `https://calendar.google.com/calendar/render?action=TEMPLATE&text=${title}&dates=${start}/${end}&details=${details}&location=${location}`

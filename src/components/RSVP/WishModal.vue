@@ -29,7 +29,7 @@
               v-model="message"
               rows="4"
               class="form-control"
-              placeholder="Gửi gắm những lời chúc ý nghĩa nhất đến Hoàng Thiện & Phan Linh..."
+              placeholder="Gửi gắm những lời chúc ý nghĩa nhất đến Hoàng Thiện & Phan Thị Linh..."
               maxlength="300"
             ></textarea>
           </div>

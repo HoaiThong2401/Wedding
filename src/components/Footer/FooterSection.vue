@@ -16,7 +16,7 @@
             <span class="monogram-heart">❦</span>
             <span class="monogram-letter">L</span>
           </div>
-          <span class="couple-sub-names">Hoàng Thiện & Phan Linh</span>
+          <span class="couple-sub-names">Hoàng Thiện & Thị Linh</span>
         </div>
 
         <div class="wedding-date-seal">

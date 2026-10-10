@@ -66,7 +66,7 @@
                 <div class="role-ribbon bride-ribbon">CÔ DÂU</div>
               </div>
 
-              <h3 class="couple-name">Phan Linh</h3>
+              <h3 class="couple-name">Phan Thị Linh</h3>
 
               <div class="quote-bubble">
                 <span class="quote-icon">“</span>
