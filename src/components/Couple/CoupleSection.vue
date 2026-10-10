@@ -33,13 +33,12 @@
             <div class="couple-side groom-side">
               <div class="avatar-halo-wrap">
                 <div class="avatar-ring">
-                  <img src="/images/avatar_nam.jpg" alt="Chú rể Lê Hoàng Thiện" class="couple-avatar" />
+                  <img :src="getImage('groom', '/images/avatar_nam.jpg')" alt="Chú rể Lê Hoàng Thiện" class="couple-avatar" />
                 </div>
                 <div class="role-ribbon groom-ribbon">CHÚ RỂ</div>
               </div>
 
               <h3 class="couple-name">Hoàng Thiện</h3>
-            
 
               <div class="quote-bubble">
                 <span class="quote-icon">“</span>
@@ -62,13 +61,12 @@
             <div class="couple-side bride-side">
               <div class="avatar-halo-wrap">
                 <div class="avatar-ring">
-                  <img src="/images/avatar_nu.jpg" alt="Cô dâu Phan Linh" class="couple-avatar" />
+                  <img :src="getImage('bride', '/images/avatar_nu.jpg')" alt="Cô dâu Phan Linh" class="couple-avatar" />
                 </div>
                 <div class="role-ribbon bride-ribbon">CÔ DÂU</div>
               </div>
 
               <h3 class="couple-name">Phan Linh</h3>
-            
 
               <div class="quote-bubble">
                 <span class="quote-icon">“</span>
@@ -84,6 +82,17 @@
     </div>
   </section>
 </template>
+
+<script setup>
+import { onMounted } from 'vue'
+import { useImageMap } from '@/composables/useImageMap'
+
+const { getImage, fetchImages } = useImageMap()
+
+onMounted(() => {
+  fetchImages()
+})
+</script>
 
 <style scoped>
 .couple-section {

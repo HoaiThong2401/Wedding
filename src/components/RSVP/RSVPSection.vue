@@ -110,7 +110,7 @@ const chatBox = ref(null);
 const wishes = ref([]);
 const realCount = ref(0);
 
-const isOpen = ref(false); // Mặc định thu gọn gọn gàng để không che khuất thiệp
+const isOpen = ref(false); 
 const showModal = ref(false);
 const showReactionMenu = ref(false);
 const floatingReactions = ref([]);

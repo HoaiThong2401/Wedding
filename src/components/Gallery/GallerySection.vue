@@ -15,21 +15,21 @@
       <div class="gallery-grid">
         <div
           v-for="(photo, index) in photos"
-          :key="index"
+          :key="photo.id || index"
           class="gallery-item"
           :style="getTransformStyle(index)"
           @click="openLightbox(index)"
         >
           <div class="polaroid-card">
             <div class="photo-frame">
-              <img :src="photo.src" :alt="photo.caption" loading="lazy" class="photo-img" />
+              <img :src="getImage(photo.id, photo.fallbackSrc)" :alt="photo.caption" loading="lazy" class="photo-img" />
               <div class="photo-overlay">
                 <span class="zoom-icon">🔍</span>
               </div>
             </div>
             <div class="polaroid-caption">
               <span class="caption-title">{{ photo.caption }}</span>
-              <span class="caption-sub">Forever in Love</span>
+              <span class="caption-sub">Thiện & Linh</span>
             </div>
           </div>
         </div>
@@ -52,7 +52,7 @@
 
             <div class="lightbox-image-box">
               <img
-                :src="photos[currentIndex].src"
+                :src="getImage(photos[currentIndex].id, photos[currentIndex].fallbackSrc)"
                 :alt="photos[currentIndex].caption"
                 class="lightbox-img"
               />
@@ -72,42 +72,54 @@
 
 <script setup>
 import { ref, onMounted, onUnmounted } from 'vue'
+import { useImageMap } from '@/composables/useImageMap'
+
+const { getImage, fetchImages } = useImageMap()
 
 const photos = [
   {
-    src: "https://images.unsplash.com/photo-1583939003579-730e3918a45a?w=800&auto=format&fit=crop&q=80",
+    id: 1,
+    fallbackSrc: "https://images.unsplash.com/photo-1583939003579-730e3918a45a?w=800&auto=format&fit=crop&q=80",
     caption: "Ánh mắt trao nhau"
   },
   {
-    src: "https://images.unsplash.com/photo-1519225421980-715cb0215aed?w=800&auto=format&fit=crop&q=80",
+    id: 2,
+    fallbackSrc: "https://images.unsplash.com/photo-1519225421980-715cb0215aed?w=800&auto=format&fit=crop&q=80",
     caption: "Cùng nhau qua năm tháng"
   },
   {
-    src: "https://images.unsplash.com/photo-1511285560929-80b456fea0bc?w=800&auto=format&fit=crop&q=80",
+    id: 3,
+    fallbackSrc: "https://images.unsplash.com/photo-1511285560929-80b456fea0bc?w=800&auto=format&fit=crop&q=80",
     caption: "Nụ cười rạng rỡ"
   },
   {
-    src: "https://images.unsplash.com/photo-1465495976277-4387d4b0b4c6?w=800&auto=format&fit=crop&q=80",
+    id: 4,
+    fallbackSrc: "https://images.unsplash.com/photo-1465495976277-4387d4b0b4c6?w=800&auto=format&fit=crop&q=80",
     caption: "Bình yên bên anh"
   },
   {
-    src: "https://images.unsplash.com/photo-1537633552985-df8429e8048b?w=800&auto=format&fit=crop&q=80",
+    id: 5,
+    fallbackSrc: "https://images.unsplash.com/photo-1537633552985-df8429e8048b?w=800&auto=format&fit=crop&q=80",
     caption: "Chạm vào hạnh phúc"
   },
   {
-    src: "https://images.unsplash.com/photo-1520854221256-17451cc331bf?w=800&auto=format&fit=crop&q=80",
+    id: 6,
+    fallbackSrc: "https://images.unsplash.com/photo-1520854221256-17451cc331bf?w=800&auto=format&fit=crop&q=80",
     caption: "Ngày chung đôi"
   },
   {
-    src: "https://images.unsplash.com/photo-1545232979-fbf68fe9b1af?w=800&auto=format&fit=crop&q=80",
+    id: 7,
+    fallbackSrc: "https://images.unsplash.com/photo-1545232979-fbf68fe9b1af?w=800&auto=format&fit=crop&q=80",
     caption: "Trọn vẹn lời hứa"
   },
   {
-    src: "https://images.unsplash.com/photo-1606800052052-a08af7148866?w=800&auto=format&fit=crop&q=80",
+    id: 8,
+    fallbackSrc: "https://images.unsplash.com/photo-1606800052052-a08af7148866?w=800&auto=format&fit=crop&q=80",
     caption: "Hành trình ngập tràn nắng"
   },
   {
-    src: "https://images.unsplash.com/photo-1529636798458-92182e662485?w=800&auto=format&fit=crop&q=80",
+    id: 9,
+    fallbackSrc: "https://images.unsplash.com/photo-1529636798458-92182e662485?w=800&auto=format&fit=crop&q=80",
     caption: "Mãi mãi một tình yêu"
   }
 ]
@@ -151,6 +163,7 @@ const handleKeydown = (e) => {
 }
 
 onMounted(() => {
+  fetchImages()
   window.addEventListener('keydown', handleKeydown)
 })
 

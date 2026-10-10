@@ -24,7 +24,7 @@
             <div class="story-card-inner">
               <div class="story-photo-box">
                 <img
-                  src="https://images.unsplash.com/photo-1522673607200-164d1b6ce486?w=600&auto=format&fit=crop&q=80"
+                  :src="getImage('story_1', 'https://images.unsplash.com/photo-1522673607200-164d1b6ce486?w=600&auto=format&fit=crop&q=80')"
                   alt="First Met"
                   class="story-img"
                   loading="lazy"
@@ -56,7 +56,7 @@
             <div class="story-card-inner">
               <div class="story-photo-box">
                 <img
-                  src="https://images.unsplash.com/photo-1515934751635-c81c6bc9a2d8?w=600&auto=format&fit=crop&q=80"
+                  :src="getImage('story_2', 'https://images.unsplash.com/photo-1515934751635-c81c6bc9a2d8?w=600&auto=format&fit=crop&q=80')"
                   alt="Falling In Love"
                   class="story-img"
                   loading="lazy"
@@ -88,7 +88,7 @@
             <div class="story-card-inner">
               <div class="story-photo-box">
                 <img
-                  src="https://images.unsplash.com/photo-1519741497674-611481863552?w=600&auto=format&fit=crop&q=80"
+                  :src="getImage('story_3', 'https://images.unsplash.com/photo-1519741497674-611481863552?w=600&auto=format&fit=crop&q=80')"
                   alt="The Proposal"
                   class="story-img"
                   loading="lazy"
@@ -123,6 +123,17 @@
     </div>
   </section>
 </template>
+
+<script setup>
+import { onMounted } from 'vue'
+import { useImageMap } from '@/composables/useImageMap'
+
+const { getImage, fetchImages } = useImageMap()
+
+onMounted(() => {
+  fetchImages()
+})
+</script>
 
 <style scoped>
 .story-section {
