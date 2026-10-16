@@ -20,7 +20,7 @@
           <span class="accent-line"></span>
         </div>
         <div class="flap-invitation-title">WEDDING INVITATION</div>
-        <div class="flap-couple-names">Hoàng Thiện <span>❦</span> Thị Linh</div>
+        <div class="flap-couple-names">Hoàng Thiện <span>❦</span> Phan Linh</div>
         <div class="flap-wedding-date">✦ 06 . 01 . 2027 ✦</div>
       </div>
     </div>

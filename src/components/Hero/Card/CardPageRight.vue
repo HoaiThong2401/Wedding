@@ -33,7 +33,7 @@
           <div class="chibi-halo-right"></div>
           <img
             src="/images/anh_icon.png"
-            alt="Cô dâu chú rể Hoàng Thiện & Thị Linh"
+            alt="Cô dâu chú rể Hoàng Thiện & Phan Linh"
             class="right-chibi-img"
           />
         </div>
