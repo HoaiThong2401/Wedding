@@ -28,6 +28,16 @@
           <span>TRÂN TRỌNG BÁO TIN LỄ TÂN HÔN CỦA HAI CON</span>
         </div>
 
+        <!-- Chibi Couple Illustration -->
+        <div class="right-chibi-wrap">
+          <div class="chibi-halo-right"></div>
+          <img
+            src="/images/anh_icon.png"
+            alt="Cô dâu chú rể Hoàng Thiện & Thị Linh"
+            class="right-chibi-img"
+          />
+        </div>
+
         <div class="couple-highlight-box">
           <div class="couple-person">
             <h3 class="name-display">Lê Hoàng Thiện</h3>
@@ -207,6 +217,43 @@
   font-weight: 600;
   text-transform: uppercase;
   margin: 5px 0;
+}
+
+.right-chibi-wrap {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 4px 0 6px;
+}
+
+.chibi-halo-right {
+  position: absolute;
+  width: 120px;
+  height: 120px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(223, 186, 115, 0.3) 0%, rgba(223, 186, 115, 0.08) 55%, transparent 75%);
+  pointer-events: none;
+  animation: chibiGlowRight 4s ease-in-out infinite alternate;
+}
+
+.right-chibi-img {
+  height: 110px;
+  width: auto;
+  object-fit: contain;
+  filter: drop-shadow(0 6px 14px rgba(74, 59, 47, 0.22));
+  position: relative;
+  z-index: 2;
+  transition: transform 0.3s ease;
+}
+
+.right-chibi-img:hover {
+  transform: scale(1.05);
+}
+
+@keyframes chibiGlowRight {
+  0% { transform: scale(0.95); opacity: 0.6; }
+  100% { transform: scale(1.05); opacity: 1; }
 }
 
 .couple-highlight-box {
@@ -411,11 +458,28 @@
   .page-right {
     border-left: none;
   }
+
+  .right-chibi-img {
+    height: 100px;
+  }
 }
 
 @media (max-width: 576px) {
   .page-ornament-border {
     padding: 16px 12px;
+  }
+
+  .right-chibi-wrap {
+    margin: 2px 0 4px;
+  }
+
+  .right-chibi-img {
+    height: 88px;
+  }
+
+  .chibi-halo-right {
+    width: 92px;
+    height: 92px;
   }
 
   .parents-section {

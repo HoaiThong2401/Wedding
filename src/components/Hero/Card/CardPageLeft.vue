@@ -4,7 +4,7 @@
       <div class="left-page-body">
         <div class="quote-box">
           <p class="quote-text">
-            “Yêu không chỉ là một danh từ, đó là một hành trình dài của sự thấu hiểu, sẻ chia và cùng nhau già đi.”
+            “Tình yêu không chỉ được thể hiện thành lời, mà là cả một hành trình dài của sự thấu hiểu, sẻ chia và cùng nhau già đi.”
           </p>
           <span class="quote-diamond">✦ ✦ ✦</span>
         </div>
