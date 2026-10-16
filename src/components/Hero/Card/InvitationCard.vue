@@ -102,11 +102,11 @@ const handleClick = () => {
     max-width: 360px;
     height: min(560px, calc(100dvh - 24px));
     min-height: 440px;
-    transform: translate(-50%, -50%) scale(0.58);
+    transform: translate(-50%, -50%) scale(0.85);
   }
 
   .invitation-card.sliding {
-    transform: translate(-50%, calc(-50% - 130px)) scale(0.58);
+    transform: translate(-50%, calc(-50% - 130px)) scale(0.85);
   }
 
   .invitation-card.centering,

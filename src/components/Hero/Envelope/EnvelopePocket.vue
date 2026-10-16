@@ -8,11 +8,14 @@
     <div class="pocket-base">
       <div class="pocket-base-pattern"></div>
     </div>
+
+    <!-- 3 Symmetrical Pocket Triangles (Left, Right, Bottom) converging to center -->
     <div class="pocket-left"></div>
     <div class="pocket-right"></div>
     <div class="pocket-bottom"></div>
-    <div class="pocket-v-trim"></div>
+    <div class="pocket-bottom-trim"></div>
 
+    <!-- Ornate Gold Foil Corners -->
     <div class="pocket-corner bl">❧</div>
     <div class="pocket-corner br">☙</div>
   </div>
@@ -61,84 +64,81 @@ const handleClick = () => {
 .pocket-base {
   position: absolute;
   inset: 0;
-  background: linear-gradient(180deg, #fdfaf4 0%, #f4e9db 60%, #ede0cd 100%);
-  border-radius: 16px;
-  border: 1.5px solid #d4af37;
+  background: radial-gradient(circle at 50% 80%, #8c202d 0%, #751923 60%, #4f0e16 100%);
+  border-radius: 18px;
+  border: 2px solid #d4af37;
   overflow: hidden;
+  box-shadow: 
+    inset 0 0 50px rgba(0, 0, 0, 0.45),
+    0 35px 80px rgba(50, 10, 18, 0.4);
 }
 
 .pocket-base-pattern {
   position: absolute;
   inset: 0;
-  background-image: radial-gradient(rgba(200, 165, 92, 0.16) 1px, transparent 1px);
-  background-size: 18px 18px;
+  background-image: radial-gradient(rgba(212, 175, 55, 0.14) 1px, transparent 1px);
+  background-size: 20px 20px;
+  opacity: 0.8;
 }
 
+/* Symmetrical Envelope Folds radiating from the 4 corners to the center */
 .pocket-left {
   position: absolute;
-  left: 0;
-  bottom: 0;
-  top: 0;
-  width: 52%;
-  background: linear-gradient(135deg, #fefdfb 0%, #f5e8da 100%);
-  clip-path: polygon(0 0, 0 100%, 100% 100%);
-  border-bottom-left-radius: 16px;
-  filter: drop-shadow(3px 0 8px rgba(74, 59, 47, 0.1));
+  inset: 0;
+  background: linear-gradient(135deg, #9b2836 0%, #851e29 100%);
+  clip-path: polygon(0 0, 0 100%, 52% 48%);
+  border-bottom-left-radius: 18px;
+  border-top-left-radius: 18px;
+  filter: drop-shadow(3px 2px 8px rgba(0, 0, 0, 0.28));
 }
 
 .pocket-right {
   position: absolute;
-  right: 0;
-  bottom: 0;
-  top: 0;
-  width: 52%;
-  background: linear-gradient(225deg, #fefdfb 0%, #f5e8da 100%);
-  clip-path: polygon(100% 0, 0 100%, 100% 100%);
-  border-bottom-right-radius: 16px;
-  filter: drop-shadow(-3px 0 8px rgba(74, 59, 47, 0.1));
+  inset: 0;
+  background: linear-gradient(225deg, #9b2836 0%, #851e29 100%);
+  clip-path: polygon(100% 0, 100% 100%, 48% 48%);
+  border-bottom-right-radius: 18px;
+  border-top-right-radius: 18px;
+  filter: drop-shadow(-3px 2px 8px rgba(0, 0, 0, 0.28));
 }
 
 .pocket-bottom {
   position: absolute;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  height: 65%;
-  background: linear-gradient(to top, #ebdccc 0%, #faf5ec 100%);
-  clip-path: polygon(0 100%, 50% 15%, 100% 100%);
-  border-bottom-left-radius: 16px;
-  border-bottom-right-radius: 16px;
-  box-shadow: 0 -5px 16px rgba(74, 59, 47, 0.14);
+  inset: 0;
+  background: linear-gradient(to top, #7d1a25 0%, #8c202d 55%, #9b2836 100%);
+  clip-path: polygon(0 100%, 100% 100%, 50% 47%);
+  border-bottom-left-radius: 18px;
+  border-bottom-right-radius: 18px;
+  filter: drop-shadow(0 -4px 10px rgba(0, 0, 0, 0.3));
 }
 
-.pocket-v-trim {
+.pocket-bottom-trim {
   position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  height: 48%;
-  clip-path: polygon(0 0, 50% 92%, 100% 0, 100% 2.5px, 50% calc(92% + 2.5px), 0 2.5px);
-  background: linear-gradient(90deg, #b8860b 0%, #ffd778 50%, #b8860b 100%);
-  box-shadow: 0 2px 6px rgba(74, 59, 47, 0.12);
+  inset: 0;
+  clip-path: polygon(0 100%, 50% 47%, 100% 100%, 100% calc(100% - 2px), 50% calc(47% + 2px), 0 calc(100% - 2px));
+  background: linear-gradient(90deg, transparent 5%, #dfba73 30%, #fff3b3 50%, #dfba73 70%, transparent 95%);
   pointer-events: none;
   z-index: 24;
 }
 
+/* Corner Ornaments */
 .pocket-corner {
   position: absolute;
-  bottom: 12px;
-  font-size: 16px;
-  color: #c8a55c;
+  bottom: 14px;
+  font-size: 20px;
+  color: #dfba73;
   opacity: 0.85;
   pointer-events: none;
+  z-index: 25;
+  text-shadow: 0 1px 4px rgba(0, 0, 0, 0.6);
 }
 
 .pocket-corner.bl {
-  left: 14px;
+  left: 18px;
 }
 
 .pocket-corner.br {
-  right: 14px;
+  right: 18px;
 }
 
 @media (max-width: 992px) {
@@ -157,7 +157,14 @@ const handleClick = () => {
     max-width: 360px;
     height: min(560px, calc(100dvh - 24px));
     min-height: 440px;
-    transform: translate(-50%, -50%) scale(0.58);
+    transform: translate(-50%, -50%) scale(0.85);
   }
+
+  .pocket-corner {
+    bottom: 12px;
+    font-size: 18px;
+  }
+  .pocket-corner.bl { left: 14px; }
+  .pocket-corner.br { right: 14px; }
 }
 </style>
