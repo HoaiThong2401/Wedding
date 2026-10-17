@@ -13,96 +13,55 @@
       </div>
 
       <div class="timeline-container">
-        <!-- MỐC 1 -->
-        <div class="timeline-item left-item">
+        <div
+          v-for="(item, index) in stories"
+          :key="item.key || index"
+          class="timeline-item"
+          :class="index % 2 === 0 ? 'left-item' : 'right-item'"
+        >
           <div class="timeline-node">
-            <div class="node-ring">
-              <span class="node-number">I</span>
+            <div
+              class="node-ring"
+              :class="{ 'node-ring-special': item.isLast }"
+              :title="item.isLast ? 'Chương cuối • Hạnh phúc trọn vẹn' : `Chương ${toRoman(index + 1)}`"
+            >
+              <span v-if="item.isLast" class="node-icon">💍</span>
+              <span v-else class="node-number">{{ toRoman(index + 1) }}</span>
             </div>
           </div>
-          <div class="story-card">
-            <div class="story-card-inner">
-              <div class="story-photo-box">
-                <img
-                  :src="getImage('story_1', 'https://images.unsplash.com/photo-1522673607200-164d1b6ce486?w=600&auto=format&fit=crop&q=80')"
-                  alt="First Met"
-                  class="story-img"
-                  loading="lazy"
-                />
-                <span class="story-date-badge">20 . 10 . 2021</span>
-              </div>
-              <div class="story-content">
-                <span class="chapter-label">CHƯƠNG I • KHOẢNH KHẮC ĐẦU TIÊN</span>
-                <h3 class="story-title">First Met</h3>
-                <p class="story-text">
-                  Đó là một buổi chiều thu tình cờ tại quán cà phê quen thuộc. Một ánh nhìn lướt qua nhưng đã mở đầu cho cuốn tiểu thuyết tình yêu đẹp đẽ nhất của hai đứa mình.
-                </p>
-                <div class="story-highlight">
-                  <span class="highlight-quote">“Duyên phận bắt đầu từ một cái chạm mắt tình cờ...”</span>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
 
-        <!-- MỐC 2 -->
-        <div class="timeline-item right-item">
-          <div class="timeline-node">
-            <div class="node-ring">
-              <span class="node-number">II</span>
-            </div>
-          </div>
-          <div class="story-card">
+          <div
+            class="story-card"
+            :class="{ 'story-card-special': item.isLast }"
+          >
             <div class="story-card-inner">
               <div class="story-photo-box">
                 <img
-                  :src="getImage('story_2', 'https://images.unsplash.com/photo-1515934751635-c81c6bc9a2d8?w=600&auto=format&fit=crop&q=80')"
-                  alt="Falling In Love"
+                  :src="item.image"
+                  :alt="item.title"
                   class="story-img"
                   loading="lazy"
                 />
-                <span class="story-date-badge">15 . 05 . 2022</span>
+                <span
+                  class="story-date-badge"
+                  :class="{ 'special-date': item.isLast }"
+                >
+                  {{ item.date }}
+                </span>
               </div>
               <div class="story-content">
-                <span class="chapter-label">CHƯƠNG II • LỜI HẸN ƯỚC</span>
-                <h3 class="story-title">Falling In Love</h3>
+                <span
+                  class="chapter-label"
+                  :class="{ 'special-label': item.isLast }"
+                >
+                  CHƯƠNG {{ toRoman(index + 1) }} • {{ item.chapter || item.chapterLabel }}
+                </span>
+                <h3 class="story-title">{{ item.title }}</h3>
                 <p class="story-text">
-                  Sau những tháng ngày cùng sẻ chia buồn vui, chúng mình quyết định nắm chặt tay nhau, cùng nhau vượt qua mọi thử thách của cuộc sống và trao trọn niềm tin.
+                  {{ item.desc || item.text }}
                 </p>
-                <div class="story-highlight">
-                  <span class="highlight-quote">“Bàn tay nắm lấy bàn tay, cùng đi qua giông bão...”</span>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <!-- MỐC 3 -->
-        <div class="timeline-item left-item">
-          <div class="timeline-node">
-            <div class="node-ring node-ring-special">
-              <span class="node-icon">💍</span>
-            </div>
-          </div>
-          <div class="story-card story-card-special">
-            <div class="story-card-inner">
-              <div class="story-photo-box">
-                <img
-                  :src="getImage('story_3', 'https://images.unsplash.com/photo-1519741497674-611481863552?w=600&auto=format&fit=crop&q=80')"
-                  alt="The Proposal"
-                  class="story-img"
-                  loading="lazy"
-                />
-                <span class="story-date-badge special-date">10 . 01 . 2026</span>
-              </div>
-              <div class="story-content">
-                <span class="chapter-label special-label">CHƯƠNG III • MÃI MÃI BÊN NHAU</span>
-                <h3 class="story-title">The Proposal</h3>
-                <p class="story-text">
-                  Dưới ánh hoàng hôn lãng mạn, chiếc nhẫn được trao đi cùng câu nói "Em đồng ý!". Và hôm nay, chúng mình sẵn sàng bước sang một trang mới: Về chung một nhà.
-                </p>
-                <div class="story-highlight">
-                  <span class="highlight-quote">“Yes, I do — Hành trình trọn đời bắt đầu!”</span>
+                <div v-if="item.quote || item.highlight" class="story-highlight">
+                  <span class="highlight-quote">{{ item.quote || item.highlight }}</span>
                 </div>
               </div>
             </div>
@@ -112,9 +71,9 @@
         <!-- TIMELINE END BADGE -->
         <div class="timeline-end-wrap">
           <div class="end-heart-badge">
-            <span class="end-heart-icon">❦</span>
+            <span class="end-heart-icon">💍</span>
             <span class="end-text">To Be Continued Forever</span>
-            <span class="end-heart-icon">❦</span>
+            <span class="end-heart-icon">💍</span>
           </div>
         </div>
 
@@ -125,10 +84,94 @@
 </template>
 
 <script setup>
-import { onMounted } from 'vue'
+import { computed, onMounted } from 'vue'
 import { useImageMap } from '@/composables/useImageMap'
 
-const { getImage, fetchImages } = useImageMap()
+const { imageMap, getImage, fetchImages, storyListFromSheet, formatDate } = useImageMap()
+
+// Dữ liệu mặc định ban đầu nếu các ô tương ứng trên Google Sheet chưa điền
+const defaultStoryData = [
+  {
+    key: 'story_1',
+    date: '20 . 10 . 2021',
+    chapter: 'KHOẢNH KHẮC ĐẦU TIÊN',
+    title: 'First Met',
+    desc: 'Đó là một buổi chiều thu tình cờ tại quán cà phê quen thuộc. Một ánh nhìn lướt qua nhưng đã mở đầu cho cuốn tiểu thuyết tình yêu đẹp đẽ nhất của hai đứa mình.',
+    quote: '“Duyên phận bắt đầu từ một cái chạm mắt tình cờ...”',
+    fallbackImg: 'https://images.unsplash.com/photo-1522673607200-164d1b6ce486?w=600&auto=format&fit=crop&q=80'
+  },
+  {
+    key: 'story_2',
+    date: '15 . 05 . 2022',
+    chapter: 'LỜI HẸN ƯỚC',
+    title: 'Falling In Love',
+    desc: 'Sau những tháng ngày cùng sẻ chia buồn vui, chúng mình quyết định nắm chặt tay nhau, cùng nhau vượt qua mọi thử thách của cuộc sống và trao trọn niềm tin.',
+    quote: '“Bàn tay nắm lấy bàn tay, cùng đi qua giông bão...”',
+    fallbackImg: 'https://images.unsplash.com/photo-1515934751635-c81c6bc9a2d8?w=600&auto=format&fit=crop&q=80'
+  },
+  {
+    key: 'story_3',
+    date: '10 . 01 . 2026',
+    chapter: 'MÃI MÃI BÊN NHAU',
+    title: 'The Proposal',
+    desc: 'Dưới ánh hoàng hôn lãng mạn, chiếc nhẫn được trao đi cùng câu nói "Em đồng ý!". Và hôm nay, chúng mình sẵn sàng bước sang một trang mới: Về chung một nhà.',
+    quote: '“Yes, I do — Hành trình trọn đời bắt đầu!”',
+    fallbackImg: 'https://images.unsplash.com/photo-1519741497674-611481863552?w=600&auto=format&fit=crop&q=80'
+  }
+]
+
+// Hàm tự động chuyển đổi số sang số La Mã (1 -> I, 2 -> II, 3 -> III, 4 -> IV, ...)
+const toRoman = (num) => {
+  const romanMap = [
+    { value: 10, symbol: 'X' },
+    { value: 9, symbol: 'IX' },
+    { value: 5, symbol: 'V' },
+    { value: 4, symbol: 'IV' },
+    { value: 1, symbol: 'I' }
+  ]
+  let result = ''
+  let n = num
+  for (const { value, symbol } of romanMap) {
+    while (n >= value) {
+      result += symbol
+      n -= value
+    }
+  }
+  return result || String(num)
+}
+
+// Xử lý danh sách câu chuyện:
+// - Đọc trực tiếp các cột từ Google Sheet: Story ID | Story Url | Date | Chapter | Title | Desc | Quote
+// - Tự động định dạng ngày sang dd/mm/yyyy
+// - Tự động đánh số La Mã (CHƯƠNG I, CHƯƠNG II...)
+// - Mục cuối cùng LUÔN TỰ ĐỘNG nhận icon chiếc nhẫn cưới (💍)
+const stories = computed(() => {
+  const fromSheet = storyListFromSheet.value || []
+  const list = fromSheet.length > 0 ? fromSheet : defaultStoryData
+  const total = list.length
+
+  return list.map((item, index) => {
+    const isLast = index === total - 1
+    const key = item.key || `story_${index + 1}`
+    const def = defaultStoryData.find(d => d.key === key) || defaultStoryData[index] || {}
+
+    // Định dạng ngày sang dd/mm/yyyy
+    const rawDate = item.date || imageMap.value[`${key}_date`] || def.date || ''
+    const formattedDate = formatDate(rawDate) || rawDate || 'Ngày kỷ niệm'
+
+    return {
+      key,
+      // Lấy trực tiếp từ Google Sheet, nếu ô trống thì lấy mặc định
+      date: formattedDate,
+      chapter: item.chapter || imageMap.value[`${key}_chapter`] || def.chapter || (isLast ? 'MÃI MÃI BÊN NHAU' : 'KHOẢNH KHẮC YÊU THƯƠNG'),
+      title: item.title || imageMap.value[`${key}_title`] || def.title || (isLast ? 'The Proposal' : `Sweet Chapter #${index + 1}`),
+      desc: item.desc || imageMap.value[`${key}_desc`] || def.desc || 'Từng bước ngoặt ngọt ngào trên hành trình gắn kết hai tâm hồn.',
+      quote: item.quote || imageMap.value[`${key}_quote`] || def.quote || '',
+      image: getImage(key, item.url || def.fallbackImg),
+      isLast
+    }
+  })
+})
 
 onMounted(() => {
   fetchImages()
