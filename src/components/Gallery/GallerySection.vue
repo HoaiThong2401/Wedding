@@ -169,6 +169,61 @@ import { useImageMap } from '@/composables/useImageMap'
 
 const { imageMap, getImage, fetchImages } = useImageMap()
 
+const defaultCaptions = [
+  "Ánh mắt trao nhau",
+  "Cùng nhau qua năm tháng",
+  "Nụ cười rạng rỡ",
+  "Bình yên bên anh",
+  "Chạm vào hạnh phúc",
+  "Ngày chung đôi",
+  "Trọn vẹn lời hứa",
+  "Hành trình ngập tràn nắng",
+  "Mãi mãi một tình yêu",
+  "Nơi tình yêu bắt đầu",
+  "Bàn tay nắm chặt bàn tay",
+  "Hạnh phúc giản đơn",
+  "Bên em là bình yên",
+  "Giây phút ngọt ngào",
+  "Giai điệu tình yêu",
+  "Dưới ánh hoàng hôn",
+  "Nắm tay đi khắp thế gian",
+  "Một đời an yên",
+  "Tình yêu đong đầy",
+  "Mảnh ghép hoàn hảo",
+  "Tựa vai nhau sớm tối",
+  "Hẹn ước trăm năm",
+  "Gửi trao yêu thương",
+  "Nắng ấm bên đời",
+  "Mùa yêu thương nở hoa",
+  "Khắc ghi từng khoảnh khắc",
+  "Chung một nhịp đập",
+  "Duyên định ngàn năm",
+  "Khoảnh khắc nhiệm màu",
+  "Lời thì thầm của trái tim",
+  "Về chung một nhà",
+  "Bên nhau trọn đời",
+  "Nguyện ước trăm năm",
+  "Hạnh phúc ngọt ngào",
+  "Ánh hoàng hôn chứng giám",
+  "Tình yêu diệu kỳ",
+  "Nụ cười em là nắng",
+  "Giữ chặt tay nhau",
+  "Đi qua bao thăng trầm",
+  "Ngày ta thuộc về nhau",
+  "Trọn đời bên anh",
+  "Ngập tràn hạnh phúc",
+  "Bước chung con đường",
+  "Giọt nắng tình yêu",
+  "Lời hứa từ trái tim",
+  "Vòng tay ấm áp",
+  "Chung đôi chung lối",
+  "Khởi đầu hành trình mới",
+  "Yêu thương không hồi kết",
+  "Viết tiếp câu chuyện tình",
+  "Hạnh phúc mãi về sau",
+  "Thiên đường có đôi"
+]
+
 // Danh sách fallback mặc định
 const initialPhotos = [
   { id: 1, fallbackSrc: "https://images.unsplash.com/photo-1583939003579-730e3918a45a?w=800&auto=format&fit=crop&q=80", caption: "Ánh mắt trao nhau" },
@@ -179,10 +234,21 @@ const initialPhotos = [
   { id: 6, fallbackSrc: "https://images.unsplash.com/photo-1520854221256-17451cc331bf?w=800&auto=format&fit=crop&q=80", caption: "Ngày chung đôi" },
   { id: 7, fallbackSrc: "https://images.unsplash.com/photo-1545232979-fbf68fe9b1af?w=800&auto=format&fit=crop&q=80", caption: "Trọn vẹn lời hứa" },
   { id: 8, fallbackSrc: "https://images.unsplash.com/photo-1606800052052-a08af7148866?w=800&auto=format&fit=crop&q=80", caption: "Hành trình ngập tràn nắng" },
-  { id: 9, fallbackSrc: "https://images.unsplash.com/photo-1529636798458-92182e662485?w=800&auto=format&fit=crop&q=80", caption: "Mãi mãi một tình yêu" }
+  { id: 9, fallbackSrc: "https://images.unsplash.com/photo-1529636798458-92182e662485?w=800&auto=format&fit=crop&q=80", caption: "Mãi mãi một tình yêu" },
+  { id: 10, fallbackSrc: "https://images.unsplash.com/photo-1519741497674-611481863552?w=800&auto=format&fit=crop&q=80", caption: "Nơi tình yêu bắt đầu" }
 ]
 
-// Tự động nhận diện tất cả ID số có trong Google Sheet (1, 2, ..., 10, 11, 12, ...)
+const getCaption = (id, index) => {
+  const fromSheet = imageMap.value[`caption_${id}`] || imageMap.value[`caption${id}`]
+  if (fromSheet) return fromSheet
+
+  const existing = initialPhotos.find(p => p.id === id)
+  if (existing?.caption) return existing.caption
+
+  const captionIdx = (id > 0 ? id - 1 : index) % defaultCaptions.length
+  return defaultCaptions[captionIdx]
+}
+
 const photos = computed(() => {
   const mapKeys = Object.keys(imageMap.value || {})
   const numericIds = mapKeys
@@ -190,14 +256,13 @@ const photos = computed(() => {
     .filter(n => !isNaN(n) && n > 0)
     .sort((a, b) => a - b)
 
-  // Nếu trong Sheet có các ID số
   if (numericIds.length > 0) {
     return numericIds.map((id, index) => {
       const existing = initialPhotos.find(p => p.id === id)
       return {
         id,
         fallbackSrc: existing?.fallbackSrc || `https://picsum.photos/800/1000?random=${id}`,
-        caption: existing?.caption || `Khoảnh khắc ngọt ngào #${id}`
+        caption: getCaption(id, index)
       }
     })
   }
@@ -211,7 +276,6 @@ let autoplayTimer = null
 
 const formatNumber = (num) => String(num).padStart(2, '0')
 
-// Tính toán khoảng cách offset tương đối so với thẻ active (vòng tròn lặp)
 const getOffset = (index) => {
   const n = photos.value.length || 1
   let diff = (index - currentIndex.value) % n
