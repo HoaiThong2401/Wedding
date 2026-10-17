@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 50 50" width="50" height="50">
+  <!-- Classic Oriental Corner Fret -->
+  <g fill="none" stroke="#d4af37" stroke-width="1.8" stroke-linecap="square" stroke-linejoin="miter">
+    <!-- Outer boundary line running along edges -->
+    <path d="M 0,50 L 0,0 L 50,0" />
+    <!-- Secondary parallel line -->
+    <path d="M 5,50 L 5,5 L 50,5" stroke-width="1" />
+    <!-- Traditional Asian Geometric Fretwork / Hồi văn triện góc -->
+    <path d="M 10,42 L 10,10 L 42,10 L 42,26 L 26,26 L 26,18 L 18,18 L 18,34 L 34,34 L 34,42 L 10,42" stroke-width="1.2" />
+    <circle cx="22" cy="22" r="1.5" fill="#d4af37" />
+  </g>
+</svg>

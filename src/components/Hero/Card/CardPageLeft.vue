@@ -1,36 +1,92 @@
 <template>
   <div class="book-page page-left">
-    <div class="page-ornament-border">
-      <div class="left-page-body">
-        <div class="quote-box">
-          <p class="quote-text">
-            “Tình yêu không chỉ được thể hiện thành lời, mà là cả một hành trình dài của sự thấu hiểu, sẻ chia và cùng nhau già đi.”
-          </p>
-          <span class="quote-diamond">✦ ✦ ✦</span>
+    <!-- Outer burgundy margin framing the card as in reference image -->
+    <div class="page-outer-red-frame">
+      <div class="page-inner-cream-card">
+        
+        <!-- Corner Fretwork (Hồi văn triện góc truyền thống màu vàng gold) -->
+        <div class="fret-corner tl">
+          <svg viewBox="0 0 45 45" fill="none" stroke="#c8a55c">
+            <path d="M 0,45 L 0,0 L 45,0" stroke-width="2" />
+            <path d="M 5,38 L 5,5 L 38,5 L 38,18 L 18,18 L 18,11 L 11,11 L 11,26 L 26,26 L 26,38 L 5,38" stroke-width="1.2" />
+          </svg>
+        </div>
+        <div class="fret-corner tr">
+          <svg viewBox="0 0 45 45" fill="none" stroke="#c8a55c">
+            <path d="M 0,45 L 0,0 L 45,0" stroke-width="2" />
+            <path d="M 5,38 L 5,5 L 38,5 L 38,18 L 18,18 L 18,11 L 11,11 L 11,26 L 26,26 L 26,38 L 5,38" stroke-width="1.2" />
+          </svg>
+        </div>
+        <div class="fret-corner bl">
+          <svg viewBox="0 0 45 45" fill="none" stroke="#c8a55c">
+            <path d="M 0,45 L 0,0 L 45,0" stroke-width="2" />
+            <path d="M 5,38 L 5,5 L 38,5 L 38,18 L 18,18 L 18,11 L 11,11 L 11,26 L 26,26 L 26,38 L 5,38" stroke-width="1.2" />
+          </svg>
+        </div>
+        <div class="fret-corner br">
+          <svg viewBox="0 0 45 45" fill="none" stroke="#c8a55c">
+            <path d="M 0,45 L 0,0 L 45,0" stroke-width="2" />
+            <path d="M 5,38 L 5,5 L 38,5 L 38,18 L 18,18 L 18,11 L 11,11 L 11,26 L 26,26 L 26,38 L 5,38" stroke-width="1.2" />
+          </svg>
         </div>
 
-        <div class="invitation-intro">
-          <span class="sub-heading">TRÂN TRỌNG KÍNH MỜI</span>
-          <h2 class="guest-title">Quý Vị & Các Bạn</h2>
-        </div>
+        <!-- Delicate Cherry Blossom Watercolor Accent (Hoa đào trắng hồng góc dưới bên trái) -->
+        <img
+          src="/images/cherry-blossom-cluster.png"
+          alt="Hoa đào"
+          class="cherry-cluster-deco bl"
+        />
 
-        <div class="invitation-message">
-          <p class="msg-para">
-            Sau những năm tháng cùng nhau đi qua giông bão và bình yên, chúng con hiểu rằng mình đã tìm thấy một nửa trọn vẹn của cuộc đời.
-          </p>
-
-          <div class="event-callout">
-            ĐẾN THAM DỰ TIỆC MỪNG & CHUNG VUI CÙNG GIA ĐÌNH CHÚNG TÔI
+        <!-- Inner Content Area -->
+        <div class="left-page-content">
+          <!-- Red Double Happiness Character (囍) -->
+          <div class="symbol-double-happiness-red">
+            <span class="symbol-char">囍</span>
           </div>
 
-          <p class="msg-sub">
-            Sự hiện diện, những nụ cười và lời chúc phúc của Quý vị chính là món quà ý nghĩa nhất và là niềm vinh hạnh to lớn cho hai gia đình trong ngày trọng đại này.
-          </p>
+          <div class="invitation-header-tag">
+            <span class="txt-invite-badge">TRÂN TRỌNG KÍNH MỜI</span>
+          </div>
+
+          <div class="invitation-core-message">
+            <p class="invite-msg-lead">
+              ĐẾN DỰ BUỔI TIỆC CHUNG VUI CÙNG GIA ĐÌNH CHÚNG TÔI
+            </p>
+            <p class="invite-msg-venue-intro">TẠI</p>
+            <h2 class="venue-grand-name">Tư Gia Nhà Trai</h2>
+            <p class="venue-detailed-address">Ấp 3, Xã Trung An, TP. Mỹ Tho, Tỉnh Tiền Giang (nay: P. Trung An, Tỉnh Đồng Tháp)</p>
+          </div>
+
+          <!-- Iconic Date & Time Layout as in Reference Image -->
+          <div class="wedding-datetime-box">
+            <div class="datetime-lead-text">VÀO LÚC</div>
+            <div class="datetime-grid-display">
+              <div class="time-col">
+                <span class="time-main">11 GIỜ 00</span>
+              </div>
+              <div class="sep-line"></div>
+              <div class="day-col">
+                <span class="day-number">06</span>
+                <span class="year-label">NĂM 2027</span>
+              </div>
+              <div class="sep-line"></div>
+              <div class="month-col">
+                <span class="month-main">THÁNG 01</span>
+              </div>
+            </div>
+            <div class="lunar-date-sub">
+              Nhằm ngày 29 tháng 11 năm Bính Ngọ
+            </div>
+          </div>
+
+          <!-- Closing Courtesies -->
+          <div class="invitation-footer-courtesy">
+            <p class="courtesy-p1">Sự hiện diện của Quý vị là niềm vinh hạnh cho gia đình chúng tôi.</p>
+            <p class="courtesy-p2">Rất hân hạnh được đón tiếp!</p>
+            <p class="courtesy-sign">Kính mời</p>
+          </div>
         </div>
 
-        <div class="bottom-ornament">
-          <span>❧</span> ❦ <span>☙</span>
-        </div>
       </div>
     </div>
   </div>
@@ -40,149 +96,267 @@
 </script>
 
 <style scoped>
-.book-page {
-  flex: 1;
+.book-page.page-left {
   position: relative;
-  background: radial-gradient(circle at center, #ffffff 0%, #faf4ea 100%);
-  padding: 12px;
+  background: #7a1219;
+  padding: 10px;
   box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
 }
 
-.page-left {
-  border-right: 1px solid rgba(200, 165, 92, 0.3);
-}
-
-.page-ornament-border {
+.page-outer-red-frame {
   width: 100%;
   height: 100%;
-  border: 1.5px solid #c8a55c;
-  padding: 16px 20px;
+  background: #7a1219;
+  padding: 8px;
+  box-sizing: border-box;
+  border-radius: 6px;
+  display: flex;
+}
+
+.page-inner-cream-card {
+  width: 100%;
+  height: 100%;
+  background: radial-gradient(circle at center, #ffffff 0%, #fefcf7 60%, #fdf5ea 100%);
+  border: 1px solid rgba(200, 165, 92, 0.7);
   box-sizing: border-box;
   position: relative;
+  overflow: hidden;
+  padding: 18px 22px;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
+  box-shadow: inset 0 0 35px rgba(200, 165, 92, 0.08);
+  border-radius: 7px;
 }
 
-.page-ornament-border::before {
-  content: "";
+/* Fret Corners */
+.fret-corner {
   position: absolute;
-  inset: 5px;
-  border: 1px solid rgba(200, 165, 92, 0.4);
+  width: 32px;
+  height: 32px;
   pointer-events: none;
+  z-index: 4;
 }
 
-.left-page-body {
+.fret-corner.tl { top: 8px; left: 8px; }
+.fret-corner.tr { top: 8px; right: 8px; transform: scaleX(-1); }
+.fret-corner.bl { bottom: 8px; left: 8px; transform: scaleY(-1); }
+.fret-corner.br { bottom: 8px; right: 8px; transform: scale(-1); }
+
+/* Cherry Blossom Watercolor Sprigs */
+.cherry-cluster-deco {
+  position: absolute;
+  pointer-events: none;
+  z-index: 3;
+  width: 110px;
+  height: 110px;
+  object-fit: contain;
+  mix-blend-mode: multiply;
+  opacity: 0.9;
+}
+
+.cherry-cluster-deco.bl {
+  bottom: -15px;
+  left: -15px;
+}
+
+/* Content Layout */
+.left-page-content {
+  position: relative;
+  z-index: 5;
   text-align: center;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
   height: 100%;
-  gap: 8px;
+  padding: 4px 6px;
 }
 
-.quote-box {
-  max-width: 95%;
-  margin-bottom: 4px;
+/* Red Double Happiness Symbol */
+.symbol-double-happiness-red {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 2px;
+  margin-bottom: 2px;
 }
 
-.quote-text {
+.symbol-char {
   font-family: var(--font-serif);
-  font-style: italic;
+  font-size: 38px;
+  font-weight: 700;
+  line-height: 1;
+  color: #8c1822;
+  text-shadow: 0 1px 2px rgba(140, 24, 34, 0.15);
+}
+
+.invitation-header-tag {
+  margin: 2px 0 6px;
+}
+
+.txt-invite-badge {
+  font-family: var(--font-serif);
   font-size: 13.5px;
-  color: #6e5e4f;
-  line-height: 1.5;
-  margin: 0;
+  letter-spacing: 2.8px;
+  font-weight: 700;
+  color: #7a1219;
+  text-transform: uppercase;
+  border-bottom: 1px solid #d4af37;
+  padding-bottom: 3px;
+  display: inline-block;
 }
 
-.quote-diamond {
-  color: #c8a55c;
-  font-size: 9px;
-  margin-top: 3px;
-  display: block;
-}
-
-.invitation-intro {
+/* Core Message */
+.invitation-core-message {
   margin: 2px 0;
 }
 
-.sub-heading {
+.invite-msg-lead {
   font-family: var(--font-serif);
-  font-size: 13.5px;
-  letter-spacing: 2.5px;
-  color: #b38b4d;
+  font-size: 11.5px;
+  letter-spacing: 1.2px;
   font-weight: 600;
-  display: block;
-}
-
-.guest-title {
-  font-family: var(--font-script);
-  font-size: 42px;
-  color: #8f2e36;
-  margin: 2px 0 6px;
-  font-weight: normal;
-}
-
-.invitation-message {
-  max-width: 440px;
-  margin: 0 auto;
-}
-
-.msg-para {
-  font-size: 13.5px;
-  color: #5f5040;
-  line-height: 1.5;
-  margin-bottom: 8px;
-}
-
-.event-callout {
-  font-family: var(--font-serif);
-  font-size: 13px;
-  font-weight: 700;
-  color: #8f2e36;
-  letter-spacing: 0.5px;
+  color: #554433;
+  margin-bottom: 3px;
+  text-transform: uppercase;
   line-height: 1.4;
-  background: rgba(143, 46, 54, 0.06);
-  padding: 6px 10px;
-  border-radius: 6px;
-  margin: 6px 0;
 }
 
-.msg-sub {
-  font-size: 12.5px;
-  color: #7a6b5c;
-  line-height: 1.5;
-  margin: 0;
+.invite-msg-venue-intro {
+  font-size: 11px;
+  letter-spacing: 2px;
+  color: #8c765c;
+  margin-bottom: 2px;
+  font-weight: 500;
 }
 
-.bottom-ornament {
-  color: #c8a55c;
-  font-size: 13px;
+.venue-grand-name {
+  font-family: var(--font-script);
+  font-size: 40px;
+  line-height: 1.1;
+  color: #8c1822;
+  font-weight: normal;
+  margin: 1px 0 3px;
+  text-shadow: 0 1px 3px rgba(140, 24, 34, 0.12);
+}
+
+.venue-detailed-address {
+  font-size: 12px;
+  color: #5f5040;
+  line-height: 1.45;
+  margin: 0 auto;
+  max-width: 90%;
+}
+
+/* Date and Time Box - Exact recreation of the reference photo */
+.wedding-datetime-box {
+  background: rgba(200, 165, 92, 0.07);
+  border-top: 1px solid rgba(200, 165, 92, 0.5);
+  border-bottom: 1px solid rgba(200, 165, 92, 0.5);
+  padding: 8px 10px;
+  margin: 4px 0;
+}
+
+.datetime-lead-text {
+  font-family: var(--font-serif);
+  font-size: 10.5px;
+  letter-spacing: 2px;
+  font-weight: 600;
+  color: #7a1219;
+  margin-bottom: 3px;
+}
+
+.datetime-grid-display {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+}
+
+.time-col, .month-col {
+  flex: 1;
+  text-align: center;
+}
+
+.time-main, .month-main {
+  font-family: var(--font-serif);
+  font-size: 13.5px;
+  font-weight: 700;
+  color: #554433;
+  letter-spacing: 1px;
+}
+
+.sep-line {
+  width: 1px;
+  height: 38px;
+  background: #c8a55c;
+}
+
+.day-col {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  min-width: 60px;
+}
+
+.day-number {
+  font-family: var(--font-serif);
+  font-size: 34px;
+  font-weight: 700;
+  line-height: 1;
+  color: #8c1822;
+  letter-spacing: 1px;
+}
+
+.year-label {
+  font-family: var(--font-serif);
+  font-size: 10px;
+  letter-spacing: 1.5px;
+  color: #8c765c;
+  font-weight: 600;
+  margin-top: 2px;
+}
+
+.lunar-date-sub {
+  font-size: 11px;
+  font-style: italic;
+  color: #7e6f5f;
   margin-top: 4px;
 }
 
-@media (max-width: 992px) {
-  .page-left {
-    border-right: none;
-    border-bottom: 1px solid rgba(200, 165, 92, 0.3);
-  }
-
-  .guest-title {
-    font-size: 40px;
-  }
+/* Courtesy Footer */
+.invitation-footer-courtesy {
+  margin-top: 2px;
 }
 
-@media (max-width: 576px) {
-  .page-ornament-border {
-    padding: 16px 12px;
-  }
+.courtesy-p1 {
+  font-size: 11.5px;
+  color: #635343;
+  line-height: 1.4;
+  margin-bottom: 2px;
+}
 
-  .guest-title {
-    font-size: 34px;
-  }
+.courtesy-p2 {
+  font-size: 11px;
+  font-style: italic;
+  color: #8c765c;
+  margin-bottom: 2px;
+}
 
-  .msg-para, .msg-sub {
-    font-size: 13px;
+.courtesy-sign {
+  font-family: var(--font-serif);
+  font-size: 12.5px;
+  font-weight: 700;
+  letter-spacing: 1px;
+  color: #8c1822;
+}
+
+@media (max-width: 992px) {
+  /* When hidden on mobile this won't show anyway, but keep clean fallback */
+  .book-page.page-left {
+    display: none !important;
   }
 }
 </style>
