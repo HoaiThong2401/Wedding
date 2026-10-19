@@ -60,7 +60,6 @@
       </div>
     </div>
 
-    <!-- CÁC HẠT TIM VÀ EMOJI BAY LÊN -->
     <div class="floating-emojis-layer">
       <span
         v-for="f in floatingReactions"
@@ -71,11 +70,8 @@
         {{ f.emoji }}
       </span>
     </div>
-
-    <!-- MODAL NHẬP LỜI CHÚC -->
     <WishModal
       v-model="showModal"
-      :script-url="SCRIPT_URL"
       @toast="handleModalToast"
     />
 
@@ -103,8 +99,6 @@ import {
   query,
   limitToLast
 } from "firebase/database";
-
-const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbzWXgxFNZdg6ZdeSqpd3es7OEEKKRwQ0olvp-DCc7ELh9e6DMA5AvZz7iRkEQhxHPJDDQ/exec";
 
 const chatBox = ref(null);
 const wishes = ref([]);

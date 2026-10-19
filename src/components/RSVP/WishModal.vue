@@ -52,7 +52,6 @@ import { ref as dbRef, push } from "firebase/database";
 
 const props = defineProps({
   modelValue: Boolean,
-  scriptUrl: String
 });
 
 const emit = defineEmits([
@@ -91,19 +90,6 @@ const submitWish = async () => {
 
   try {
     await push(dbRef(db, "wishes"), wish);
-
-    if (props.scriptUrl) {
-      fetch(props.scriptUrl, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/x-www-form-urlencoded"
-        },
-        body: new URLSearchParams({
-          name: wish.name,
-          message: wish.message
-        })
-      }).catch(() => {});
-    }
 
     emit("toast", "Gửi lời chúc thành công! Cảm ơn bạn rất nhiều ❤️", "success", "❤️");
 
